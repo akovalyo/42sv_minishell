@@ -1,0 +1,10 @@
+*.o
+a.out
+.DS_Store
+.*.swp
+.vscode
+ft_strlen2.s
+._*
+ft_strncmp.s
+libasm.a
+test*
