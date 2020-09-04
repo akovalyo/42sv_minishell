@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/07/27 12:04:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/04 12:32:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstlast(t_list *lst);
-t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
+						void (*del)(void *));
 t_list				*ft_lstnew(void *content);
 
 /*
@@ -130,8 +131,9 @@ char				*signific_handler(long double nbr, int precis,
 char				*ft_ftoa_long(long double nbr, int precis, int sign);
 char				*ft_ftoa(double nbr, int precis);
 int					ft_strchr_ind(const char *s, char c);
-size_t 				ft_strarraylen(char **arr);
+size_t				ft_strarraylen(char **arr);
 float				ft_atof(char *nptr);
 int					ft_atoi_base(char *str, char *base);
+void				*ft_realloc(void *ptr, size_t n);
 
 #endif

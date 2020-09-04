@@ -6,7 +6,7 @@
 #    By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/08/31 13:21:32 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/09/04 11:41:24 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,9 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+test:
+	gcc srcs/main.c -o $(NAME) -L libft/ -lft -I libft/includes/ -I includes/
 
 norm:
 	norminette -R CheckForbiddenSourceHeader $(SRCS) $(INCL)*.h $(LIBFT_DIR)*.c $(LIBFT_INCL)*.h

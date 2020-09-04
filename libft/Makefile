@@ -6,7 +6,7 @@
 #    By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/07/27 12:24:25 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/09/04 12:28:37 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,7 @@ SRC = ft_memset.c \
 	  ft_strarraylen.c \
 	  ft_atof.c \
 	  ft_atoi_base.c \
+	  ft_realloc.c \
 	  pf_get_c.c \
 	  pf_get_s.c \
 	  pf_get_di.c \
@@ -103,6 +104,7 @@ SRC = ft_memset.c \
 	  pf_helpers.c \
 	  pf_print.c \
 	  pf_asterisk.c
+
 SRCS = ${addprefix ${SRC_DIR}, ${SRC}}
 OBJS = $(SRC:%.c=%.o)
 
