@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/04 12:32:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/07 12:08:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,7 @@ size_t				ft_strarraylen(char **arr);
 float				ft_atof(char *nptr);
 int					ft_atoi_base(char *str, char *base);
 void				*ft_realloc(void *ptr, size_t n);
+int					ft_isspace(int c);
+char				**ft_strsplit_space(char const *s);
 
 #endif
