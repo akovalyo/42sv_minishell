@@ -37,3 +37,11 @@ The objective of this project is to create a simple shell and learn about proces
 |**[closedir](https://man7.org/linux/man-pages/man3/closedir.3p.html)**| **#include <dirent.h>**<p></p>int closedir(DIR *dirp);<p></p>Closes the directory stream referred to by the argument dirp.  Upon return, the value of dirp may no longer point to an accessible object of the type DIR.  If a file descriptor is used to implement type DIR, that file descriptor shall be closed.|
 |**[strerror](https://man7.org/linux/man-pages/man3/strerror.3.html)**| **#include <string.h>**<p></p>char *strerror(int errnum);<p></p>Returns a pointer to a string that describes the error code passed in the argument *errnum*.|
 |**[errno](https://man7.org/linux/man-pages/man3/errno.3.html)**| **#include <errno.h>**<p></p>Number of last error|
+
+### Signal
+
+* **Ctrl-C** sends an INT signal ("interrupt", SIGINT); by default, this causes the process to terminate.
+
+* **Ctrl-Z** sends a TSTP signal ("terminal stop", SIGTSTP); by default, this causes the process to suspend execution.
+
+* **Ctrl-\\** sends a QUIT signal (SIGQUIT); by default, this causes the process to terminate and dump core.
