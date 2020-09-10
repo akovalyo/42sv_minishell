@@ -20,4 +20,11 @@
 # include <signal.h>
 # include "libft.h"
 
+typedef struct      s_shell
+{
+    char            **comms;
+    char            **tab_comm;
+}                   t_shell;
+
+
 #endif

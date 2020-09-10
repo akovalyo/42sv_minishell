@@ -45,18 +45,17 @@ void	tab_free(char **tab, int len)
 	free(tab);
 }
 
-void	run_comms(char **comms)
+void	run_comms(t_shell *sh)
 {
 	int		i;
-	char	**tab_comm;
 	
 	i = 0;
-	while (comms[i])
+	while (sh->comms[i])
 	{
-		tab_comm = ft_strsplit_space(comms[i]);
+		sh->tab_comm = ft_strsplit_space(sh->comms[i]);
 		i++;
-		ft_printf("%d\n", ft_strarraylen(tab_comm));
-		tab_free(tab_comm, ft_strarraylen(tab_comm));
+		ft_printf("%d\n", ft_strarraylen(sh->tab_comm));
+		tab_free(sh->tab_comm, ft_strarraylen(sh->tab_comm));
 	}
 }
 
@@ -74,7 +73,6 @@ void	clear_scr(void)
 
 void	sig_func(int sig)
 {
-	ft_printf("\nnum: %d\nSIGINT: %d\n", sig, SIGINT);
 	if (sig == SIGINT)
 	{
 		ft_printf("\n");
@@ -91,18 +89,18 @@ void	sig_sl(int sig)
 
 int		main(int argc, char **argv)
 {
-	char	*input;
-	char	**comms;
+	t_shell		sh;
 
 	clear_scr();
+	//init_shell(&sh);
 	while (1)
 	{
 		prompt_msg();
 		signal(SIGINT, sig_func);
 		signal(SIGQUIT, sig_sl);
-		comms = read_input();
-		run_comms(comms);
-		tab_free(comms, ft_strarraylen(comms));
+		sh.comms = read_input();
+		run_comms(&sh);
+		tab_free(sh.comms, ft_strarraylen(sh.comms));
 	}
 	return (0);
 }
