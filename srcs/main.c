@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/09 13:23:44 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/10 17:25:29 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,6 @@ char	**read_input()
 	return (tab_comms);
 }
 
-void	tab_free(char **tab, int len)
-{
-	while (len > 0)
-		free(tab[len--]);
-	free(tab);
-}
-
 void	run_comms(t_shell *sh)
 {
 	int		i;
@@ -55,7 +48,7 @@ void	run_comms(t_shell *sh)
 		sh->tab_comm = ft_strsplit_space(sh->comms[i]);
 		i++;
 		ft_printf("%d\n", ft_strarraylen(sh->tab_comm));
-		tab_free(sh->tab_comm, ft_strarraylen(sh->tab_comm));
+		ft_strtab_free(sh->tab_comm, ft_strarraylen(sh->tab_comm));
 	}
 }
 
@@ -100,7 +93,7 @@ int		main(int argc, char **argv)
 		signal(SIGQUIT, sig_sl);
 		sh.comms = read_input();
 		run_comms(&sh);
-		tab_free(sh.comms, ft_strarraylen(sh.comms));
+		ft_strtab_free(sh.comms, ft_strarraylen(sh.comms));
 	}
 	return (0);
 }
