@@ -3,52 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/10 17:25:29 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/11 18:39:51 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**read_input()
+void	exit_shell(t_shell *sh, char *message)
 {
-	char	*input;
-	char	**tab_comms;
+	if (message)
+		ft_printf("minishell: %s", message);
+	if (sh->input)
+		free(sh->input);
+	if (sh->lines)
+		ft_strtab_free(sh->lines, ft_strarraylen(sh->lines));
+	//ft_printf("\n");
+	exit(0);
+}
+
+char	**read_input(t_shell *sh)
+{
+	char	**tab_lines;
 	int		tab_len;
 	int		i;
 	int		ret;
 
 	i = 0;
-	if ((ret = get_next_line(0, &input)) < 0)
-	{
-		ft_printf("minishell: read error");
-		free(input);
-		return NULL;
-	}
+	if ((ret = get_next_line(0, &(sh->input))) < 0)
+		exit_shell(sh, "read error");
 	else if (ret == 0)
-	{
-		free(input);
-		ft_printf("\n");
-		exit(0);
-	}
-	tab_comms = ft_strsplit(input, ';');
-	free(input);
-	return (tab_comms);
+		exit_shell(sh, NULL);
+	tab_lines = ft_strsplit(sh->input, ';');
+	free(sh->input);
+	sh->input = NULL;
+	return (tab_lines);
 }
 
-void	run_comms(t_shell *sh)
+int		check_builtins(t_shell *sh, char *comm)
+{
+	if (ft_strcmp(comm, "exit") == 0)
+		return (-1);
+	return (0);
+}
+
+int		parse_line(t_shell *sh, char **tab_comm)
+{
+	int		builtin;
+	
+	if ((builtin = check_builtins(sh, tab_comm[0])) == -1)
+		 return (-1);
+	return (0);
+}
+
+void	exec_lines(t_shell *sh)
 {
 	int		i;
+	char	**tab_comm;
+	int		ret;
 	
 	i = 0;
-	while (sh->comms[i])
+	while (sh->lines[i])
 	{
-		sh->tab_comm = ft_strsplit_space(sh->comms[i]);
+		tab_comm = ft_strsplit_space(sh->lines[i]);
 		i++;
-		ft_printf("%d\n", ft_strarraylen(sh->tab_comm));
-		ft_strtab_free(sh->tab_comm, ft_strarraylen(sh->tab_comm));
+		ret = parse_line(sh, tab_comm);
+		// ft_printf("%d\n", ft_strarraylen(sh->tab_comm));
+		ft_strtab_free(tab_comm, ft_strarraylen(tab_comm));
+		if (ret == -1)
+			exit_shell(sh, NULL);
 	}
 }
 
@@ -80,20 +105,34 @@ void	sig_sl(int sig)
 	signal(SIGQUIT, sig_sl);
 }
 
-int		main(int argc, char **argv)
+void	init_shell(t_shell *sh)
+{
+	sh->lines = NULL;
+	sh->input = NULL;
+}
+
+int		main(int argc, char **argv, char **env)
 {
 	t_shell		sh;
 
 	clear_scr();
-	//init_shell(&sh);
+	init_shell(&sh);
+
+	int i = 1;
+	// while (env[i])
+	// {
+	// 	ft_printf("%s\n", env[i]);
+	// 	i++;
+	// }
 	while (1)
 	{
 		prompt_msg();
 		signal(SIGINT, sig_func);
 		signal(SIGQUIT, sig_sl);
-		sh.comms = read_input();
-		run_comms(&sh);
-		ft_strtab_free(sh.comms, ft_strarraylen(sh.comms));
+		sh.lines = read_input(&sh);
+		exec_lines(&sh);
+		ft_strtab_free(sh.lines, ft_strarraylen(sh.lines));
+		sh.lines = NULL;
 	}
 	return (0);
 }
