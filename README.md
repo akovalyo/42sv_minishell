@@ -1,6 +1,6 @@
 # 42sv_minishell
 
-:building_construction: **In process** &nbsp; ![yellow](https://img.icons8.com/emoji/24/000000/yellow-circle-emoji.png)
+:building_construction: **In process** :yellow_circle:
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)
 
