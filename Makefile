@@ -6,7 +6,7 @@
 #    By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/04 11:41:24 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/09/14 10:31:19 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,11 @@ LIBFT_DIR = libft/
 LIBFT_INCL = libft/includes/
 INCL = includes/
 
-SRC = main.c
+SRC = main.c \
+		signal.c \
+		utils.c
 
-SRCS = ${addprefix ${SRC_FOLDER}, ${SRC}}
+SRCS = ${addprefix ${SRCS_DIR}, ${SRC}}
 
 OBJF = $(SRC:%.c=%.o)
 
@@ -55,7 +57,7 @@ fclean: clean
 re: fclean all
 
 test:
-	gcc srcs/main.c -o $(NAME) -L libft/ -lft -I libft/includes/ -I includes/
+	gcc $(SRCS) -o $(NAME) -L libft/ -lft -I libft/includes/ -I includes/
 
 norm:
 	norminette -R CheckForbiddenSourceHeader $(SRCS) $(INCL)*.h $(LIBFT_DIR)*.c $(LIBFT_INCL)*.h

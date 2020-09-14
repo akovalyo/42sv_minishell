@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/11 18:39:51 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/14 11:34:18 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,73 +42,57 @@ char	**read_input(t_shell *sh)
 	return (tab_lines);
 }
 
-int		check_builtins(t_shell *sh, char *comm)
+void	void_comm(t_shell *sh, char **tab_comm)
 {
-	if (ft_strcmp(comm, "exit") == 0)
-		return (-1);
-	return (0);
+	ft_printf("minishell: command not found: %s\n", tab_comm[0]);
 }
 
-int		parse_line(t_shell *sh, char **tab_comm)
+void		echo_comm(t_shell *sh, char **tab_comm)
 {
-	int		builtin;
-	
-	if ((builtin = check_builtins(sh, tab_comm[0])) == -1)
-		 return (-1);
-	return (0);
+	if (sh->arg_1 == 0)
+		ft_printf("\n");
+}
+
+void		check_builtins(t_shell *sh, char **tab_comm)
+{
+	if (ft_strncmp(tab_comm[0], "exit", 5) == 0)
+		sh->exit = 1;
+	else if (ft_strncmp(tab_comm[0], "echo", 5) == 0)
+		sh->comm = ECHO;
+
+}
+
+void		parse_line(t_shell *sh, char **tab_comm)
+{
+	check_builtins(sh, tab_comm);
+	if (ft_strarraylen(tab_comm) > 1)
+	{
+		sh->arg_1 = 1;
+		if (ft_strncmp(tab_comm[1], "-n", 3) == 0)
+			sh->n = 1;
+	}
 }
 
 void	exec_lines(t_shell *sh)
 {
 	int		i;
 	char	**tab_comm;
-	int		ret;
+	int				ret;
+	static void		(*exec_comm[])(t_shell*, char**) = {void_comm, echo_comm};
 	
 	i = 0;
 	while (sh->lines[i])
 	{
 		tab_comm = ft_strsplit_space(sh->lines[i]);
 		i++;
-		ret = parse_line(sh, tab_comm);
-		// ft_printf("%d\n", ft_strarraylen(sh->tab_comm));
-		ft_strtab_free(tab_comm, ft_strarraylen(tab_comm));
-		if (ret == -1)
+		parse_line(sh, tab_comm);
+		if (sh->exit)
 			exit_shell(sh, NULL);
+		// else if (!sh->comm)
+		// 	ft_printf("minishell: command not found: %s\n", tab_comm[0]);
+		exec_comm[sh->comm](sh, tab_comm);
+		ft_strtab_free(tab_comm, ft_strarraylen(tab_comm));
 	}
-}
-
-void prompt_msg(void)
-{
-	char	buff[256];
-
-	ft_printf("%s: ", getcwd(buff, 256));
-}
-
-void	clear_scr(void)
-{
-	ft_printf("\e[1;1H\e[2J");
-}
-
-void	sig_func(int sig)
-{
-	if (sig == SIGINT)
-	{
-		ft_printf("\n");
-		prompt_msg();
-		signal(SIGINT, sig_func);
-	}
-}
-
-void	sig_sl(int sig)
-{
-	sig = 0;
-	signal(SIGQUIT, sig_sl);
-}
-
-void	init_shell(t_shell *sh)
-{
-	sh->lines = NULL;
-	sh->input = NULL;
 }
 
 int		main(int argc, char **argv, char **env)
