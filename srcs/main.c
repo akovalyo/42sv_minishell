@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/14 11:34:18 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/14 16:30:25 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	exit_shell(t_shell *sh, char *message)
 		free(sh->input);
 	if (sh->lines)
 		ft_strtab_free(sh->lines, ft_strarraylen(sh->lines));
-	//ft_printf("\n");
+	if (g_pwd)
+		free(g_pwd);
 	exit(0);
 }
 
@@ -102,7 +103,7 @@ int		main(int argc, char **argv, char **env)
 	clear_scr();
 	init_shell(&sh);
 
-	int i = 1;
+	// int i = 1;
 	// while (env[i])
 	// {
 	// 	ft_printf("%s\n", env[i]);
@@ -116,7 +117,7 @@ int		main(int argc, char **argv, char **env)
 		sh.lines = read_input(&sh);
 		exec_lines(&sh);
 		ft_strtab_free(sh.lines, ft_strarraylen(sh.lines));
-		sh.lines = NULL;
+		clear_shell(&sh);
 	}
 	return (0);
 }
