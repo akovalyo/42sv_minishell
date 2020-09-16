@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit_lst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 11:53:41 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/10 17:33:50 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/16 10:46:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ t_list		*ft_strsplit_lst(char const *s, char c)
 		add_node(&result, tab[i]);
 		i++;
 	}
-	ft_strtab_free(tab, tab_len);
+	ft_strtab_free(tab);
 	return (result);
 }

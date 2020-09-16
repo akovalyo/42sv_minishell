@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/14 16:30:20 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/16 13:18:12 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,39 @@ void	clear_scr(void)
 	ft_printf("\e[1;1H\e[2J");
 }
 
-void	init_shell(t_shell *sh)
+void	init_shell()
 {
-	g_pwd = NULL;
-	sh->lines = NULL;
-	sh->input = NULL;
-	sh->single_qt = 0;
-	sh->double_qt = 0;
-	sh->exit = 0;
-	sh->comm = 0;
-	sh->n = 0;
-	sh->arg_1 = 0;
+	clear_scr();
+	g_sh.pwd = NULL;
+	g_sh.lines = NULL;
+	g_sh.input = NULL;
+	g_sh.single_qt = 0;
+	g_sh.double_qt = 0;
+	g_sh.exit = 0;
+	g_sh.comm = 0;
+	g_sh.n = 0;
 }
 
-void	clear_shell(t_shell *sh)
+void	clear_shell()
 {
-	sh->lines = NULL;
-	sh->single_qt = 0;
-	sh->double_qt = 0;
-	sh->exit = 0;
-	sh->comm = 0;
-	sh->n = 0;
-	sh->arg_1 = 0;
+	g_sh.lines = NULL;
+	g_sh.single_qt = 0;
+	g_sh.double_qt = 0;
+	g_sh.exit = 0;
+	g_sh.comm = 0;
+	g_sh.n = 0;
 }
 
 void update_pwd()
 {
 
-	if (g_pwd)
-		free(g_pwd);
-	g_pwd = getcwd(NULL, 0);
+	if (g_sh.pwd)
+		free(g_sh.pwd);
+	g_sh.pwd = getcwd(NULL, 0);
 }
 
 void prompt_msg()
 {
 	update_pwd();
-	ft_printf("%s: ", g_pwd);
+	ft_printf("%s: ", g_sh.pwd);
 }
