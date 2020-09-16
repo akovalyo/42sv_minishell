@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#    By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/10 17:25:48 by alex             ###   ########.fr        #
+#    Updated: 2020/09/16 15:58:22 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,6 +97,7 @@ SRC = ft_memset.c \
 	  ft_strsplit_space.c \
 	  ft_strsplit_lst.c \
 	  ft_strtab_free.c \
+	  ft_strip.c \
 	  pf_get_c.c \
 	  pf_get_s.c \
 	  pf_get_di.c \
@@ -145,4 +146,5 @@ test:
 
 debug:
 	@gcc -g -o test main.c -L. -lft -I ./includes
+
 
