@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/16 13:18:12 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/18 09:54:27 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_shell()
 {
 	clear_scr();
 	g_sh.pwd = NULL;
-	g_sh.lines = NULL;
+	g_sh.input_tab = NULL;
 	g_sh.input = NULL;
 	g_sh.single_qt = 0;
 	g_sh.double_qt = 0;
@@ -32,7 +32,7 @@ void	init_shell()
 
 void	clear_shell()
 {
-	g_sh.lines = NULL;
+	g_sh.input_tab = NULL;
 	g_sh.single_qt = 0;
 	g_sh.double_qt = 0;
 	g_sh.exit = 0;
