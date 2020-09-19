@@ -6,7 +6,7 @@
 #    By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/16 15:58:22 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/09/18 16:13:50 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,6 +98,7 @@ SRC = ft_memset.c \
 	  ft_strsplit_lst.c \
 	  ft_strtab_free.c \
 	  ft_strip.c \
+	  ft_strnequ_alpha.c \
 	  pf_get_c.c \
 	  pf_get_s.c \
 	  pf_get_di.c \

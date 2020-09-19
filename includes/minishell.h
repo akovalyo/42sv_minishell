@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 13:00:27 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/18 17:34:26 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define EXPORT 4
 # define UNSET 5
 # define ENV 6
+# define SH 7
 # define CMD 10
 
 # include <unistd.h>
@@ -27,6 +28,7 @@
 # include <errno.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include "libft.h"
 
 typedef struct		s_shell
@@ -64,7 +66,14 @@ char				**read_input();
 void				comm_void(char **tab_comm);
 void				comm_echo(char **tab_comm);
 void				comm_pwd(char **tab_comm);
-void				check_builtins(char **tab_comm);
+void				comm_cd(char **tab_comm);
+void				comm_export(char **tab_comm);
+void				comm_unset(char **tab_comm);
+void				comm_env(char **tab_comm);
+void				comm_sh(char **tab_comm);
+int 				check_bin(char *comm);
+char				*get_env(char *var);
+void				check_builtins_and_bin(char **tab_comm);
 char				**parse_cmd(char *comm);
 void				check_comm_line(char **tab_comm);
 void				exec_input();

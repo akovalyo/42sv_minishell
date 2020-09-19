@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 12:56:02 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:43:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	**read_input()
 
 void	comm_void(char **tab_comm)
 {
-	//execve("/bin/pwd", tab_comm + 1, g_sh.env);
 	ft_printf("minishell: command not found: %s\n", tab_comm[0]);
 }
 
@@ -59,12 +58,24 @@ int 		isquote(char c)
 
 void		comm_echo(char **tab_comm)
 {
+	int i;
+	int len;
+
+	i = 0;
 	if (ft_strarraylen(tab_comm) == 1)
 		ft_printf("\n");
-	if (ft_strarraylen(tab_comm) > 1)
+	else
 	{
-		if (ft_strncmp(tab_comm[1], "-n", 3) == 0)
+		len = ft_strlen(tab_comm[1]);
+		if (ft_strncmp(tab_comm[1], "-n ", 3) == 0)
+		{
 			g_sh.n = 1;
+			i = 3;
+		}
+		while (i < len)
+		{
+
+		}
 		ft_printf("%s\n", tab_comm[1]);
 	}
 }
@@ -80,16 +91,101 @@ void		comm_pwd(char **tab_comm)
 	}
 }
 
-void		check_builtins(char **tab_comm)
+void		comm_cd(char **tab_comm)
+{
+	return ;
+}
+
+void		comm_export(char **tab_comm)
+{
+	return ;
+}
+
+void		comm_unset(char **tab_comm)
+{
+	return ;
+}
+
+void		comm_env(char **tab_comm)
+{
+	return ;
+}
+
+void		comm_sh(char **tab_comm)
+{	
+	execve(tab_comm[0], tab_comm, g_sh.env);
+}
+
+/*
+** Checks existing system executable for the first argument in the input
+*/
+
+int 		check_bin(char *comm)
+{
+	char			**paths;
+	int				i;
+	struct stat		buf;
+
+	i = 0;
+	if(!(paths = ft_strsplit(get_env("PATH="), ':')))
+		return (0);
+	
+	// while (comm[i++])
+	// 	ft_printf("%s\n", paths[i]);
+	// return (0);
+	
+	while (paths[i])
+	{
+		
+		if (ft_strncmp(paths[i], comm, ft_strlen(paths[i])) == 0)
+		{
+			if (lstat(comm, &buf) == 0)
+				return (1);
+		}	
+		i++;
+	}
+	return (0);
+}
+
+/*
+** Returns pointer to the value of the environment variable 'var' if found, else NULL
+*/
+
+char		*get_env(char *var)
+{
+	int i;
+
+	i = 0;
+	while (g_sh.env[i])
+	{
+		if (ft_strncmp(g_sh.env[i], var, ft_strlen(var)) == 0)
+			return (ft_strchr(g_sh.env[i], '=') + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+void		check_builtins_and_bin(char **tab_comm)
 {
 	//ft_printf("%s\n", tab_comm[1]);
-	if (ft_strncmp(tab_comm[0], "exit", 5) == 0)
+	if (ft_strnequ_alpha(tab_comm[0], "exit", 5) == 0)
 		g_sh.exit = 1;
-	else if (ft_strncmp(tab_comm[0], "echo", 5) == 0)
+	else if (ft_strnequ_alpha(tab_comm[0], "echo", 5) == 0)
 		g_sh.comm = ECHO;
-	else if (ft_strncmp(tab_comm[0], "pwd", 4) == 0)
+	else if (ft_strnequ_alpha(tab_comm[0], "pwd", 4) == 0)
 		g_sh.comm = PWD;
+	else if (ft_strnequ_alpha(tab_comm[0], "cd", 3) == 0)
+		g_sh.comm = CD;
+	else if (ft_strnequ_alpha(tab_comm[0], "export", 7) == 0)
+		g_sh.comm = EXPORT;
+	else if (ft_strnequ_alpha(tab_comm[0], "unset", 6) == 0)
+		g_sh.comm = UNSET;
+	else if (ft_strnequ_alpha(tab_comm[0], "env", 4) == 0)
+		g_sh.comm = ENV;
+	else if (check_bin(tab_comm[0]))
+		g_sh.comm = SH;
 
+	
 }
 
 char			**parse_cmd(char *comm)
@@ -123,27 +219,29 @@ char			**parse_cmd(char *comm)
 // 	parse_cmd(comm);
 // }
 
-void		check_comm_line(char **comm)
-{
+// void		check_comm_line(char **comm)
+// {
 	
-	//parse_comm_line(comm);
-	check_builtins(comm);
+// 	//parse_comm_line(comm);
+// 	check_builtins_and_bin(comm);
 	
-}
+// }
 
 void	exec_input()
 {
-	int		i;
-	char	**tab_comm;
+	int				i;
+	char			**tab_comm;
 	int				ret;
-	static void		(*exec_comm[])(char**) = {comm_void, comm_echo, comm_pwd};
+	static void		(*exec_comm[])(char**) = {comm_void, comm_echo, comm_pwd,
+					comm_cd, comm_export, comm_unset, comm_env, comm_sh};
 	
 	i = 0;
 	while (g_sh.input_tab[i])
 	{
 		//tab_comm = ft_strsplit_space(g_sh.input_tab[i]);
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
-		check_comm_line(tab_comm);
+		//check_comm_line(tab_comm);
+		check_builtins_and_bin(tab_comm);
 		if (g_sh.exit)
 			exit_shell(NULL);
 		// else if (!sh->comm)

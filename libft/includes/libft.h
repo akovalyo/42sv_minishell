@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/16 15:53:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/18 16:14:23 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,6 @@ int					ft_isspace(int c);
 char				**ft_strsplit_space(char const *s);
 void				ft_strtab_free(char **tab);
 char				*ft_strip(char *str);
+int					ft_strnequ_alpha(const char *s1, const char *s2, size_t n);
 
 #endif
