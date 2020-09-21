@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 18:43:04 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/21 12:58:37 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		comm_export(char **tab_comm)
 
 void		comm_unset(char **tab_comm)
 {
-	return ;
+	return ; 
 }
 
 void		comm_env(char **tab_comm)
@@ -113,7 +113,22 @@ void		comm_env(char **tab_comm)
 
 void		comm_sh(char **tab_comm)
 {	
-	execve(tab_comm[0], tab_comm, g_sh.env);
+	pid_t pid;
+	int i;
+	
+	i = 0;
+	while (tab_comm[i])
+	{
+		if (strlen(tab_comm[i]) == 0)
+			tab_comm[i] = NULL;
+		i++;
+	}
+	pid = fork();
+	if (pid == 0)
+		execve(tab_comm[0], tab_comm, g_sh.env);
+	else if (pid < 0)
+		ft_printf("minishell: failed to create a new process\n");
+	wait(&pid);
 }
 
 /*
@@ -129,15 +144,9 @@ int 		check_bin(char *comm)
 	i = 0;
 	if(!(paths = ft_strsplit(get_env("PATH="), ':')))
 		return (0);
-	
-	// while (comm[i++])
-	// 	ft_printf("%s\n", paths[i]);
-	// return (0);
-	
 	while (paths[i])
 	{
-		
-		if (ft_strncmp(paths[i], comm, ft_strlen(paths[i])) == 0)
+		if (ft_strncmp(paths[i], comm, ft_strlen(paths[i])) == 0) 
 		{
 			if (lstat(comm, &buf) == 0)
 				return (1);
