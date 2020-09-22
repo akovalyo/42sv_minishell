@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/21 18:54:51 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/22 09:29:44 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,11 +212,13 @@ char			**parse_cmd(char *comm)
 
 	len = ft_strlen(comm);
 	start = 0;
+	
 	while (ft_isspace(comm[start]))
 		start++;
 	end = start;
 	while (comm[end] && ft_isspace(comm[end]) == 0)
 		end++;
+	
 	cmd = ft_strsub(comm, start, end - start);
 	start = (len - end > 0) ? 2 : 1;
 	tab_comm = malloc(sizeof(char *) * (start + 1));
@@ -224,70 +226,97 @@ char			**parse_cmd(char *comm)
 	tab_comm[start] = NULL;
 	if (start > 1)
 		tab_comm[1] = ft_strtrim(&comm[end]);
+	
 	return (tab_comm);
 }
 
-//char		*get_arg(char *comm)
+int		get_index_arg(char *comm)
 {
-	char *arg;
-	char *tmp;
+	// char *arg;
+	// char *tmp;
 	int len;
 	int i;
-	int start;
+	// int start;
 
-	ft_printf("OK\n");
-	i = 0;
-	start  = 0;
 	
-	ft_printf("%s\n", *comm);
-	while (*comm[i] && ft_isspace(*comm[i]))
-		i++;
-	start = i;
-
-	if (ft_strlen(*comm) > 1 && *comm[i++] == '-' && ft_isalpha(*comm[i]))
+	i = 0;
+	// start  = 0;
+	
+	
+	// while (comm[i] && ft_isspace(comm[i]))
+	// 	i++;
+	// start = i;
+	
+	if (ft_strlen(comm) > 1 && comm[i++] == '-')
 	{
-		while (*comm[i] && ft_isalpha(*comm[i]))
-			i++;
-		len = ft_strlen(*comm) - i;
-		if (len == 0)
-			return (NULL);
+		if (ft_isalpha(comm[i]))
+		{
+			
+			while (comm[i] && ft_isalpha(comm[i]))
+				i++;
+			len = ft_strlen(comm) - i;
+			if (len == 0)
+				return (0);
+			
+			// arg = ft_strsub(*comm, start, i);
+			// tmp = *comm;
+			// *comm = ft_strsub(*comm, i, len);
+			
+			// free(tmp);
 
-		arg = ft_strsub(*comm, start, i);
-		tmp = *comm;
-		*comm = ft_strsub(*comm, i, len); 
-		free(tmp);
-		ft_printf("|%s|\n", arg);
-		return (arg);
+			return (i - 1);
+		}
 	}
-	return (NULL);
+
+	return (0);
 }
 
-//void		parse_arg(char **tab_comm)
+char **tab_realloc(char **tab, int size)
 {
-	char *arg;
-	char **tmp;
+	char **new;
+	int i;
+
+	i = 0;
+	if (!(new = (char **)malloc(sizeof(char *) * (size + 1))))
+		return (NULL);
+	while (i < size)
+	{
+		new[i] = tab[i];
+		i++;
+	}
+	new[i] = NULL;
+	free(tab);
+	ft_printf("%d\n", ft_strarraylen(new));
+	return (new);
+}
+
+void		parse_arg(char **tab_comm)
+{
+	int ind;
+	char *tmp;
 	int i;
 	int j;
 
 	i = 1;
 	
-	while (((arg = get_arg(tab_comm[i]))) != 0))
+	while ((ind = get_index_arg(tab_comm[i])) != 0)
 	{	
-		
 		i++;
-		tmp = malloc(sizeof(char *) * (i + 1));
-		j = 0;
-		while (*tab_comm[j])
-		{
-			tmp[j] = *tab_comm[j];
-			j++;
-		}
-		tmp[j] = arg;
-		j++;
-		tmp[j] = NULL;
-		*tab_comm = tmp;
+		tab_comm = tab_realloc(tab_comm, i + 1);
+
+		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		
-		free(tmp);	
+		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind);
+		tmp = tab_comm[i - 1];
+		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind);
+		free(tmp);
+
+		j = -1;
+		while (tab_comm[j++])
+			ft_printf("%s\n", tab_comm[j]);
+ 
+		//free(arg);
+		//free(tmp);	
 		
 	}
 }
@@ -304,20 +333,33 @@ void	exec_input()
 {
 	int				i;
 	char			**tab_comm;
+	//char			**tmp;
 	int				ret;
 	static void		(*exec_comm[])(char**) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh};
 	
-	i = 0;
+	int j = -1;
+	
+
+	i = -1;
 	while (g_sh.input_tab[i])
 	{
+		
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
+		
+		while (tab_comm[j++])
+			ft_printf("%s\n", tab_comm[j]);
+
+
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
 		{
-			
-			parse_arg(&tab_comm);
+			parse_arg(tab_comm);
 		}
+
+		// j = 0;
+		while (tab_comm[j++])
+			ft_printf("%s\n", tab_comm[j]);
 		
 		if (g_sh.exit)
 			exit_shell(NULL);
