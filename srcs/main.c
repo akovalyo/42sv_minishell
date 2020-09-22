@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/22 09:29:44 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/22 11:52:38 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,26 +271,32 @@ int		get_index_arg(char *comm)
 	return (0);
 }
 
+/*
+** Changes the size of the array of strings
+*/
+
 char **tab_realloc(char **tab, int size)
 {
 	char **new;
 	int i;
-
+	
 	i = 0;
 	if (!(new = (char **)malloc(sizeof(char *) * (size + 1))))
 		return (NULL);
+	
 	while (i < size)
 	{
-		new[i] = tab[i];
+		new[i] = ft_strdup(tab[i]);
+		free(tab[i]);
 		i++;
 	}
 	new[i] = NULL;
 	free(tab);
-	ft_printf("%d\n", ft_strarraylen(new));
+	//ft_printf("%d\n", ft_strarraylen(new));
 	return (new);
 }
 
-void		parse_arg(char **tab_comm)
+char		**parse_arg(char **tab_comm)
 {
 	int ind;
 	char *tmp;
@@ -302,23 +308,28 @@ void		parse_arg(char **tab_comm)
 	while ((ind = get_index_arg(tab_comm[i])) != 0)
 	{	
 		i++;
+		
 		tab_comm = tab_realloc(tab_comm, i + 1);
-
+		
 		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		
-		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind);
-		tmp = tab_comm[i - 1];
-		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind);
-		free(tmp);
+		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind - 1);
 
-		j = -1;
-		while (tab_comm[j++])
-			ft_printf("%s\n", tab_comm[j]);
- 
-		//free(arg);
-		//free(tmp);	
+		tmp = tab_comm[i - 1];
 		
+
+		// j = -1;
+		// while (tab_comm[j++])
+		// 	ft_printf("%s\n", tab_comm[j]);
+
+		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind + 1);
+		free(tmp);
+		// j = -1;
+		// while (tab_comm[j++])
+		// 	ft_printf("%s\n", tab_comm[j]);
 	}
+	return (tab_comm);
+	
 }
 
 // void		check_comm_line(char **comm)
@@ -341,26 +352,26 @@ void	exec_input()
 	int j = -1;
 	
 
-	i = -1;
+	i = 0;
 	while (g_sh.input_tab[i])
 	{
 		
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
 		
-		while (tab_comm[j++])
-			ft_printf("%s\n", tab_comm[j]);
+		// while (tab_comm[j++])
+		// 	ft_printf("%s\n", tab_comm[j]);
 
 
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
 		{
-			parse_arg(tab_comm);
+			tab_comm = parse_arg(tab_comm);
 		}
-
-		// j = 0;
+		
+		j = -1;
 		while (tab_comm[j++])
 			ft_printf("%s\n", tab_comm[j]);
-		
+		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		if (g_sh.exit)
 			exit_shell(NULL);
 		exec_comm[g_sh.comm](tab_comm);
@@ -395,6 +406,7 @@ int		main(int argc, char **argv, char **env)
 		signal(SIGQUIT, sig_sl);
 		g_sh.input_tab = read_input();
 		exec_input();
+		
 		if (g_sh.input_tab)
 			ft_strtab_free(g_sh.input_tab);
 		clear_shell();
