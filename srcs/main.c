@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/21 12:58:37 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/21 18:54:51 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,23 @@ void		comm_env(char **tab_comm)
 	return ;
 }
 
+void convert_arguments(char **tab_comm)
+{
+	int i;
+
+	
+}
+
 void		comm_sh(char **tab_comm)
 {	
 	pid_t pid;
-	int i;
 	
-	i = 0;
-	while (tab_comm[i])
+	if (ft_strarraylen(tab_comm) > 1 &&	strlen(tab_comm[1]) == 0)
 	{
-		if (strlen(tab_comm[i]) == 0)
-			tab_comm[i] = NULL;
-		i++;
+		free(tab_comm[1]);
+		tab_comm[1] = NULL;
 	}
+	//ft_printf("%d\n", ft_strarraylen(tab_comm));
 	pid = fork();
 	if (pid == 0)
 		execve(tab_comm[0], tab_comm, g_sh.env);
@@ -219,14 +224,73 @@ char			**parse_cmd(char *comm)
 	tab_comm[start] = NULL;
 	if (start > 1)
 		tab_comm[1] = ft_strtrim(&comm[end]);
-		//tab_comm[1] = ft_strsub(comm, end, len - end);
 	return (tab_comm);
 }
 
-// void		parse_comm_line(char *comm)
-// {
-// 	parse_cmd(comm);
-// }
+//char		*get_arg(char *comm)
+{
+	char *arg;
+	char *tmp;
+	int len;
+	int i;
+	int start;
+
+	ft_printf("OK\n");
+	i = 0;
+	start  = 0;
+	
+	ft_printf("%s\n", *comm);
+	while (*comm[i] && ft_isspace(*comm[i]))
+		i++;
+	start = i;
+
+	if (ft_strlen(*comm) > 1 && *comm[i++] == '-' && ft_isalpha(*comm[i]))
+	{
+		while (*comm[i] && ft_isalpha(*comm[i]))
+			i++;
+		len = ft_strlen(*comm) - i;
+		if (len == 0)
+			return (NULL);
+
+		arg = ft_strsub(*comm, start, i);
+		tmp = *comm;
+		*comm = ft_strsub(*comm, i, len); 
+		free(tmp);
+		ft_printf("|%s|\n", arg);
+		return (arg);
+	}
+	return (NULL);
+}
+
+//void		parse_arg(char **tab_comm)
+{
+	char *arg;
+	char **tmp;
+	int i;
+	int j;
+
+	i = 1;
+	
+	while (((arg = get_arg(tab_comm[i]))) != 0))
+	{	
+		
+		i++;
+		tmp = malloc(sizeof(char *) * (i + 1));
+		j = 0;
+		while (*tab_comm[j])
+		{
+			tmp[j] = *tab_comm[j];
+			j++;
+		}
+		tmp[j] = arg;
+		j++;
+		tmp[j] = NULL;
+		*tab_comm = tmp;
+		
+		free(tmp);	
+		
+	}
+}
 
 // void		check_comm_line(char **comm)
 // {
@@ -247,14 +311,16 @@ void	exec_input()
 	i = 0;
 	while (g_sh.input_tab[i])
 	{
-		//tab_comm = ft_strsplit_space(g_sh.input_tab[i]);
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
-		//check_comm_line(tab_comm);
 		check_builtins_and_bin(tab_comm);
+		if (ft_strarraylen(tab_comm) > 1)
+		{
+			
+			parse_arg(&tab_comm);
+		}
+		
 		if (g_sh.exit)
 			exit_shell(NULL);
-		// else if (!sh->comm)
-		// 	ft_printf("minishell: command not found: %s\n", tab_comm[0]);
 		exec_comm[g_sh.comm](tab_comm);
 		ft_strtab_free(tab_comm);
 		i++;
@@ -272,8 +338,6 @@ void	init_env(char **env)
 		
 		if (!(g_sh.env[i] = ft_strdup(env[i])))
 			exit_shell(NULL);
-		
-		// ft_printf("%s\n", g_sh.env[i]);
 		i++;
 	}
 }
@@ -282,13 +346,6 @@ int		main(int argc, char **argv, char **env)
 {
 	init_shell();
 	init_env(env);
-	
-	// int i = 1;
-	// while (env[i])
-	// {
-	// 	ft_printf("%s\n", env[i]);
-	// 	i++;
-	// }
 	while (1)
 	{
 		prompt_msg();

@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 17:34:26 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/21 15:42:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef struct		s_shell
 // typedef struct		s_shlist
 // {
 // 	int				id;
-
+// 	char			*data;
+// 	struct s_shlist	*next;
 // }					t_shlist;
 
 /*
