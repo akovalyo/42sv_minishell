@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/22 11:52:38 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/23 12:48:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,45 +230,44 @@ char			**parse_cmd(char *comm)
 	return (tab_comm);
 }
 
-int		get_index_arg(char *comm)
+int		get_indxs_spaces(char *arg, int i)
 {
-	// char *arg;
-	// char *tmp;
-	int len;
-	int i;
-	// int start;
+	int		start;
+	t_list	*new;
 
+	start = i;
+	new = malloc(sizeof(t_list));
+	while (arg[i] && ft_isspace(arg[i])
+		i++;
+	new.content = NULL;
+	new.content_size; = 0;
+	new.ctg = SP;
+	new.atr = i - start;
+	ft_lstadd_back(&(sh.pars), new);
+	return (i);
+}
+
+int		get_indxs_flags(char *arg, int i)
+{
+	int 	start;
+	t_list	*new;
 	
-	i = 0;
-	// start  = 0;
-	
-	
-	// while (comm[i] && ft_isspace(comm[i]))
-	// 	i++;
-	// start = i;
-	
-	if (ft_strlen(comm) > 1 && comm[i++] == '-')
+	start = i;
+	if (ft_isalpha(arg[i + 1]))
 	{
-		if (ft_isalpha(comm[i]))
-		{
-			
-			while (comm[i] && ft_isalpha(comm[i]))
-				i++;
-			len = ft_strlen(comm) - i;
-			if (len == 0)
-				return (0);
-			
-			// arg = ft_strsub(*comm, start, i);
-			// tmp = *comm;
-			// *comm = ft_strsub(*comm, i, len);
-			
-			// free(tmp);
-
-			return (i - 1);
-		}
+		while (arg[i] && ft_isalpha(arg[i]))
+			i++;
+		new = malloc(sizeof(t_list));
+		g_sh.flags++;
+		new.content = ft_strsub(arg, start, i - start);
+		new.size = i - start;
+		new.stg = FLAG;
+		new.atr = 0;
+		ft_lstadd_back(&(sh.pars), new);
+		return (i);
 	}
-
-	return (0);
+	g_sh.fl_ignore = 1;
+	return (start);
 }
 
 /*
@@ -305,7 +304,7 @@ char		**parse_arg(char **tab_comm)
 
 	i = 1;
 	
-	while ((ind = get_index_arg(tab_comm[i])) != 0)
+	while ((ind = get_indxs_flags(tab_comm[i])) != 0)
 	{	
 		i++;
 		
@@ -332,13 +331,28 @@ char		**parse_arg(char **tab_comm)
 	
 }
 
-// void		check_comm_line(char **comm)
-// {
+
+
+void		parser(char *arg)
+{
+	int i;
+	int len;
+	int start;
 	
-// 	//parse_comm_line(comm);
-// 	check_builtins_and_bin(comm);
+	i = 0;
+	len = ft_strlen(arg);
+
+	while (arg[i])
+	{
+		start = i;
+		if (ft_isspace(arg[i]))
+			i = get_indxs_spaces(arg, i);
+		elif (arg[i] == '-' && !g_sh.fl_ignore)
+			i = get_indxs_flags(arg, i);
+	}
 	
-// }
+	
+}
 
 void	exec_input()
 {
@@ -365,7 +379,8 @@ void	exec_input()
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
 		{
-			tab_comm = parse_arg(tab_comm);
+			parser(tab_comm[1]);
+			//tab_comm = parse_arg(tab_comm);
 		}
 		
 		j = -1;

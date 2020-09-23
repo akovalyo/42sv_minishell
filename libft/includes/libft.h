@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/22 16:10:51 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/23 12:42:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef enum		e_ctg
 {
-	SP = 1, SINGLE_QT, DOUBLE_QT
+	SP = 1, SINGLE_QT, DOUBLE_QT, FLAG
 }					t_ctg;
 
 typedef struct		s_list

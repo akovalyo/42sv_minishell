@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 09:54:27 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/23 12:29:00 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	init_shell()
 	g_sh.exit = 0;
 	g_sh.comm = 0;
 	g_sh.n = 0;
+	g_sh.pars = NULL;
+	g_sh.flags = 0;
+	g_sh.fl_ignore = 0; 
 }
 
 void	clear_shell()
@@ -38,6 +41,8 @@ void	clear_shell()
 	g_sh.exit = 0;
 	g_sh.comm = 0;
 	g_sh.n = 0;
+	g_sh.flags = 0;
+	g_sh.fl_ignore = 0; 
 }
 
 void update_pwd()
