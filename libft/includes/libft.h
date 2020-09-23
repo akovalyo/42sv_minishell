@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/18 16:14:23 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/22 16:10:51 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@
 # include "printf.h"
 # define BUFF_SIZE 32
 
+typedef enum		e_ctg
+{
+	SP = 1, SINGLE_QT, DOUBLE_QT
+}					t_ctg;
+
 typedef struct		s_list
 {
 	void			*content;
 	size_t			content_size;
+	t_ctg			ctg;
+	int				atr;
 	struct s_list	*next;
 }					t_list;
 

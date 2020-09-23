@@ -6,21 +6,12 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/21 20:15:48 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/22 16:15:47 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define ECHO 1
-# define PWD 2
-# define CD 3
-# define EXPORT 4
-# define UNSET 5
-# define ENV 6
-# define SH 7
-# define CMD 10
-
 # include <unistd.h>
 # include <stdlib.h>
 # include <dirent.h>
@@ -32,6 +23,11 @@
 # include <sys/wait.h>
 # include "libft.h"
 
+typedef enum		e_comm
+{
+	ECHO = 1, PWD, CD, EXPORT, UNSET, ENV, SH
+}					t_comm;
+
 typedef struct		s_shell
 {
 	char			**env;
@@ -41,10 +37,13 @@ typedef struct		s_shell
 	int				single_qt : 1;
 	int				double_qt : 1;
 	int				exit : 1;
-	int				comm : 4;
+	t_comm			comm;
 	int				n : 1;
+	t_list			*pars;
 
 }                   t_shell;
+
+
 
 // typedef struct		s_shlist
 // {
