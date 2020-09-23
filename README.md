@@ -6,7 +6,7 @@
 
 The objective of this project is to create a simple shell and learn about processes and file descriptors.
 
-*The project is written in accordance with the school's [Norm](https://github.com/akovalyo/DOCS/blob/master/42_NORM.md).*
+*The project is written in accordance with the school's [Norm](https://github.com/akovalyo/akovalyo/blob/master/42_NORM.md).*
 
 ### Allowed functions
 
