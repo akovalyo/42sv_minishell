@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 12:42:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/23 18:00:35 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 
 typedef enum		e_ctg
 {
-	SP = 1, SINGLE_QT, DOUBLE_QT, FLAG
+	SP = 1, SINGLE_QT, DOUBLE_QT, FLAG, ENVV, STR, SN_QT, DB_QT, GR_SIGN,
+	LESS_SIGN, DB_GR_SIGN
 }					t_ctg;
 
 typedef struct		s_list

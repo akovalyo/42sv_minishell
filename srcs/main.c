@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 12:48:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/23 17:59:16 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,24 +230,25 @@ char			**parse_cmd(char *comm)
 	return (tab_comm);
 }
 
-int		get_indxs_spaces(char *arg, int i)
+int		addlst_spaces(char *arg, int i)
 {
 	int		start;
 	t_list	*new;
 
 	start = i;
 	new = malloc(sizeof(t_list));
-	while (arg[i] && ft_isspace(arg[i])
+	while (arg[i] && ft_isspace(arg[i]))
 		i++;
-	new.content = NULL;
-	new.content_size; = 0;
-	new.ctg = SP;
-	new.atr = i - start;
-	ft_lstadd_back(&(sh.pars), new);
+	new->content = NULL;
+	new->content_size = 0;
+	new->ctg = SP;
+	new->atr = i - start;
+	new->next = NULL;
+	ft_lstadd_back(&(g_sh.pars), new);
 	return (i);
 }
 
-int		get_indxs_flags(char *arg, int i)
+int		addlst_flags(char *arg, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -255,19 +256,102 @@ int		get_indxs_flags(char *arg, int i)
 	start = i;
 	if (ft_isalpha(arg[i + 1]))
 	{
+		i++;
 		while (arg[i] && ft_isalpha(arg[i]))
 			i++;
 		new = malloc(sizeof(t_list));
 		g_sh.flags++;
-		new.content = ft_strsub(arg, start, i - start);
-		new.size = i - start;
-		new.stg = FLAG;
-		new.atr = 0;
-		ft_lstadd_back(&(sh.pars), new);
+		new->content = ft_strsub(arg, start, i - start);
+		new->content_size = i - start;
+		new->ctg = FLAG;
+		new->atr = 0;
+		new->next = NULL;
+		ft_lstadd_back(&(g_sh.pars), new);
+		//ft_printf("cont: |%s|; ctg: %d\n", g_sh.pars->content, g_sh.pars->ctg);
 		return (i);
 	}
 	g_sh.fl_ignore = 1;
 	return (start);
+}
+
+int		addlst_envv(char *arg, int i)
+{
+	int 	start;
+	t_list	*new;
+	
+	start = i;
+	i++;
+	while (arg[i] && ft_isalpha(arg[i]))
+		i++;
+	new = malloc(sizeof(t_list));
+	new->content = ft_strsub(arg, start, i - start);
+	new->content_size = i - start;
+	new->atr = 0;
+	new->next = NULL;
+	if (get_env(new->content + 1))
+		new->ctg = ENVV;
+	else
+		new->ctg = STR;
+	ft_lstadd_back(&(g_sh.pars), new);
+	return (i);
+}
+
+int special_char(char c)
+{
+	if (c == '\'' || c == '"' || c == '<' || c == '>' || c == '$')
+		return (1);
+	return (0);
+}
+
+int		addlst_str(char *arg, int i)
+{
+	t_list	*new;
+
+	new = malloc(sizeof(t_list));
+	while (arg[i] && !special_char(arg[i]) && arg[i] != '$' && !ft_isspace(arg[i]))
+	{	
+		if (arg[i] == '\\')
+			i++;
+		new->content = ft_straddchr_free(new->content, arg[i]);
+		i++;
+	}
+	new->content_size = ft_strlen(new->content);
+	new->atr = 0;
+	new->next = NULL;
+	new->ctg = STR;
+	ft_lstadd_back(&(g_sh.pars), new);
+	return (i);
+}
+
+int		addlst_specialch(char *arg, int i)
+{
+	t_list	*new;
+	
+	new = malloc(sizeof(t_list));
+	if (arg[i] == '\'')
+	{
+		new->ctg = SN_QT;
+		g_sh.sn_qt += 1;
+	}
+	else if (arg[i] == '"')
+	{
+		new->ctg = DB_QT;
+		g_sh.db_qt += 1;
+	}
+	else if (arg[i] == '<')
+		new->ctg = LESS_SIGN;
+	else if (arg[i] == '>')
+	{
+		if (arg[i + 1] == '>')
+			new->ctg = DB_GR_SIGN;
+		else
+			new->ctg = GR_SIGN;
+	}
+	new->content_size = 0;
+	new->next = NULL;
+	new->atr = 0;
+	ft_lstadd_back(&(g_sh.pars), new);
+	return (new->ctg == 11 ? i + 2 : i + 1);
 }
 
 /*
@@ -295,64 +379,71 @@ char **tab_realloc(char **tab, int size)
 	return (new);
 }
 
-char		**parse_arg(char **tab_comm)
-{
-	int ind;
-	char *tmp;
-	int i;
-	int j;
+// char		**parse_arg(char **tab_comm)
+// {
+// 	int ind;
+// 	char *tmp;
+// 	int i;
+// 	int j;
 
-	i = 1;
+// 	i = 1;
 	
-	while ((ind = get_indxs_flags(tab_comm[i])) != 0)
-	{	
-		i++;
+// 	while ((ind = get_indxs_flags(tab_comm[i])) != 0)
+// 	{	
+// 		i++;
 		
-		tab_comm = tab_realloc(tab_comm, i + 1);
+// 		tab_comm = tab_realloc(tab_comm, i + 1);
 		
-		// ft_printf("%d\n", ft_strarraylen(tab_comm));
+// 		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		
-		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind - 1);
+// 		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind - 1);
 
-		tmp = tab_comm[i - 1];
+// 		tmp = tab_comm[i - 1];
 		
 
-		// j = -1;
-		// while (tab_comm[j++])
-		// 	ft_printf("%s\n", tab_comm[j]);
+// 		// j = -1;
+// 		// while (tab_comm[j++])
+// 		// 	ft_printf("%s\n", tab_comm[j]);
 
-		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind + 1);
-		free(tmp);
-		// j = -1;
-		// while (tab_comm[j++])
-		// 	ft_printf("%s\n", tab_comm[j]);
-	}
-	return (tab_comm);
+// 		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind + 1);
+// 		free(tmp);
+// 		// j = -1;
+// 		// while (tab_comm[j++])
+// 		// 	ft_printf("%s\n", tab_comm[j]);
+// 	}
+// 	return (tab_comm);
 	
-}
+// }
 
 
 
 void		parser(char *arg)
 {
 	int i;
-	int len;
-	int start;
+	//int len;
+	//int start;
 	
 	i = 0;
-	len = ft_strlen(arg);
+	//len = ft_strlen(arg);
 
 	while (arg[i])
 	{
-		start = i;
+		//ft_printf("OK\n");
+		//start = i;
 		if (ft_isspace(arg[i]))
-			i = get_indxs_spaces(arg, i);
-		elif (arg[i] == '-' && !g_sh.fl_ignore)
-			i = get_indxs_flags(arg, i);
+			i = addlst_spaces(arg, i);
+		else if (arg[i] == '-' && !g_sh.fl_ignore)
+			i = addlst_flags(arg, i);
+		else if (arg[i] == '$')
+			i = addlst_envv(arg, i);
+		else if (special_char(arg[i]))
+			i = addlst_specialch(arg, i);
+		else
+			i = addlst_str(arg, i);
 	}
-	
-	
+
 }
+
 
 void	exec_input()
 {
@@ -382,10 +473,15 @@ void	exec_input()
 			parser(tab_comm[1]);
 			//tab_comm = parse_arg(tab_comm);
 		}
-		
-		j = -1;
-		while (tab_comm[j++])
-			ft_printf("%s\n", tab_comm[j]);
+		//
+		while (g_sh.pars)
+		{	
+			ft_printf("cont: |%s|; ctg: %d; atr: %d\n", g_sh.pars->content, g_sh.pars->ctg, g_sh.pars->atr);
+			g_sh.pars = g_sh.pars->next;
+		}
+		exit_shell(NULL);
+		//
+
 		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		if (g_sh.exit)
 			exit_shell(NULL);

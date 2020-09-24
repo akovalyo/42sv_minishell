@@ -6,7 +6,7 @@
 /*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 12:28:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/23 17:43:52 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ typedef struct		s_shell
 	char			*input;
 	char			**input_tab;
 	char			*pwd;
-	int				single_qt : 2;
-	int				double_qt : 2;
+	int				sn_qt;
+	int				db_qt;
 	int				exit : 1;
 	t_comm			comm;
 	int				n : 1;
-	int				flags : 8;
+	short			flags;
 	int				fl_ignore : 1;
 	t_list			*pars;
 
