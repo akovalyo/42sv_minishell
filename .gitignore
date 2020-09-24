@@ -2,7 +2,6 @@
 a.out
 .DS_Store
 .*.swp
-.vscode
 ._*
 test*
 rot.sh

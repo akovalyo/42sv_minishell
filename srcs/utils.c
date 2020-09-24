@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 17:15:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/24 12:58:11 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	init_shell()
 	clear_scr();
 	g_sh.pwd = NULL;
 	g_sh.input_tab = NULL;
-	g_sh.input = NULL;
 	g_sh.sn_qt = 0;
 	g_sh.db_qt = 0;
 	g_sh.exit = 0;

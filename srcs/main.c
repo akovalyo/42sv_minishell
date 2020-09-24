@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 17:59:16 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:02:13 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,22 +118,56 @@ void convert_arguments(char **tab_comm)
 	
 }
 
+char **create_argv(char **tab_comm)
+{
+	char	**new;
+	int		size;
+	int		i;
+	t_list 	*lstptr;
+
+	size = g_sh.fl_ignore == 1 ? 1 : 0;
+	size = size + g_sh.flags + 2;
+	new = malloc(sizeof(char *) * size);
+	new[0] = ft_strdup(tab_comm[0]);	
+	new[size - 1] = NULL;
+	lstptr = g_sh.pars;
+	i = 1;
+
+	
+	while (i < (size - 1) && g_sh.flags > 0)
+	{
+		if (lstptr->ctg == FLAG)
+		{
+			new[i] = ft_strdup(lstptr->content);
+			g_sh.flags--;
+			i++;
+		}
+		lstptr = lstptr->next;
+	}
+	return (new);
+}
+
 void		comm_sh(char **tab_comm)
 {	
-	pid_t pid;
+	char	**argv;
+	pid_t	pid;
+	// ft_printf("%d\n", ft_strarraylen(tab_comm));
+	// if (g_sh.pars)
+	// 	ft_printf("PARS\n");
+	// if (ft_strarraylen(tab_comm) > 1 &&	strlen(tab_comm[1]) == 0)
+	// {
+	// 	free(tab_comm[1]);
+	// 	tab_comm[1] = NULL;
+	// }
+	argv = create_argv(tab_comm);
 	
-	if (ft_strarraylen(tab_comm) > 1 &&	strlen(tab_comm[1]) == 0)
-	{
-		free(tab_comm[1]);
-		tab_comm[1] = NULL;
-	}
-	//ft_printf("%d\n", ft_strarraylen(tab_comm));
 	pid = fork();
 	if (pid == 0)
 		execve(tab_comm[0], tab_comm, g_sh.env);
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
+	ft_strtab_free(argv);
 }
 
 /*
@@ -154,10 +188,14 @@ int 		check_bin(char *comm)
 		if (ft_strncmp(paths[i], comm, ft_strlen(paths[i])) == 0) 
 		{
 			if (lstat(comm, &buf) == 0)
+			{
+				ft_strtab_free(paths);
 				return (1);
+			}
 		}	
 		i++;
 	}
+	ft_strtab_free(paths);
 	return (0);
 }
 
@@ -222,7 +260,14 @@ char			**parse_cmd(char *comm)
 	cmd = ft_strsub(comm, start, end - start);
 	start = (len - end > 0) ? 2 : 1;
 	tab_comm = malloc(sizeof(char *) * (start + 1));
-	tab_comm[0] = cmd;
+	tab_comm[0] = ft_strdup(cmd);
+	free(cmd);
+	
+	// start = (len - end > 0) ? 2 : 1;
+	// tab_comm = malloc(sizeof(char *) * (start + 1));
+	// tab_comm[0] = ft_strsub(comm, start, end - start);
+
+
 	tab_comm[start] = NULL;
 	if (start > 1)
 		tab_comm[1] = ft_strtrim(&comm[end]);
@@ -444,12 +489,25 @@ void		parser(char *arg)
 
 }
 
+void	free_pars()
+{
+	t_list *tmp;
+
+	while (g_sh.pars)
+	{
+		tmp = g_sh.pars->next;
+		if (g_sh.pars->content)
+			free(g_sh.pars->content);
+		free(g_sh.pars);
+		g_sh.pars = tmp;
+	}
+}
 
 void	exec_input()
 {
 	int				i;
 	char			**tab_comm;
-	//char			**tmp;
+	char			**tmp;
 	int				ret;
 	static void		(*exec_comm[])(char**) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh};
@@ -460,32 +518,16 @@ void	exec_input()
 	i = 0;
 	while (g_sh.input_tab[i])
 	{
-		
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
-		
-		// while (tab_comm[j++])
-		// 	ft_printf("%s\n", tab_comm[j]);
-
-
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
 		{
 			parser(tab_comm[1]);
-			//tab_comm = parse_arg(tab_comm);
 		}
-		//
-		while (g_sh.pars)
-		{	
-			ft_printf("cont: |%s|; ctg: %d; atr: %d\n", g_sh.pars->content, g_sh.pars->ctg, g_sh.pars->atr);
-			g_sh.pars = g_sh.pars->next;
-		}
-		exit_shell(NULL);
-		//
-
-		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		if (g_sh.exit)
 			exit_shell(NULL);
 		exec_comm[g_sh.comm](tab_comm);
+		free_pars();
 		ft_strtab_free(tab_comm);
 		i++;
 	}
@@ -516,6 +558,7 @@ int		main(int argc, char **argv, char **env)
 		signal(SIGINT, sig_func);
 		signal(SIGQUIT, sig_sl);
 		g_sh.input_tab = read_input();
+		
 		exec_input();
 		
 		if (g_sh.input_tab)
