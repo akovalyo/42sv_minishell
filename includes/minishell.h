@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:14:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/24 22:51:06 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,6 @@ typedef struct		s_shell
 
 }                   t_shell;
 
-
-
-// typedef struct		s_shlist
-// {
-// 	int				id;
-// 	char			*data;
-// 	struct s_shlist	*next;
-// }					t_shlist;
-
 /*
 ** global variables
 */
@@ -80,7 +71,6 @@ void				check_builtins_and_bin(char **tab_comm);
 char				**parse_cmd(char *comm);
 void				check_comm_line(char **tab_comm);
 void				exec_input();
-void				init_env(char **env);
 
 
 
@@ -107,5 +97,13 @@ void				prompt_msg();
 
 char				**arr_realloc(char **arr, int size);
 void				free_pars();
+
+/*
+** env.c
+*/
+
+void				init_env(char **env);
+int					addlst_envv(char *arg, int i);
+char				*get_env(char *var);
 
 #endif

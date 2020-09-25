@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:34:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/24 22:50:40 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,24 +199,6 @@ int 		check_bin(char *comm)
 	return (0);
 }
 
-/*
-** Returns pointer to the value of the environment variable 'var' if found, else NULL
-*/
-
-char		*get_env(char *var)
-{
-	int i;
-
-	i = 0;
-	while (g_sh.env[i])
-	{
-		if (ft_strncmp(g_sh.env[i], var, ft_strlen(var)) == 0)
-			return (ft_strchr(g_sh.env[i], '=') + 1);
-		i++;
-	}
-	return (NULL);
-}
-
 void		check_builtins_and_bin(char **tab_comm)
 {
 	//ft_printf("%s\n", tab_comm[1]);
@@ -308,6 +290,10 @@ int		addlst_flags(char *arg, int i)
 	g_sh.fl_ignore = 1;
 	return (start);
 }
+
+/*
+** 
+*/
 
 int		addlst_envv(char *arg, int i)
 {
@@ -442,21 +428,6 @@ void	exec_input()
 		//free_pars();
 		ft_lstclear(&(g_sh.pars), free);
 		ft_strarr_free(tab_comm);
-		i++;
-	}
-}
-
-void	init_env(char **env)
-{
-	int i;
-
-	i = 0;
-	g_sh.env = ft_memalloc(sizeof(char *) * (ft_strarraylen(env) + 1));
-	while (env[i])
-	{
-		
-		if (!(g_sh.env[i] = ft_strdup(env[i])))
-			exit_shell(NULL);
 		i++;
 	}
 }

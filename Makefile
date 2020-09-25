@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/24 22:14:36 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/09/24 22:44:18 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ INCL = includes/
 SRC = main.c \
 		signal.c \
 		utils.c \
-		memory.c
+		memory.c \
+		env.c
 
 SRCS = ${addprefix ${SRCS_DIR}, ${SRC}}
 
