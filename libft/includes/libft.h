@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/23 18:00:35 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/24 21:17:42 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int					ft_atoi_base(char *str, char *base);
 void				*ft_realloc(void *ptr, size_t n);
 int					ft_isspace(int c);
 char				**ft_strsplit_space(char const *s);
-void				ft_strtab_free(char **tab);
+void				ft_strarr_free(char **arr);
 char				*ft_strip(char *str);
 int					ft_strnequ_alpha(const char *s1, const char *s2, size_t n);
 

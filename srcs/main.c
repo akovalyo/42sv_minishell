@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 15:02:13 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/24 21:47:32 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	exit_shell(char *message)
 	if (g_sh.input)
 		free(g_sh.input);
 	if (g_sh.input_tab)
-		ft_strtab_free(g_sh.input_tab);
+		ft_strarr_free(g_sh.input_tab);
 	if (g_sh.pwd)
 		free(g_sh.pwd);
-	ft_strtab_free(g_sh.env);
+	ft_strarr_free(g_sh.env);
 	exit(0);
 }
 
 char	**read_input()
 {
-	char	**tab_input_tab;
+	char	**tab_input;
 	int		tab_len;
 	int		i;
 	int		ret;
@@ -38,10 +38,10 @@ char	**read_input()
 		exit_shell("read error");
 	else if (ret == 0)
 		exit_shell(NULL);
-	tab_input_tab = ft_strsplit(g_sh.input, ';');
+	tab_input = ft_strsplit(g_sh.input, ';');
 	free(g_sh.input);
 	g_sh.input = NULL;
-	return (tab_input_tab);
+	return (tab_input);
 }
 
 void	comm_void(char **tab_comm)
@@ -167,7 +167,7 @@ void		comm_sh(char **tab_comm)
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
-	ft_strtab_free(argv);
+	ft_strarr_free(argv);
 }
 
 /*
@@ -189,13 +189,13 @@ int 		check_bin(char *comm)
 		{
 			if (lstat(comm, &buf) == 0)
 			{
-				ft_strtab_free(paths);
+				ft_strarr_free(paths);
 				return (1);
 			}
 		}	
 		i++;
 	}
-	ft_strtab_free(paths);
+	ft_strarr_free(paths);
 	return (0);
 }
 
@@ -403,7 +403,7 @@ int		addlst_specialch(char *arg, int i)
 ** Changes the size of the array of strings
 */
 
-char **tab_realloc(char **tab, int size)
+char **arr_realloc(char **arr, int size)
 {
 	char **new;
 	int i;
@@ -414,12 +414,12 @@ char **tab_realloc(char **tab, int size)
 	
 	while (i < size)
 	{
-		new[i] = ft_strdup(tab[i]);
-		free(tab[i]);
+		new[i] = ft_strdup(arr[i]);
+		free(arr[i]);
 		i++;
 	}
 	new[i] = NULL;
-	free(tab);
+	free(arr);
 	//ft_printf("%d\n", ft_strarraylen(new));
 	return (new);
 }
@@ -437,7 +437,7 @@ char **tab_realloc(char **tab, int size)
 // 	{	
 // 		i++;
 		
-// 		tab_comm = tab_realloc(tab_comm, i + 1);
+// 		tab_comm = arr_realloc(tab_comm, i + 1);
 		
 // 		// ft_printf("%d\n", ft_strarraylen(tab_comm));
 		
@@ -525,10 +525,13 @@ void	exec_input()
 			parser(tab_comm[1]);
 		}
 		if (g_sh.exit)
+		{
+			free(tab_comm);
 			exit_shell(NULL);
+		}
 		exec_comm[g_sh.comm](tab_comm);
 		free_pars();
-		ft_strtab_free(tab_comm);
+		ft_strarr_free(tab_comm);
 		i++;
 	}
 }
@@ -562,9 +565,9 @@ int		main(int argc, char **argv, char **env)
 		exec_input();
 		
 		if (g_sh.input_tab)
-			ft_strtab_free(g_sh.input_tab);
+			ft_strarr_free(g_sh.input_tab);
 		clear_shell();
 	}
-	ft_strtab_free(g_sh.env);
+	ft_strarr_free(g_sh.env);
 	return (0);
 }
