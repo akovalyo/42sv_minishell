@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:50:40 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 12:35:23 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,32 @@ void convert_arguments(char **tab_comm)
 	
 }
 
+void 	add_to_argv_rest(char **new, t_list *lstptr, int i)
+{
+	char *tmp;
+	char *rest;
+	
+	//ft_lstprint_str(lstptr);
+	rest = NULL;
+	if (lstptr && lstptr->ctg == SP)
+		lstptr = lstptr->next;
+	while (lstptr)
+	{
+		tmp = rest;
+		rest = ft_strjoin(rest,lstptr->content);
+		if (tmp)
+			free(tmp);
+		lstptr = lstptr->next;
+	}
+	if (rest)
+	{
+		new[i] = ft_strdup(rest);
+		free(rest);
+	}
+	else
+		new[i] = NULL;
+}
+
 char **create_argv(char **tab_comm)
 {
 	char	**new;
@@ -125,15 +151,13 @@ char **create_argv(char **tab_comm)
 	int		i;
 	t_list 	*lstptr;
 
-	size = g_sh.fl_ignore == 1 ? 1 : 0;
+	size = ft_strarraylen(tab_comm) > 1 == 1 ? 1 : 0;
 	size = size + g_sh.flags + 2;
 	new = malloc(sizeof(char *) * size);
 	new[0] = ft_strdup(tab_comm[0]);	
 	new[size - 1] = NULL;
 	lstptr = g_sh.pars;
 	i = 1;
-
-	
 	while (i < (size - 1) && g_sh.flags > 0)
 	{
 		if (lstptr->ctg == FLAG)
@@ -144,6 +168,8 @@ char **create_argv(char **tab_comm)
 		}
 		lstptr = lstptr->next;
 	}
+	if (i < (size - 1))
+		add_to_argv_rest(new, lstptr, i);
 	return (new);
 }
 
@@ -151,19 +177,17 @@ void		comm_sh(char **tab_comm)
 {	
 	char	**argv;
 	pid_t	pid;
-	// ft_printf("%d\n", ft_strarraylen(tab_comm));
-	// if (g_sh.pars)
-	// 	ft_printf("PARS\n");
-	// if (ft_strarraylen(tab_comm) > 1 &&	strlen(tab_comm[1]) == 0)
+	// i = 0;
+	// while (new[i])
 	// {
-	// 	free(tab_comm[1]);
-	// 	tab_comm[1] = NULL;
+	// 	ft_printf("%d - %s\n", ft_strarraylen(new), new[i]);
+	// 	i++;
 	// }
-	argv = create_argv(tab_comm);
 	
+	argv = create_argv(tab_comm);
 	pid = fork();
 	if (pid == 0)
-		execve(tab_comm[0], tab_comm, g_sh.env);
+		execve(argv[0], argv, g_sh.env);
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
@@ -201,7 +225,6 @@ int 		check_bin(char *comm)
 
 void		check_builtins_and_bin(char **tab_comm)
 {
-	//ft_printf("%s\n", tab_comm[1]);
 	if (ft_strnequ_alpha(tab_comm[0], "exit", 5) == 0)
 		g_sh.exit = 1;
 	else if (ft_strnequ_alpha(tab_comm[0], "echo", 5) == 0)
@@ -329,6 +352,7 @@ int		addlst_str(char *arg, int i)
 	t_list	*new;
 
 	new = malloc(sizeof(t_list));
+	new->content = NULL;
 	while (arg[i] && !special_char(arg[i]) && arg[i] != '$' && !ft_isspace(arg[i]))
 	{	
 		if (arg[i] == '\\')
@@ -344,10 +368,10 @@ int		addlst_str(char *arg, int i)
 	return (i);
 }
 
-int		addlst_specialch(char *arg, int i)
+t_list 	*specialch_create_node(char *arg, int i)
 {
 	t_list	*new;
-	
+
 	new = malloc(sizeof(t_list));
 	if (arg[i] == '\'')
 	{
@@ -368,6 +392,24 @@ int		addlst_specialch(char *arg, int i)
 		else
 			new->ctg = GR_SIGN;
 	}
+	return (new);
+}
+
+int		addlst_specialch(char *arg, int i)
+{
+	t_list	*new;
+	
+	new = specialch_create_node(arg, i);
+	if (new->ctg == SN_QT)
+		new->content = ft_strdup("'");
+	else if (new->ctg == DB_QT)
+		new->content = ft_strdup("\"");
+	else if (new->ctg == LESS_SIGN)
+		new->content = ft_strdup("<");
+	else if (new->ctg == GR_SIGN)
+		new->content = ft_strdup(">");
+	else if (new->ctg == DB_GR_SIGN)
+		new->content = ft_strdup(">>");	
 	new->content_size = 0;
 	new->next = NULL;
 	new->atr = 0;

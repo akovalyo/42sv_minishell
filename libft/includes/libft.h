@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:07:22 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 10:53:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef enum		e_ctg
 {
-	SP = 1, SINGLE_QT, DOUBLE_QT, FLAG, ENVV, STR, SN_QT, DB_QT, GR_SIGN,
+	SP = 1, FLAG, ENVV, STR, SN_QT, DB_QT, GR_SIGN,
 	LESS_SIGN, DB_GR_SIGN
 }					t_ctg;
 

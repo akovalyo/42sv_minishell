@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 18:44:12 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/05/05 15:25:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 12:55:27 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ char	*ft_straddchr(char *str, char ch)
 	len = 0;
 	if (!ch && !str)
 		return (NULL);
-	if (str)
+	if (str && !ch)
+		new = ft_strdup(str);
+	else if (str)
 	{
 		len = ft_strlen(str);
 		if (!(new = ft_strnew(len + 2)))
 			return (NULL);
 		ft_memmove(new, str, len);
 	}
-	else if (str && !ch)
-		return (str);
 	else
-		new = ft_strnew(1);
+		new = ft_strnew(2);
 	new[len] = ch;
 	return (new);
 }
