@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 15:49:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 16:48:00 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ t_shell				g_sh;
 ** main.c
 */
 
-void				exit_shell(char *message);
 char				**read_input();
 void				comm_void(char **tab_comm);
 void				comm_echo(char **tab_comm);
@@ -66,39 +65,44 @@ void				comm_export(char **tab_comm);
 void				comm_unset(char **tab_comm);
 void				comm_env(char **tab_comm);
 void				comm_sh(char **tab_comm);
+void 				add_to_argv_rest(char **new, t_list *lstptr, int i);
+char 				**create_argv(char **tab_comm);
 int 				check_bin(char *comm);
-char				*get_env(char *var);
 void				check_builtins_and_bin(char **tab_comm);
 char				**parse_cmd(char *comm);
-void				check_comm_line(char **tab_comm);
 void				exec_input();
-int 				special_char(char c);
-
-
 
 /*
 ** signal.c
 */
 
-void				update_pwd();
+
 void				sig_func(int sig);
 void				sig_sl(int sig);
 
 /*
-** utils.c
+** utils_1.c
 */
 
 void				clear_scr(void);
 void				init_shell();
 void				clear_shell();
+void				update_pwd();
 void				prompt_msg();
+
+/*
+** utils_2.c
+*/
+
+int 				special_char(char c);
+int 				isquote(char c);
 
 /*
 ** memory.c
 */
 
 char				**arr_realloc(char **arr, int size);
-void				free_pars();
+void				exit_shell(char *message);
 
 /*
 ** env.c
@@ -107,5 +111,29 @@ void				free_pars();
 void				init_env(char **env);
 int					addnode_envv(char *arg, int i);
 char				*get_env(char *var);
+
+/*
+** parser.c
+*/
+
+void				parser(char *arg);
+
+
+/*
+** addnode_1.c
+*/
+
+int					addnode_flags(char *arg, int i);
+int					addnode_envv(char *arg, int i);
+int					addnode_tilde(char *arg, int i);
+int					addnode_str(char *arg, int i);
+int					addnode_spaces(char *arg, int i);
+
+/*
+** addnode_2.c
+*/
+
+t_list 				*specialch_create_node(char *arg, int i);
+int					addnode_specialch(char *arg, int i);
 
 #endif

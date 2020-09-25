@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:36:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 16:39:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ char	**arr_realloc(char **arr, int size)
 	return (new);
 }
 
-// void	free_pars(void)
-// {
-// 	t_list	*tmp;
-
-// 	while (g_sh.pars)
-// 	{
-// 		tmp = g_sh.pars->next;
-// 		if (g_sh.pars->content)
-// 			free(g_sh.pars->content);
-// 		free(g_sh.pars);
-// 		g_sh.pars = tmp;
-// 	}
-// }
+void	exit_shell(char *message)
+{
+	if (message)
+		ft_printf("minishell: %s", message);
+	if (g_sh.input)
+		free(g_sh.input);
+	if (g_sh.input_tab)
+		ft_strarr_free(g_sh.input_tab);
+	if (g_sh.pwd)
+		free(g_sh.pwd);
+	ft_strarr_free(g_sh.env);
+	exit(0);
+}
