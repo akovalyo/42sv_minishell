@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:51:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 15:49:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft.h"
+# define RESERVED "<>:\"/\\|&*"
 
 typedef enum		e_comm
 {
@@ -71,6 +72,7 @@ void				check_builtins_and_bin(char **tab_comm);
 char				**parse_cmd(char *comm);
 void				check_comm_line(char **tab_comm);
 void				exec_input();
+int 				special_char(char c);
 
 
 
@@ -103,7 +105,7 @@ void				free_pars();
 */
 
 void				init_env(char **env);
-int					addlst_envv(char *arg, int i);
+int					addnode_envv(char *arg, int i);
 char				*get_env(char *var);
 
 #endif

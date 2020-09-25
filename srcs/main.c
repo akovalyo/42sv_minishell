@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
+/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 12:35:23 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 15:48:54 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,6 @@ void		comm_sh(char **tab_comm)
 {	
 	char	**argv;
 	pid_t	pid;
-	// i = 0;
-	// while (new[i])
-	// {
-	// 	ft_printf("%d - %s\n", ft_strarraylen(new), new[i]);
-	// 	i++;
-	// }
 	
 	argv = create_argv(tab_comm);
 	pid = fork();
@@ -271,7 +265,7 @@ char	**parse_cmd(char *comm)
 	return (tab_comm);
 }
 
-int		addlst_spaces(char *arg, int i)
+int		addnode_spaces(char *arg, int i)
 {
 	int		start;
 	t_list	*new;
@@ -289,7 +283,7 @@ int		addlst_spaces(char *arg, int i)
 	return (i);
 }
 
-int		addlst_flags(char *arg, int i)
+int		addnode_flags(char *arg, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -318,27 +312,64 @@ int		addlst_flags(char *arg, int i)
 ** 
 */
 
-int		addlst_envv(char *arg, int i)
+int		addnode_envv(char *arg, int i)
 {
 	int 	start;
 	t_list	*new;
+	char 	*tmp;
+	char	*ptr_env;
 	
 	start = i;
 	i++;
 	while (arg[i] && ft_isalpha(arg[i]))
 		i++;
 	new = malloc(sizeof(t_list));
-	new->content = ft_strsub(arg, start, i - start);
-	new->content_size = i - start;
+	tmp = ft_strsub(arg, start, i - start);
 	new->atr = 0;
 	new->next = NULL;
-	if (get_env(new->content + 1))
-		new->ctg = ENVV;
+	if ((ptr_env = get_env(tmp + 1)))
+		new->content = ft_strdup(ptr_env);
 	else
-		new->ctg = STR;
+		new->content = ft_strdup(tmp);
+	new->content_size = ft_strlen(new->content);
+	new->ctg = STR;
+	ft_lstadd_back(&(g_sh.pars), new);
+	free(tmp);
+	return (i);
+}
+
+int		addnode_tilde(char *arg, int i)
+{
+	int 	start;
+	t_list	*new;
+	char	*rest;
+	char	*ptr;
+
+	
+	start = i + 1;
+	i++;
+	while (arg[i] && !special_char(arg[i]) && !ft_isspace(arg[i]))
+		i++;
+	new = malloc(sizeof(t_list));
+	ptr = get_env("HOME");
+	new->content = ft_strdup(ptr);
+	if (start != i)
+	{
+		rest = ft_strsub(arg, start, i - start);
+		ptr = new->content;
+		new->content = ft_strjoin(new->content, rest);
+		free(ptr);
+		free(rest);
+	}
+	new->content_size = ft_strlen(new->content);
+	new->atr = 0;
+	new->next = NULL;
+	new->ctg = STR;
 	ft_lstadd_back(&(g_sh.pars), new);
 	return (i);
 }
+
+
 
 int special_char(char c)
 {
@@ -347,7 +378,7 @@ int special_char(char c)
 	return (0);
 }
 
-int		addlst_str(char *arg, int i)
+int		addnode_str(char *arg, int i)
 {
 	t_list	*new;
 
@@ -395,7 +426,7 @@ t_list 	*specialch_create_node(char *arg, int i)
 	return (new);
 }
 
-int		addlst_specialch(char *arg, int i)
+int		addnode_specialch(char *arg, int i)
 {
 	t_list	*new;
 	
@@ -426,15 +457,17 @@ void		parser(char *arg)
 	while (arg[i])
 	{
 		if (ft_isspace(arg[i]))
-			i = addlst_spaces(arg, i);
+			i = addnode_spaces(arg, i);
 		else if (arg[i] == '-' && !g_sh.fl_ignore)
-			i = addlst_flags(arg, i);
+			i = addnode_flags(arg, i);
 		else if (arg[i] == '$')
-			i = addlst_envv(arg, i);
+			i = addnode_envv(arg, i);
+		else if (arg[i] == '~')
+			i = addnode_tilde(arg, i);
 		else if (special_char(arg[i]))
-			i = addlst_specialch(arg, i);
+			i = addnode_specialch(arg, i);
 		else
-			i = addlst_str(arg, i);
+			i = addnode_str(arg, i);
 	}
 
 }

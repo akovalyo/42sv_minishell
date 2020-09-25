@@ -7,3 +7,4 @@ test*
 rot.sh
 libft.a
 minishell
+*.dSYM
