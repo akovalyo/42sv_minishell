@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 14:44:07 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/24 22:14:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,12 @@ void				clear_scr(void);
 void				init_shell();
 void				clear_shell();
 void				prompt_msg();
+
+/*
+** memory.c
+*/
+
+char				**arr_realloc(char **arr, int size);
+void				free_pars();
 
 #endif

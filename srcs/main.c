@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 21:47:32 by alex             ###   ########.fr       */
+/*   Updated: 2020/09/24 22:34:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,38 +240,29 @@ void		check_builtins_and_bin(char **tab_comm)
 	
 }
 
-char			**parse_cmd(char *comm)
+char	**parse_cmd(char *comm)
 {
-	int start;
-	int end;
-	int len;
-	char *cmd;
-	char **tab_comm;
+	int		start;
+	int		end;
+	int		len;
+	char	*cmd;
+	char	**tab_comm;
 
 	len = ft_strlen(comm);
 	start = 0;
-	
 	while (ft_isspace(comm[start]))
 		start++;
 	end = start;
 	while (comm[end] && ft_isspace(comm[end]) == 0)
 		end++;
-	
 	cmd = ft_strsub(comm, start, end - start);
 	start = (len - end > 0) ? 2 : 1;
 	tab_comm = malloc(sizeof(char *) * (start + 1));
 	tab_comm[0] = ft_strdup(cmd);
 	free(cmd);
-	
-	// start = (len - end > 0) ? 2 : 1;
-	// tab_comm = malloc(sizeof(char *) * (start + 1));
-	// tab_comm[0] = ft_strsub(comm, start, end - start);
-
-
 	tab_comm[start] = NULL;
 	if (start > 1)
 		tab_comm[1] = ft_strtrim(&comm[end]);
-	
 	return (tab_comm);
 }
 
@@ -312,7 +303,6 @@ int		addlst_flags(char *arg, int i)
 		new->atr = 0;
 		new->next = NULL;
 		ft_lstadd_back(&(g_sh.pars), new);
-		//ft_printf("cont: |%s|; ctg: %d\n", g_sh.pars->content, g_sh.pars->ctg);
 		return (i);
 	}
 	g_sh.fl_ignore = 1;
@@ -399,82 +389,14 @@ int		addlst_specialch(char *arg, int i)
 	return (new->ctg == 11 ? i + 2 : i + 1);
 }
 
-/*
-** Changes the size of the array of strings
-*/
-
-char **arr_realloc(char **arr, int size)
-{
-	char **new;
-	int i;
-	
-	i = 0;
-	if (!(new = (char **)malloc(sizeof(char *) * (size + 1))))
-		return (NULL);
-	
-	while (i < size)
-	{
-		new[i] = ft_strdup(arr[i]);
-		free(arr[i]);
-		i++;
-	}
-	new[i] = NULL;
-	free(arr);
-	//ft_printf("%d\n", ft_strarraylen(new));
-	return (new);
-}
-
-// char		**parse_arg(char **tab_comm)
-// {
-// 	int ind;
-// 	char *tmp;
-// 	int i;
-// 	int j;
-
-// 	i = 1;
-	
-// 	while ((ind = get_indxs_flags(tab_comm[i])) != 0)
-// 	{	
-// 		i++;
-		
-// 		tab_comm = arr_realloc(tab_comm, i + 1);
-		
-// 		// ft_printf("%d\n", ft_strarraylen(tab_comm));
-		
-// 		tab_comm[i] = ft_strsub(tab_comm[i - 1], ind + 1, ft_strlen(tab_comm[i - 1]) - ind - 1);
-
-// 		tmp = tab_comm[i - 1];
-		
-
-// 		// j = -1;
-// 		// while (tab_comm[j++])
-// 		// 	ft_printf("%s\n", tab_comm[j]);
-
-// 		tab_comm[i - 1] = ft_strsub(tab_comm[i - 1], 0, ind + 1);
-// 		free(tmp);
-// 		// j = -1;
-// 		// while (tab_comm[j++])
-// 		// 	ft_printf("%s\n", tab_comm[j]);
-// 	}
-// 	return (tab_comm);
-	
-// }
-
-
 
 void		parser(char *arg)
 {
 	int i;
-	//int len;
-	//int start;
-	
-	i = 0;
-	//len = ft_strlen(arg);
 
+	i = 0;
 	while (arg[i])
 	{
-		//ft_printf("OK\n");
-		//start = i;
 		if (ft_isspace(arg[i]))
 			i = addlst_spaces(arg, i);
 		else if (arg[i] == '-' && !g_sh.fl_ignore)
@@ -487,20 +409,6 @@ void		parser(char *arg)
 			i = addlst_str(arg, i);
 	}
 
-}
-
-void	free_pars()
-{
-	t_list *tmp;
-
-	while (g_sh.pars)
-	{
-		tmp = g_sh.pars->next;
-		if (g_sh.pars->content)
-			free(g_sh.pars->content);
-		free(g_sh.pars);
-		g_sh.pars = tmp;
-	}
 }
 
 void	exec_input()
@@ -518,6 +426,7 @@ void	exec_input()
 	i = 0;
 	while (g_sh.input_tab[i])
 	{
+		
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
@@ -526,11 +435,12 @@ void	exec_input()
 		}
 		if (g_sh.exit)
 		{
-			free(tab_comm);
+			ft_strarr_free(tab_comm);
 			exit_shell(NULL);
 		}
 		exec_comm[g_sh.comm](tab_comm);
-		free_pars();
+		//free_pars();
+		ft_lstclear(&(g_sh.pars), free);
 		ft_strarr_free(tab_comm);
 		i++;
 	}

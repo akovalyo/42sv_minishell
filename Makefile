@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/24 20:59:07 by alex             ###   ########.fr        #
+#    Updated: 2020/09/24 22:14:36 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ INCL = includes/
 
 SRC = main.c \
 		signal.c \
-		utils.c
+		utils.c \
+		memory.c
 
 SRCS = ${addprefix ${SRCS_DIR}, ${SRC}}
 
