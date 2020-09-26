@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 16:58:26 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 18:51:44 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,23 @@ void		comm_env(char **tab_comm)
 	return ;
 }
 
+void	ft_strarr_free2(char **arr)
+{
+	int i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+	arr = NULL;
+}
+
+
 void		comm_sh(char **tab_comm)
 {	
 	char	**argv;
@@ -102,61 +119,107 @@ void		comm_sh(char **tab_comm)
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
-	ft_strarr_free(argv);
+	//ft_printf("%d\n", ft_strarraylen(argv));
+
+
+	ft_strarr_free2(argv);
 }
 
-void 	add_to_argv_rest(char **new, t_list *lstptr, int i)
+void decrease_qt(t_ctg ctg)
+{
+	if (ctg == DB_QT)
+		g_sh.db_qt--;
+	else if (ctg == SN_QT)
+		g_sh.sn_qt--;
+}
+
+char	**between_quotes(char **arr, t_list **lstptr, int i)
+{
+	char *new;
+	char *tmp;
+	t_ctg qt;
+
+	new = NULL;
+	qt = lstptr->ctg;
+	lstptr = lstptr->next;
+	decrease_qt(qt);
+	while (lstptr && lstptr->ctg != qt)
+	{
+		if (lstptr->ctg == SP)
+		{
+			while (lstptr->atr-- > 0)
+				new = ft_straddchr_free(new, ' ');
+		}
+		else
+		{
+			tmp = new;
+			new = ft_strjoin(new, lstptr->content);
+			free(tmp);
+		}
+		*lstptr = lstptr->next;
+	}
+	arr = add_elem_to_arr(arr, new);
+	return (lstptr == NULL ? NULL : lstptr->next);
+}
+
+char 	**add_to_argv_rest(char **arr, t_list *lstptr, int i)
 {
 	char *tmp;
-	char *rest;
+	// char *rest;
 	
-	rest = NULL;
+	// rest = NULL;
 	if (lstptr && lstptr->ctg == SP)
 		lstptr = lstptr->next;
 	while (lstptr)
 	{
-		tmp = rest;
-		rest = ft_strjoin(rest, lstptr->content);
-		if (tmp)
-			free(tmp);
-		lstptr = lstptr->next;
+		if (lstptr->ctg == DB_QT || lstptr->ctg == SN_QT)
+			arr = between_quotes(arr, &lstptr, i);
+
+
+
+		// tmp = rest;
+		// rest = ft_strjoin(rest, lstptr->content);
+		// if (tmp)
+		// 	free(tmp);
+		// lstptr = lstptr->next;
 	}
-	if (rest)
-	{
-		new[i] = ft_strdup(rest);
-		free(rest);
-	}
-	else
-		new[i] = NULL;
+	return (arr);
+	// if (rest)
+	// {
+	// 	arr[i] = ft_strdup(rest);
+	// 	free(rest);
+	// }
+	// else
+	// 	arr[i] = NULL;
 }
 
 char **create_argv(char **tab_comm)
 {
-	char	**new;
+	char	**new_arr;
 	int		size;
 	int		i;
 	t_list 	*lstptr;
 
-	size = ft_strarraylen(tab_comm) > 1 == 1 ? 1 : 0;
-	size = size + g_sh.flags + 2;
-	new = malloc(sizeof(char *) * size);
-	new[0] = ft_strdup(tab_comm[0]);	
-	new[size - 1] = NULL;
+	//size = ft_strarraylen(tab_comm) > 1 == 1 ? 1 : 0;
+	size = 1 + g_sh.flags + 1;
+	new_arr = malloc(sizeof(char *) * size);
+	new_arr[0] = ft_strdup(tab_comm[0]);	
+	new_arr[size - 1] = NULL;
 	lstptr = g_sh.pars;
 	i = 1;
 	while (i < (size - 1) && g_sh.flags > 0)
 	{
 		if (lstptr->ctg == FLAG)
 		{
-			new[i] = ft_strdup(lstptr->content);
+			new_arr[i] = ft_strdup(lstptr->content);
 			g_sh.flags--;
 			i++;
 		}
 		lstptr = lstptr->next;
 	}
-	if (i < (size - 1))
-		add_to_argv_rest(new, lstptr, i);
-	return (new);
+	if (lstptr)
+		new_arr = add_to_argv_rest(new_arr, lstptr, i);
+	return (new_arr);
 }
 
 /*

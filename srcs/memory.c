@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 16:39:04 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 18:22:34 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,24 @@
 ** Changes the size of the array of strings
 */
 
-char	**arr_realloc(char **arr, int size)
+char	**add_elem_to_arr(char **arr, char *str)
 {
 	char	**new;
 	int		i;
+	int		size;
 
 	i = 0;
-	if (!(new = (char **)malloc(sizeof(char *) * (size + 1))))
-		return (NULL);
+	size = ft_strarraylen(arr);
+	new = malloc(sizeof(char *) * (size + 2));
 	while (i < size)
 	{
 		new[i] = ft_strdup(arr[i]);
 		free(arr[i]);
 		i++;
 	}
+	new[i] = ft_strdup(str);
+	free(str);
+	i++;
 	new[i] = NULL;
 	free(arr);
 	return (new);
