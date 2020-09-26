@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 18:51:44 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 19:44:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,26 +140,27 @@ char	**between_quotes(char **arr, t_list **lstptr, int i)
 	t_ctg qt;
 
 	new = NULL;
-	qt = lstptr->ctg;
-	lstptr = lstptr->next;
+	qt = (*lstptr)->ctg;
+	*lstptr = (*lstptr)->next;
 	decrease_qt(qt);
-	while (lstptr && lstptr->ctg != qt)
+	while (*lstptr && (*lstptr)->ctg != qt)
 	{
-		if (lstptr->ctg == SP)
+		if ((*lstptr)->ctg == SP)
 		{
-			while (lstptr->atr-- > 0)
+			while ((*lstptr)->atr-- > 0)
 				new = ft_straddchr_free(new, ' ');
 		}
 		else
 		{
 			tmp = new;
-			new = ft_strjoin(new, lstptr->content);
+			new = ft_strjoin(new, (*lstptr)->content);
 			free(tmp);
 		}
-		*lstptr = lstptr->next;
+		*lstptr = (*lstptr)->next;
 	}
-	arr = add_elem_to_arr(arr, new);
-	return (lstptr == NULL ? NULL : lstptr->next);
+	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
+	return (add_elem_to_arr(arr, new));
+	
 }
 
 char 	**add_to_argv_rest(char **arr, t_list *lstptr, int i)

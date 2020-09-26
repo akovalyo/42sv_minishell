@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 17:58:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/25 19:47:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void				comm_export(char **tab_comm);
 void				comm_unset(char **tab_comm);
 void				comm_env(char **tab_comm);
 void				comm_sh(char **tab_comm);
-void 				add_to_argv_rest(char **new, t_list *lstptr, int i);
+char				**between_quotes(char **arr, t_list **lstptr, int i);
+char 				**add_to_argv_rest(char **arr, t_list *lstptr, int i);
 char 				**create_argv(char **tab_comm);
 int 				check_bin(char *comm);
 void				check_builtins_and_bin(char **tab_comm);
