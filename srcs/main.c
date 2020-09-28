@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/27 21:24:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 12:28:38 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ char	**read_input()
 
 void	comm_void(char **tab_comm)
 {
-	ft_printf("minishell: command not found: %s\n", tab_comm[0]);
+	if (ft_strlen(tab_comm[0]) == 0)
+		ft_printf("");
+	else
+		ft_printf("minishell: command not found: %s\n", tab_comm[0]);
 }
 
 void		comm_echo(char **tab_comm)
@@ -97,17 +100,18 @@ void		comm_sh(char **tab_comm)
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
 	
 	argv = create_argv(tab_comm);
+	
 	pid = fork();
 	if (pid == 0)
 	{
+		if (g_sh.error)
+			exit(0);
 		execve(argv[0], argv, g_sh.env);
 	}
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
-
-
 	ft_strarr_free(argv);
 }
 
@@ -165,7 +169,10 @@ void redirection_sign(t_list **lstptr)
 		g_sh.rewrite = 1;
 	*lstptr = (*lstptr)->next;
 	if (!(*lstptr))
-		exit_shell("minishell: syntax error near unexpected token 'newline'");
+	{
+		g_sh.error = ft_strdup("minishell: syntax error near unexpected token 'newline'");
+		return ;
+	}
 	if (g_sh.redirect)
 		free(g_sh.redirect);
 	g_sh.redirect = ft_strdup((*lstptr)->content);
@@ -195,7 +202,6 @@ char 	**add_to_argv_rest(char **arr, t_list *lstptr)
 			lstptr = lstptr->next;
 		}
 			
-		ft_printf("%d\n", ft_strarraylen(arr));
 
 
 		// tmp = rest;
@@ -290,7 +296,7 @@ void		check_builtins_and_bin(char **tab_comm)
 		g_sh.comm = ENV;
 	else if (check_bin(tab_comm[0]))
 		g_sh.comm = SH;
-
+	
 	
 }
 
@@ -332,16 +338,15 @@ void	exec_input()
 	int				ret;
 	static void		(*exec_comm[])(char**) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh};
-	
 	i = 0;
+	
 	while (g_sh.input_tab[i])
 	{
 		tab_comm = parse_cmd(g_sh.input_tab[i]);
+		//ft_printf("|%s|\n", tab_comm[0]);
 		check_builtins_and_bin(tab_comm);
 		if (ft_strarraylen(tab_comm) > 1)
-		{
 			parser(tab_comm[1]);
-		}
 		if (g_sh.exit)
 		{
 			ft_strarr_free(tab_comm);
@@ -364,11 +369,11 @@ int		main(int argc, char **argv, char **env)
 		signal(SIGINT, sig_func);
 		signal(SIGQUIT, sig_sl);
 		g_sh.input_tab = read_input();
-		
 		exec_input();
-		
 		if (g_sh.input_tab)
 			ft_strarr_free(g_sh.input_tab);
+		if (g_sh.error)
+			ft_printf("%s\n", g_sh.error);
 		clear_shell();
 	}
 	ft_strarr_free(g_sh.env);

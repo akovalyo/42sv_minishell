@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/27 21:13:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 11:48:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	init_shell()
 	clear_scr();
 	g_sh.pwd = NULL;
 	g_sh.input_tab = NULL;
+	g_sh.error = NULL;
 	g_sh.sn_qt = 0;
 	g_sh.db_qt = 0;
 	g_sh.exit = 0;
@@ -46,7 +47,10 @@ void	clear_shell()
 	g_sh.fl_ignore = 0;
 	g_sh.rewrite = 0;
 	if (g_sh.redirect)
-		free(g_sh.redirect); 
+		free(g_sh.redirect);
+	if (g_sh.error)
+		free(g_sh.error);
+	g_sh.error = NULL;	 
 }
 
 void update_pwd()

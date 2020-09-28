@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/27 21:01:22 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 11:36:00 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	exit_shell(char *message)
 		free(g_sh.pwd);
 	if (g_sh.redirect)
 		free(g_sh.redirect);
+	if (g_sh.error)
+		free(g_sh.error);
 	ft_strarr_free(g_sh.env);
 	exit(0);
 }

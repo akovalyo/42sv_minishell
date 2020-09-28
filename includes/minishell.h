@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/27 21:13:31 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 11:34:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct		s_shell
 	char			*input;
 	char			**input_tab;
 	char			*pwd;
+	char			*error;
 	int				sn_qt;
 	int				db_qt;
 	int				exit : 1;
