@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 19:44:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/27 21:24:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,39 +90,25 @@ void		comm_env(char **tab_comm)
 	return ;
 }
 
-void	ft_strarr_free2(char **arr)
-{
-	int i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-	arr = NULL;
-}
-
-
 void		comm_sh(char **tab_comm)
 {	
 	char	**argv;
 	pid_t	pid;
+	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
 	
 	argv = create_argv(tab_comm);
 	pid = fork();
 	if (pid == 0)
+	{
 		execve(argv[0], argv, g_sh.env);
+	}
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
 
 
-	ft_strarr_free2(argv);
+	ft_strarr_free(argv);
 }
 
 void decrease_qt(t_ctg ctg)
@@ -133,7 +119,7 @@ void decrease_qt(t_ctg ctg)
 		g_sh.sn_qt--;
 }
 
-char	**between_quotes(char **arr, t_list **lstptr, int i)
+char	**between_quotes(char **arr, t_list **lstptr)
 {
 	char *new;
 	char *tmp;
@@ -159,23 +145,57 @@ char	**between_quotes(char **arr, t_list **lstptr, int i)
 		*lstptr = (*lstptr)->next;
 	}
 	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
-	return (add_elem_to_arr(arr, new));
+	return (add_elem_to_arr(arr, new, 1));
 	
 }
 
-char 	**add_to_argv_rest(char **arr, t_list *lstptr, int i)
+// char	**add_to_argv_other(char **arr, t_list **lstptr)
+// {
+// 	char **new;
+	
+// 	new = add_elem_to_arr(arr, (*lstptr)->content);
+// 	*lstptr = (*lstptr)->next;
+// 	return (new);
+	
+// }
+
+void redirection_sign(t_list **lstptr)
+{
+	if ((*lstptr)->ctg == GR_SIGN)
+		g_sh.rewrite = 1;
+	*lstptr = (*lstptr)->next;
+	if (!(*lstptr))
+		exit_shell("minishell: syntax error near unexpected token 'newline'");
+	if (g_sh.redirect)
+		free(g_sh.redirect);
+	g_sh.redirect = ft_strdup((*lstptr)->content);
+	*lstptr = (*lstptr)->next;
+}
+
+char 	**add_to_argv_rest(char **arr, t_list *lstptr)
 {
 	char *tmp;
 	// char *rest;
 	
 	// rest = NULL;
-	if (lstptr && lstptr->ctg == SP)
-		lstptr = lstptr->next;
+	// if (lstptr && lstptr->ctg == SP)
+	// 	lstptr = lstptr->next;
 	while (lstptr)
 	{
-		if (lstptr->ctg == DB_QT || lstptr->ctg == SN_QT)
-			arr = between_quotes(arr, &lstptr, i);
-
+		if (lstptr->ctg == SP)
+			lstptr = lstptr->next;
+		else if (lstptr->ctg == DB_QT || lstptr->ctg == SN_QT)
+			arr = between_quotes(arr, &lstptr);
+		else if (lstptr->ctg == GR_SIGN || lstptr->ctg == DB_GR_SIGN)
+			redirection_sign(&lstptr);
+		else
+			// arr = add_to_argv_other(arr, &lstptr);
+		{
+			arr = add_elem_to_arr(arr, lstptr->content, 0);
+			lstptr = lstptr->next;
+		}
+			
+		ft_printf("%d\n", ft_strarraylen(arr));
 
 
 		// tmp = rest;
@@ -219,7 +239,7 @@ char **create_argv(char **tab_comm)
 		lstptr = lstptr->next;
 	}
 	if (lstptr)
-		new_arr = add_to_argv_rest(new_arr, lstptr, i);
+		new_arr = add_to_argv_rest(new_arr, lstptr);
 	return (new_arr);
 }
 

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 19:47:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/27 21:13:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct		s_shell
 	short			flags;
 	int				fl_ignore : 1;
 	t_list			*pars;
+	char			*redirect;
+	int				rewrite : 1;
 
 }                   t_shell;
 
@@ -65,8 +67,8 @@ void				comm_export(char **tab_comm);
 void				comm_unset(char **tab_comm);
 void				comm_env(char **tab_comm);
 void				comm_sh(char **tab_comm);
-char				**between_quotes(char **arr, t_list **lstptr, int i);
-char 				**add_to_argv_rest(char **arr, t_list *lstptr, int i);
+char				**between_quotes(char **arr, t_list **lstptr);
+char 				**add_to_argv_rest(char **arr, t_list *lstptr);
 char 				**create_argv(char **tab_comm);
 int 				check_bin(char *comm);
 void				check_builtins_and_bin(char **tab_comm);
@@ -102,7 +104,7 @@ int 				isquote(char c);
 ** memory.c
 */
 
-char				**add_elem_to_arr(char **arr, char *str);
+char				**add_elem_to_arr(char **arr, char *str, int free_str);
 void				exit_shell(char *message);
 
 /*

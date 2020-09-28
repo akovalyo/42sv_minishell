@@ -67,3 +67,26 @@ struct stat {
     struct timespec st_ctim;        /* Time of last status change */
     };
 ```
+
+### Redirection
+
+* The standard input (stdin) device is the keyboard.
+
+* The standard output (stdout) device is the screen.
+
+With redirection, the standard input/output can be changed.
+
+The **>** and ***>>*** symbol is used for **output (STDOUT) redirection**.
+
+If redirection to the file, **>** will delete the contents of that file,***>>*** will add the contents.
+
+Also standart out can be redirected to the device:
+
+```
+cat song.mp3 > /dev/audio
+```
+
+The cat command reads the file song.mp3 and sends the output to **/dev/audio** which is the audio device.
+
+The **<** symbol is used for **input (STDIN) redirection**
+

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 18:22:34 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/27 21:01:22 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Changes the size of the array of strings
 */
 
-char	**add_elem_to_arr(char **arr, char *str)
+char	**add_elem_to_arr(char **arr, char *str, int free_str)
 {
 	char	**new;
 	int		i;
@@ -32,7 +32,9 @@ char	**add_elem_to_arr(char **arr, char *str)
 		i++;
 	}
 	new[i] = ft_strdup(str);
-	free(str);
+	if (free_str)
+		free(str);
+	// str = NULL;
 	i++;
 	new[i] = NULL;
 	free(arr);
@@ -49,6 +51,8 @@ void	exit_shell(char *message)
 		ft_strarr_free(g_sh.input_tab);
 	if (g_sh.pwd)
 		free(g_sh.pwd);
+	if (g_sh.redirect)
+		free(g_sh.redirect);
 	ft_strarr_free(g_sh.env);
 	exit(0);
 }

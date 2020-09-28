@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:07:20 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/27 21:13:30 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	init_shell()
 	g_sh.n = 0;
 	g_sh.pars = NULL;
 	g_sh.flags = 0;
-	g_sh.fl_ignore = 0; 
+	g_sh.fl_ignore = 0;
+	g_sh.redirect = NULL;
+	g_sh.rewrite = 0;
 }
 
 void	clear_shell()
@@ -41,7 +43,10 @@ void	clear_shell()
 	g_sh.comm = 0;
 	g_sh.n = 0;
 	g_sh.flags = 0;
-	g_sh.fl_ignore = 0; 
+	g_sh.fl_ignore = 0;
+	g_sh.rewrite = 0;
+	if (g_sh.redirect)
+		free(g_sh.redirect); 
 }
 
 void update_pwd()
