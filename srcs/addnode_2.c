@@ -6,11 +6,29 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 16:33:53 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 16:36:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		addnode_spaces(char *arg, int i)
+{
+	int		start;
+	t_list	*new;
+
+	start = i;
+	new = malloc(sizeof(t_list));
+	while (arg[i] && ft_isspace(arg[i]))
+		i++;
+	new->content = NULL;
+	new->content_size = 0;
+	new->ctg = SP;
+	new->atr = i - start;
+	new->next = NULL;
+	ft_lstadd_back(&(g_sh.tokens), new);
+	return (i);
+}
 
 t_list 	*specialch_create_node(char *arg, int i)
 {
@@ -54,9 +72,13 @@ int		addnode_specialch(char *arg, int i)
 		new->content = ft_strdup(">");
 	else if (new->ctg == DB_GR_SIGN)
 		new->content = ft_strdup(">>");	
+	if (new->ctg == GR_SIGN || new->ctg == DB_GR_SIGN)
+	{
+		g_sh.red_count++;
+		new->atr = g_sh.red_count;
+	}
 	new->content_size = 0;
 	new->next = NULL;
-	new->atr = 0;
-	ft_lstadd_back(&(g_sh.pars), new);
-	return (new->ctg == 11 ? i + 2 : i + 1);
+	ft_lstadd_back(&(g_sh.tokens), new);
+	return (new->ctg == DB_GR_SIGN ? i + 2 : i + 1);
 }

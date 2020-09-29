@@ -6,11 +6,25 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/25 18:00:21 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/28 16:18:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		addnode_comm(char *comm)
+{
+	t_list	*new;
+
+	new = malloc(sizeof(t_list));
+	g_sh.n_comm++;
+	new->content = ft_strdup(comm);
+	new->ctg = COMM;
+	new->atr = g_sh.n_comm;
+	new->next = NULL;
+	ft_lstadd_back(&(g_sh.tokens), new);
+}
+
 
 int		addnode_flags(char *arg, int i)
 {
@@ -30,7 +44,7 @@ int		addnode_flags(char *arg, int i)
 		new->ctg = FLAG;
 		new->atr = 0;
 		new->next = NULL;
-		ft_lstadd_back(&(g_sh.pars), new);
+		ft_lstadd_back(&(g_sh.tokens), new);
 		return (i);
 	}
 	g_sh.fl_ignore = 1;
@@ -58,7 +72,7 @@ int		addnode_envv(char *arg, int i)
 		new->content = ft_strdup(tmp);
 	new->content_size = ft_strlen(new->content);
 	new->ctg = STR;
-	ft_lstadd_back(&(g_sh.pars), new);
+	ft_lstadd_back(&(g_sh.tokens), new);
 	free(tmp);
 	return (i);
 }
@@ -90,7 +104,7 @@ int		addnode_tilde(char *arg, int i)
 	new->atr = 0;
 	new->next = NULL;
 	new->ctg = STR;
-	ft_lstadd_back(&(g_sh.pars), new);
+	ft_lstadd_back(&(g_sh.tokens), new);
 	return (i);
 }
 
@@ -111,24 +125,6 @@ int		addnode_str(char *arg, int i)
 	new->atr = 0;
 	new->next = NULL;
 	new->ctg = STR;
-	ft_lstadd_back(&(g_sh.pars), new);
-	return (i);
-}
-
-int		addnode_spaces(char *arg, int i)
-{
-	int		start;
-	t_list	*new;
-
-	start = i;
-	new = malloc(sizeof(t_list));
-	while (arg[i] && ft_isspace(arg[i]))
-		i++;
-	new->content = NULL;
-	new->content_size = 0;
-	new->ctg = SP;
-	new->atr = i - start;
-	new->next = NULL;
-	ft_lstadd_back(&(g_sh.pars), new);
+	ft_lstadd_back(&(g_sh.tokens), new);
 	return (i);
 }
