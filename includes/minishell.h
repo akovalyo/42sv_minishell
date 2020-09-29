@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 11:10:12 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:27:39 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int 				isquote(char c);
 ** memory.c
 */
 
-char				**add_elem_to_arr(char **arr, char *str, int free_str);
+char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
 void				exit_shell(char *message);
 
 /*

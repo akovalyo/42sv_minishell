@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 11:14:58 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:27:41 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char	**between_quotes(char **arr, t_list **lstptr)
 	}
 	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	g_sh.flag = 0;
-	return (add_elem_to_arr(arr, new, 1));
+	return (add_elem_to_arr(arr, new, free));
 	
 }
 
@@ -177,7 +177,7 @@ char **create_strarray_comm(t_list **lstptr)
 char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 {
 
-	arr = add_elem_to_arr(arr, (*lstptr)->content, 0);
+	arr = add_elem_to_arr(arr, (*lstptr)->content, NULL);
 	*lstptr = (*lstptr)->next;
 	return (arr);
 }
@@ -185,7 +185,7 @@ char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 char 	**add_to_arg_else(char **arr, t_list **lstptr)
 {
 
-	arr = add_elem_to_arr(arr, (*lstptr)->content, 0);
+	arr = add_elem_to_arr(arr, (*lstptr)->content, NULL);
 	*lstptr = (*lstptr)->next;
 	g_sh.flag = 0;
 	return (arr);

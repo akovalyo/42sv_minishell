@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 11:36:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:27:38 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Changes the size of the array of strings
 */
 
-char	**add_elem_to_arr(char **arr, char *str, int free_str)
+char	**add_elem_to_arr(char **arr, char *str, void (*del)(void *))
 {
 	char	**new;
 	int		i;
@@ -32,9 +32,8 @@ char	**add_elem_to_arr(char **arr, char *str, int free_str)
 		i++;
 	}
 	new[i] = ft_strdup(str);
-	if (free_str)
-		free(str);
-	// str = NULL;
+	if (del)
+		del(str);
 	i++;
 	new[i] = NULL;
 	free(arr);
