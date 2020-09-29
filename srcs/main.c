@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 11:27:41 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 13:27:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,9 @@ char	**between_quotes(char **arr, t_list **lstptr)
 {
 	char *new;
 	char *tmp;
-	t_ctg qt;
+	int qt;
 
+	new = NULL;
 	qt = (*lstptr)->ctg;
 	*lstptr = (*lstptr)->next;
 	while (*lstptr && (*lstptr)->ctg != qt)
@@ -144,23 +145,22 @@ char	**between_quotes(char **arr, t_list **lstptr)
 	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	g_sh.flag = 0;
 	return (add_elem_to_arr(arr, new, free));
-	
 }
 
 void redirection_sign(t_list **lstptr)
 {
 	if ((*lstptr)->ctg == GR_SIGN)
 		g_sh.rewrite = 1;
-	*lstptr = (*lstptr)->next;
-	if (!(*lstptr))
+	//*lstptr = (*lstptr)->next;
+	if (!((*lstptr)->next))
 	{
 		g_sh.error = ft_strdup("minishell: syntax error near unexpected token 'newline'");
 		return ;
 	}
 	if (g_sh.redirect)
 		free(g_sh.redirect);
-	g_sh.redirect = ft_strdup((*lstptr)->content);
-	*lstptr = (*lstptr)->next;
+	g_sh.redirect = ft_strdup((*lstptr)->next->content);
+	//*lstptr = (*lstptr)->next;
 }
 
 char **create_strarray_comm(t_list **lstptr)
@@ -205,7 +205,10 @@ char **create_arg(t_list **lstptr)
 		else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
 			arr = between_quotes(arr, lstptr);
 		else if (((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN) && (*lstptr)->atr == g_sh.red_count)
+		{
 			redirection_sign(lstptr);
+			return (arr);
+		}
 		else
 			arr = add_to_arg_else(arr, lstptr);
 	}
