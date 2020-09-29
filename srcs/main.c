@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 17:15:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:14:58 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,32 +95,27 @@ void		comm_env(void)
 
 void		comm_sh(void)
 {	
-	char	**argv;
+	char	**arg;
 	pid_t	pid;
+	t_list 	*lstptr;
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-	
-	argv = create_argv();
+	lstptr = g_sh.tokens;
+
+	arg = create_arg(&lstptr);
 	
 	pid = fork();
 	if (pid == 0)
 	{
 		if (g_sh.error)
 			exit(0);
-		execve(argv[0], argv, g_sh.env);
+		execve(arg[0], arg, g_sh.env);
 	}
 	else if (pid < 0)
 		ft_printf("minishell: failed to create a new process\n");
 	wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
-	ft_strarr_free(argv);
-}
-
-void decrease_qt(t_ctg ctg)
-{
-	if (ctg == DB_QT)
-		g_sh.db_qt--;
-	else if (ctg == SN_QT)
-		g_sh.sn_qt--;
+	ft_strarr_free(arg);
+	
 }
 
 char	**between_quotes(char **arr, t_list **lstptr)
@@ -129,10 +124,8 @@ char	**between_quotes(char **arr, t_list **lstptr)
 	char *tmp;
 	t_ctg qt;
 
-	new = NULL;
 	qt = (*lstptr)->ctg;
 	*lstptr = (*lstptr)->next;
-	decrease_qt(qt);
 	while (*lstptr && (*lstptr)->ctg != qt)
 	{
 		if ((*lstptr)->ctg == SP)
@@ -149,6 +142,7 @@ char	**between_quotes(char **arr, t_list **lstptr)
 		*lstptr = (*lstptr)->next;
 	}
 	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
+	g_sh.flag = 0;
 	return (add_elem_to_arr(arr, new, 1));
 	
 }
@@ -169,59 +163,53 @@ void redirection_sign(t_list **lstptr)
 	*lstptr = (*lstptr)->next;
 }
 
-char 	**add_to_argv_rest(char **arr, t_list *lstptr)
+char **create_strarray_comm(t_list **lstptr)
 {
-	char *tmp;
-	// char *rest;
-	
-	// rest = NULL;
-	// if (lstptr && lstptr->ctg == SP)
-	// 	lstptr = lstptr->next;
-	while (lstptr)
-	{
-		if (lstptr->ctg == SP)
-			lstptr = lstptr->next;
-		else if (lstptr->ctg == DB_QT || lstptr->ctg == SN_QT)
-			arr = between_quotes(arr, &lstptr);
-		else if ((lstptr->ctg == GR_SIGN || lstptr->ctg == DB_GR_SIGN) && lstptr->atr == g_sh.red_count)
-			redirection_sign(&lstptr);
-		else
-			// arr = add_to_argv_other(arr, &lstptr);
-		{
-			arr = add_elem_to_arr(arr, lstptr->content, 0);
-			lstptr = lstptr->next;
-		}
-	}
+	char **arr;
+
+	arr = malloc(sizeof(char *) * 2);
+	arr[0] = ft_strdup((*lstptr)->content);	
+	arr[1] = NULL;
+	*lstptr = (*lstptr)->next;
 	return (arr);
 }
 
-char **create_argv(void)
+char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 {
-	char	**new_arr;
-	int		size;
-	int		i;
-	t_list 	*lstptr;
 
-	size = 1 + g_sh.flags + 1;
-	lstptr = g_sh.tokens;
-	new_arr = malloc(sizeof(char *) * size);
-	new_arr[0] = ft_strdup(lstptr->content);	
-	new_arr[size - 1] = NULL;
-	lstptr = lstptr->next;
-	i = 1;
-	while (i < (size - 1) && g_sh.flags > 0)
+	arr = add_elem_to_arr(arr, (*lstptr)->content, 0);
+	*lstptr = (*lstptr)->next;
+	return (arr);
+}
+
+char 	**add_to_arg_else(char **arr, t_list **lstptr)
+{
+
+	arr = add_elem_to_arr(arr, (*lstptr)->content, 0);
+	*lstptr = (*lstptr)->next;
+	g_sh.flag = 0;
+	return (arr);
+}
+
+char **create_arg(t_list **lstptr)
+{
+	char	**arr;
+
+	arr = create_strarray_comm(lstptr);
+	while (*lstptr)
 	{
-		if (lstptr->ctg == FLAG)
-		{
-			new_arr[i] = ft_strdup(lstptr->content);
-			g_sh.flags--;
-			i++;
-		}
-		lstptr = lstptr->next;
+		if ((*lstptr)->ctg == SP)
+			*lstptr = (*lstptr)->next;
+		if ((*lstptr)->ctg == FLAG && g_sh.flag)
+			arr = add_to_arg_flag(arr, lstptr);
+		else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
+			arr = between_quotes(arr, lstptr);
+		else if (((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN) && (*lstptr)->atr == g_sh.red_count)
+			redirection_sign(lstptr);
+		else
+			arr = add_to_arg_else(arr, lstptr);
 	}
-	if (lstptr)
-		new_arr = add_to_argv_rest(new_arr, lstptr);
-	return (new_arr);
+	return (arr);
 }
 
 /*

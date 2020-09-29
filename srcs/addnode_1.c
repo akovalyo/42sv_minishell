@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 16:18:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 10:46:37 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		addnode_flags(char *arg, int i)
 		while (arg[i] && ft_isalpha(arg[i]))
 			i++;
 		new = malloc(sizeof(t_list));
-		g_sh.flags++;
+		//g_sh.flags++;
 		new->content = ft_strsub(arg, start, i - start);
 		new->content_size = i - start;
 		new->ctg = FLAG;

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 16:50:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:10:12 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct		s_shell
 	int				exit : 1;
 	t_comm			comm;
 	int				n_comm : 8;
-	short			flags;
+	int				flag : 1;
 	int				fl_ignore : 1;
 	t_list			*tokens;
 	char			*redirect;
@@ -71,8 +71,10 @@ void				comm_env(void);
 void				comm_sh(void);
 char				**between_quotes(char **arr, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
-char 				**add_to_argv_rest(char **arr, t_list *lstptr);
-char 				**create_argv(void);
+char 				**create_strarray_comm(t_list **lstptr);
+char 				**add_to_arg_flag(char **arr, t_list **lstptr);
+char 				**add_to_arg_else(char **arr, t_list **lstptr);
+char 				**create_arg(t_list **lstptr);
 int 				check_bin(char *comm);
 void				check_builtins_and_bin(char *comm);
 void				exec_input(void);

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 16:50:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 10:46:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_shell(void)
 	g_sh.comm = VOID;
 	g_sh.n_comm = 0;
 	g_sh.tokens = NULL;
-	g_sh.flags = 0;
+	g_sh.flag = 1;
 	g_sh.fl_ignore = 0;
 	g_sh.redirect = NULL;
 	g_sh.rewrite = 0;
@@ -46,7 +46,7 @@ void	clear_shell(void)
 	g_sh.exit = 0;
 	g_sh.comm = VOID;
 	g_sh.n_comm = 0;
-	g_sh.flags = 0;
+	g_sh.flag = 1;
 	g_sh.fl_ignore = 0;
 	g_sh.rewrite = 0;
 	g_sh.red_count = 0;
