@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 16:38:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 17:46:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ char **create_arg(t_list **lstptr)
 	{
 		if ((*lstptr)->ctg == SP)
 			*lstptr = (*lstptr)->next;
+		if (*lstptr == NULL)
+			break ;
 		if ((*lstptr)->ctg == FLAG && g_sh.flag)
 			arr = add_to_arg_flag(arr, lstptr);
 		else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)

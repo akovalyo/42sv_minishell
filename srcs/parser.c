@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 17:05:25 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 17:38:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ char *get_first_arg(char *str, int *i)
 	return (arg);
 }
 
-void parser_rest()
-{
-	
-}
+
 
 void	add_to_map(t_list *new)
 {
@@ -69,24 +66,8 @@ void	add_to_map(t_list *new)
 	}
 }
 
-
-void 	parser(char *str)
+void parser_rest(char *str, int i)
 {
-	int i;
-	char *arg;
-
-	i = 0;
-	arg = NULL;
-	i = skip_spaces(str, i);
-	if (str[i])
-		arg = get_first_arg(str, &i);
-	if (!arg)
-		return ;
-	addnode_comm(arg);
-
-
-
-	//ft_printf("%d-%s\n", ft_arraylen((void **)g_sh.map), g_sh.map[0]->content);
 	while (str[i])
 	{
 		if (ft_isspace(str[i]))
@@ -102,5 +83,26 @@ void 	parser(char *str)
 		else
 			i = addnode_str(str, i);
 	}
+}
+
+
+void 	parser(char *str)
+{
+	int i;
+	char *arg;
+
+	i = 0;
+	arg = NULL;
+	i = skip_spaces(str, i);
+	if (str[i])
+		arg = get_first_arg(str, &i);
+	if (!arg)
+		return ;
+	addnode_comm(arg);
+
+	parser_rest(str, i);
+
+	//ft_printf("%d-%s\n", ft_arraylen((void **)g_sh.map), g_sh.map[0]->content);
+	
 	free(arg);
 }
