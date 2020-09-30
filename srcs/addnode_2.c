@@ -6,20 +6,20 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 16:36:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:05:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		addnode_spaces(char *arg, int i)
+int		addnode_spaces(char *str, int i)
 {
 	int		start;
 	t_list	*new;
 
 	start = i;
 	new = malloc(sizeof(t_list));
-	while (arg[i] && ft_isspace(arg[i]))
+	while (str[i] && ft_isspace(str[i]))
 		i++;
 	new->content = NULL;
 	new->content_size = 0;
@@ -30,38 +30,40 @@ int		addnode_spaces(char *arg, int i)
 	return (i);
 }
 
-t_list 	*specialch_create_node(char *arg, int i)
+t_list 	*specialch_create_node(char *str, int i)
 {
 	t_list	*new;
 
 	new = malloc(sizeof(t_list));
-	if (arg[i] == '\'')
+	if (str[i] == '\'')
 	{
 		new->ctg = SN_QT;
 		g_sh.sn_qt += 1;
 	}
-	else if (arg[i] == '"')
+	else if (str[i] == '"')
 	{
 		new->ctg = DB_QT;
 		g_sh.db_qt += 1;
 	}
-	else if (arg[i] == '<')
+	else if (str[i] == '<')
 		new->ctg = LESS_SIGN;
-	else if (arg[i] == '>')
+	else if (str[i] == '>')
 	{
-		if (arg[i + 1] == '>')
+		if (str[i + 1] == '>')
 			new->ctg = DB_GR_SIGN;
 		else
 			new->ctg = GR_SIGN;
 	}
+	else if (str[i] == '|')
+		new->ctg = PIPE;
 	return (new);
 }
 
-int		addnode_specialch(char *arg, int i)
+int		addnode_specialch(char *str, int i)
 {
 	t_list	*new;
 	
-	new = specialch_create_node(arg, i);
+	new = specialch_create_node(str, i);
 	if (new->ctg == SN_QT)
 		new->content = ft_strdup("'");
 	else if (new->ctg == DB_QT)
@@ -71,7 +73,9 @@ int		addnode_specialch(char *arg, int i)
 	else if (new->ctg == GR_SIGN)
 		new->content = ft_strdup(">");
 	else if (new->ctg == DB_GR_SIGN)
-		new->content = ft_strdup(">>");	
+		new->content = ft_strdup(">>");
+	else if (new->ctg == PIPE)
+		new->content = ft_strdup("|");		
 	if (new->ctg == GR_SIGN || new->ctg == DB_GR_SIGN)
 	{
 		g_sh.red_count++;

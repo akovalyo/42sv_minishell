@@ -6,44 +6,56 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 17:09:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 12:06:13 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		addnode_comm(char *comm)
+int		addnode_comm(char *str, int i)
 {
 	t_list	*new;
+	int start;
 
 	new = malloc(sizeof(t_list));
-	g_sh.n_comm++;
-	new->content = ft_strdup(comm);
-	new->ctg = COMM;
-	new->atr = g_sh.n_comm;
+	if (str[i] == '|')
+		g_sh.pipe++;
+	i = skip_spaces(str, i++);
+	start = i;
+	while (str[i] && !ft_isspace(str[i]))
+		i++;
+	new->content = ft_strsub(str, start, i - start);
+	new->comm = (i == start) ? VOID : check_builtins_and_bin(new->content);
 	new->next = NULL;
+	if (new->comm != VOID && new->comm != NOCOMM)
+	{
+		new->ctg = COMM;
+		g_sh.n_comm++;
+		new->atr = g_sh.n_comm;
+	}
+	add_to_map(new);
 	ft_lstadd_back(&(g_sh.tokens), new);
-	if (!g_sh.map)
-		add_to_map(new);
+	return (i);		
 }
 
 
-int		addnode_flags(char *arg, int i)
+int		addnode_flags(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
 	
 	start = i;
-	if (ft_isalpha(arg[i + 1]))
+	if (ft_isalpha(str[i + 1]))
 	{
 		i++;
-		while (arg[i] && ft_isalpha(arg[i]))
+		while (str[i] && ft_isalpha(str[i]))
 			i++;
 		new = malloc(sizeof(t_list));
 		//g_sh.flags++;
-		new->content = ft_strsub(arg, start, i - start);
+		new->content = ft_strsub(str, start, i - start);
 		new->content_size = i - start;
 		new->ctg = FLAG;
+		new->comm = VOID;
 		new->atr = 0;
 		new->next = NULL;
 		ft_lstadd_back(&(g_sh.tokens), new);
@@ -53,7 +65,7 @@ int		addnode_flags(char *arg, int i)
 	return (start);
 }
 
-int		addnode_envv(char *arg, int i)
+int		addnode_envv(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -62,10 +74,10 @@ int		addnode_envv(char *arg, int i)
 	
 	start = i;
 	i++;
-	while (arg[i] && ft_isalpha(arg[i]))
+	while (str[i] && ft_isalpha(str[i]))
 		i++;
 	new = malloc(sizeof(t_list));
-	tmp = ft_strsub(arg, start, i - start);
+	tmp = ft_strsub(str, start, i - start);
 	new->atr = 0;
 	new->next = NULL;
 	if ((ptr_env = get_env(tmp + 1)))
@@ -74,29 +86,29 @@ int		addnode_envv(char *arg, int i)
 		new->content = ft_strdup(tmp);
 	new->content_size = ft_strlen(new->content);
 	new->ctg = STR;
+	new->comm = VOID;
 	ft_lstadd_back(&(g_sh.tokens), new);
 	free(tmp);
 	return (i);
 }
 
-int		addnode_tilde(char *arg, int i)
+int		addnode_tilde(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
 	char	*rest;
 	char	*ptr;
 
-	
 	start = i + 1;
 	i++;
-	while (arg[i] && !special_char(arg[i]) && !ft_isspace(arg[i]))
+	while (str[i] && !special_char(str[i]) && !ft_isspace(str[i]))
 		i++;
 	new = malloc(sizeof(t_list));
 	ptr = get_env("HOME");
 	new->content = ft_strdup(ptr);
 	if (start != i)
 	{
-		rest = ft_strsub(arg, start, i - start);
+		rest = ft_strsub(str, start, i - start);
 		ptr = new->content;
 		new->content = ft_strjoin(new->content, rest);
 		free(ptr);
@@ -106,21 +118,23 @@ int		addnode_tilde(char *arg, int i)
 	new->atr = 0;
 	new->next = NULL;
 	new->ctg = STR;
+	new->comm = VOID;
 	ft_lstadd_back(&(g_sh.tokens), new);
 	return (i);
 }
 
-int		addnode_str(char *arg, int i)
+int		addnode_str(char *str, int i)
 {
 	t_list	*new;
 
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
-	while (arg[i] && !special_char(arg[i]) && arg[i] != '$' && !ft_isspace(arg[i]))
+	new->comm = VOID;
+	while (str[i] && !special_char(str[i]) && str[i] != '$' && !ft_isspace(str[i]))
 	{	
-		if (arg[i] == '\\')
+		if (str[i] == '\\')
 			i++;
-		new->content = ft_straddchr_free(new->content, arg[i]);
+		new->content = ft_straddchr_free(new->content, str[i]);
 		i++;
 	}
 	new->content_size = ft_strlen(new->content);

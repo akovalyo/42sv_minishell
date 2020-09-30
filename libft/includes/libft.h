@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 16:11:33 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:28:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@
 # include "printf.h"
 # define BUFF_SIZE 32
 
+typedef enum		e_comm
+{
+	VOID, ECHO, PWD, CD, EXPORT, UNSET, ENV, SH, NOCOMM
+}					t_comm;
 
 typedef enum		e_ctg
 {
 	SP = 1, FLAG, STR, SN_QT, DB_QT, GR_SIGN,
-	LESS_SIGN, DB_GR_SIGN, COMM
+	LESS_SIGN, DB_GR_SIGN, COMM, PIPE
 }					t_ctg;
 
 typedef struct		s_list
@@ -31,6 +35,7 @@ typedef struct		s_list
 	void			*content;
 	size_t			content_size;
 	t_ctg			ctg;
+	t_comm			comm;
 	int				atr;
 	struct s_list	*next;
 }					t_list;

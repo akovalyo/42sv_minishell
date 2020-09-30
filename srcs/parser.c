@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 17:38:31 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:04:45 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,41 @@ void	add_to_map(t_list *new)
 	}
 }
 
-void parser_rest(char *str, int i)
+// void parser_rest(char *str, int i)
+// {
+// 	while (str[i])
+// 	{
+// 		if (ft_isspace(str[i]))
+// 			i = addnode_spaces(str, i);
+// 		else if (str[i] == '-' && !g_sh.fl_ignore)
+// 			i = addnode_flags(str, i);
+// 		else if (str[i] == '$')
+// 			i = addnode_envv(str, i);
+// 		else if (str[i] == '~')
+// 			i = addnode_tilde(str, i);
+// 		else if (special_char(str[i]))
+// 			i = addnode_specialch(str, i);
+// 		else
+// 			i = addnode_str(str, i);
+// 	}
+// }
+
+
+void 	parser(char *str)
 {
+	int i;
+	//char *arg;
+
+	i = 0;
+	//arg = NULL;
+	//i = skip_spaces(str, i);
+	// if (!(ft_strlen(&str[i])))
+	// 	return ;
 	while (str[i])
 	{
-		if (ft_isspace(str[i]))
+		if (!g_sh.tokens || (str[i] == '|' && g_sh.n_comm > 0))
+			i = addnode_comm(str, i);
+		else if (ft_isspace(str[i]))
 			i = addnode_spaces(str, i);
 		else if (str[i] == '-' && !g_sh.fl_ignore)
 			i = addnode_flags(str, i);
@@ -82,27 +112,9 @@ void parser_rest(char *str, int i)
 			i = addnode_specialch(str, i);
 		else
 			i = addnode_str(str, i);
+	
 	}
-}
-
-
-void 	parser(char *str)
-{
-	int i;
-	char *arg;
-
-	i = 0;
-	arg = NULL;
-	i = skip_spaces(str, i);
-	if (str[i])
-		arg = get_first_arg(str, &i);
-	if (!arg)
-		return ;
-	addnode_comm(arg);
-
-	parser_rest(str, i);
-
 	//ft_printf("%d-%s\n", ft_arraylen((void **)g_sh.map), g_sh.map[0]->content);
 	
-	free(arg);
+	//free(arg);
 }

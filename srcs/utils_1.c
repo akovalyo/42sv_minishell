@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 17:31:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:32:13 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_shell(void)
 	g_sh.sn_qt = 0;
 	g_sh.db_qt = 0;
 	g_sh.exit = 0;
-	g_sh.comm = VOID;
 	g_sh.n_comm = 0;
 	g_sh.tokens = NULL;
 	g_sh.flag = 1;
@@ -36,6 +35,7 @@ void	init_shell(void)
 	g_sh.red_count = 0;
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
+	g_sh.pipe = 0;
 }
 
 void	clear_shell(void)
@@ -45,7 +45,6 @@ void	clear_shell(void)
 	g_sh.sn_qt = 0;
 	g_sh.db_qt = 0;
 	g_sh.exit = 0;
-	g_sh.comm = VOID;
 	g_sh.n_comm = 0;
 	g_sh.flag = 1;
 	g_sh.fl_ignore = 0;
@@ -57,7 +56,8 @@ void	clear_shell(void)
 	g_sh.error = NULL;
 	free(g_sh.map);
 	g_sh.map = NULL;
-	g_sh.map_i = 0;	
+	g_sh.map_i = 0;
+	g_sh.pipe = 0;
 }
 
 void update_pwd(void)

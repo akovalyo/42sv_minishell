@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 17:46:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 12:00:47 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ char	**read_input(void)
 	return (tab_input);
 }
 
-void	comm_void(void)
+void	comm_void(int i)
 {
-	if (g_sh.comm == VOID)
+	if (g_sh.map[i]->comm == VOID)
 		ft_printf("");
-	else if (g_sh.comm == NOCOMM)
+	else if (g_sh.map[i]->comm == NOCOMM)
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 }
 
-void		comm_echo(void)
+void		comm_echo(int i)
 {
-	int i;
+	int j;
 	int len;
 
-	i = 0;
+	j = 0;
 	// if (ft_arraylen(tab_comm) == 1)
 	// 	ft_printf("\n");
 	// else
@@ -62,7 +62,7 @@ void		comm_echo(void)
 	// }
 }
 
-void		comm_pwd(void)
+void		comm_pwd(int i)
 {
 	if (g_sh.tokens->next == NULL || (ft_lstsize(g_sh.tokens) == 2 && g_sh.tokens->next->ctg == SP))
 	{
@@ -73,27 +73,27 @@ void		comm_pwd(void)
 		ft_printf("minishell: too many arguments\n");	
 }
 
-void		comm_cd(void)
+void		comm_cd(int i)
 {
 	return ;
 }
 
-void		comm_export(void)
+void		comm_export(int i)
 {
 	return ;
 }
 
-void		comm_unset(void)
+void		comm_unset(int i)
 {
 	return ; 
 }
 
-void		comm_env(void)
+void		comm_env(int i)
 {
 	return ;
 }
 
-void		comm_sh(void)
+void		comm_sh(int i)
 {	
 	char	**arg;
 	pid_t	pid;
@@ -246,27 +246,27 @@ int 		check_bin(char *comm)
 	return (0);
 }
 
-void		check_builtins_and_bin(char *comm)
+t_comm		check_builtins_and_bin(char *comm)
 {
 	if (ft_strnequ_alpha(comm, "exit", 5) == 0)
 		g_sh.exit = 1;
 	else if (ft_strnequ_alpha(comm, "echo", 5) == 0)
-		g_sh.comm = ECHO;
+		return (ECHO);
 	else if (ft_strnequ_alpha(comm, "pwd", 4) == 0)
-		g_sh.comm = PWD;
+		return (PWD);
 	else if (ft_strnequ_alpha(comm, "cd", 3) == 0)
-		g_sh.comm = CD;
+		return (CD);
 	else if (ft_strnequ_alpha(comm, "export", 7) == 0)
-		g_sh.comm = EXPORT;
+		return (EXPORT);
 	else if (ft_strnequ_alpha(comm, "unset", 6) == 0)
-		g_sh.comm = UNSET;
+		return (UNSET);
 	else if (ft_strnequ_alpha(comm, "env", 4) == 0)
-		g_sh.comm = ENV;
+		return (ENV);
 	else if (check_bin(comm))
-		g_sh.comm = SH;
+		return (SH);
 	else
-		g_sh.comm = NOCOMM;
-	
+		return (NOCOMM);
+	return (VOID);
 }
 
 /*
@@ -278,7 +278,7 @@ void	exec_input(void)
 	int				i;
 	//char			**tmp;
 	int				ret;
-	static void		(*exec_comm[])(void) = {comm_void, comm_echo, comm_pwd,
+	static void		(*exec_comm[])(int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
 	i = 0;
 	
@@ -289,7 +289,7 @@ void	exec_input(void)
 		{
 			exit_shell(NULL);
 		}
-		exec_comm[g_sh.comm]();
+		exec_comm[g_sh.map[0]->comm](0);
 		ft_lstclear(&(g_sh.tokens), free);
 		i++;
 	}

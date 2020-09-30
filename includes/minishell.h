@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 16:39:13 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:59:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@
 # include "libft.h"
 # define RESERVED "<>:\"/\\|&*"
 
-typedef enum		e_comm
-{
-	VOID, ECHO, PWD, CD, EXPORT, UNSET, ENV, SH, NOCOMM
-}					t_comm;
-
 typedef struct		s_shell
 {
 	char			**env;
@@ -39,7 +34,6 @@ typedef struct		s_shell
 	int				sn_qt;
 	int				db_qt;
 	int				exit : 1;
-	t_comm			comm;
 	int				n_comm : 8;
 	int				flag : 1;
 	int				fl_ignore : 1;
@@ -49,6 +43,7 @@ typedef struct		s_shell
 	int				red_count;
 	t_list			**map;
 	int				map_i;
+	int				pipe;
 
 }                   t_shell;
 
@@ -66,14 +61,14 @@ void				add_to_map(t_list *new);
 
 
 char				**read_input(void);
-void				comm_void(void);
-void				comm_echo(void);
-void				comm_pwd(void);
-void				comm_cd(void);
-void				comm_export(void);
-void				comm_unset(void);
-void				comm_env(void);
-void				comm_sh(void);
+void				comm_void(int i);
+void				comm_echo(int i);
+void				comm_pwd(int i);
+void				comm_cd(int i);
+void				comm_export(int i);
+void				comm_unset(int i);
+void				comm_env(int i);
+void				comm_sh(int i);
 char				**between_quotes(char **arr, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);
@@ -81,7 +76,7 @@ char 				**add_to_arg_flag(char **arr, t_list **lstptr);
 char 				**add_to_arg_else(char **arr, t_list **lstptr);
 char 				**create_arg(t_list **lstptr);
 int 				check_bin(char *comm);
-void				check_builtins_and_bin(char *comm);
+t_comm				check_builtins_and_bin(char *comm);
 void				exec_input(void);
 
 /*
@@ -128,6 +123,7 @@ char				*get_env(char *var);
 ** parser.c
 */
 
+int					skip_spaces(char *str, int i);
 void				parser(char *arg);
 
 
@@ -135,19 +131,19 @@ void				parser(char *arg);
 ** addnode_1.c
 */
 
-void				addnode_comm(char *comm);
-int					addnode_flags(char *arg, int i);
-int					addnode_envv(char *arg, int i);
-int					addnode_tilde(char *arg, int i);
-int					addnode_str(char *arg, int i);
+int					addnode_comm(char *str, int i);
+int					addnode_flags(char *str, int i);
+int					addnode_envv(char *str, int i);
+int					addnode_tilde(char *str, int i);
+int					addnode_str(char *str, int i);
 
 
 /*
 ** addnode_2.c
 */
 
-int					addnode_spaces(char *arg, int i);
-t_list 				*specialch_create_node(char *arg, int i);
-int					addnode_specialch(char *arg, int i);
+int					addnode_spaces(char *str, int i);
+t_list 				*specialch_create_node(char *str, int i);
+int					addnode_specialch(char *str, int i);
 
 #endif
