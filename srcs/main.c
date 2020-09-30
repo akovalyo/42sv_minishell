@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 12:00:47 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 12:14:49 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ char	**read_input(void)
 	return (tab_input);
 }
 
-void	comm_void(int i)
+void	comm_void(int map_i)
 {
-	if (g_sh.map[i]->comm == VOID)
+	if (g_sh.map[map_i]->comm == VOID)
 		ft_printf("");
-	else if (g_sh.map[i]->comm == NOCOMM)
+	else if (g_sh.map[map_i]->comm == NOCOMM)
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 }
 
-void		comm_echo(int i)
+void		comm_echo(int map_i)
 {
 	int j;
 	int len;
@@ -62,9 +62,9 @@ void		comm_echo(int i)
 	// }
 }
 
-void		comm_pwd(int i)
+void		comm_pwd(int map_i)
 {
-	if (g_sh.tokens->next == NULL || (ft_lstsize(g_sh.tokens) == 2 && g_sh.tokens->next->ctg == SP))
+	if (g_sh.map[map_i]->next == NULL || (ft_lstsize(g_sh.map[map_i]) == 2 && g_sh.map[map_i]->next->ctg == SP))
 	{
 		update_pwd();
 		ft_printf("%s\n", g_sh.pwd);
@@ -73,27 +73,27 @@ void		comm_pwd(int i)
 		ft_printf("minishell: too many arguments\n");	
 }
 
-void		comm_cd(int i)
+void		comm_cd(int map_i)
 {
 	return ;
 }
 
-void		comm_export(int i)
+void		comm_export(int map_i)
 {
 	return ;
 }
 
-void		comm_unset(int i)
+void		comm_unset(int map_i)
 {
 	return ; 
 }
 
-void		comm_env(int i)
+void		comm_env(int map_i)
 {
 	return ;
 }
 
-void		comm_sh(int i)
+void		comm_sh(int map_i)
 {	
 	char	**arg;
 	pid_t	pid;
@@ -289,7 +289,7 @@ void	exec_input(void)
 		{
 			exit_shell(NULL);
 		}
-		exec_comm[g_sh.map[0]->comm](0);
+		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
 		ft_lstclear(&(g_sh.tokens), free);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 11:59:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 12:13:49 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ void				add_to_map(t_list *new);
 
 
 char				**read_input(void);
-void				comm_void(int i);
-void				comm_echo(int i);
-void				comm_pwd(int i);
-void				comm_cd(int i);
-void				comm_export(int i);
-void				comm_unset(int i);
-void				comm_env(int i);
-void				comm_sh(int i);
+void				comm_void(int map_i);
+void				comm_echo(int map_i);
+void				comm_pwd(int map_i);
+void				comm_cd(int imap_i);
+void				comm_export(int map_i);
+void				comm_unset(int map_i);
+void				comm_env(int map_i);
+void				comm_sh(int map_i);
 char				**between_quotes(char **arr, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);

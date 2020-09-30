@@ -90,3 +90,14 @@ The cat command reads the file song.mp3 and sends the output to **/dev/audio** w
 
 The **<** symbol is used for **input (STDIN) redirection**
 
+### dup2 system call
+
+The **dup2()** system function is used to create a copy of an existing file descriptor.
+
+```
+int dup2(int old_file_descriptor, int new_file_descriptor);
+```
+
+**dup2()** function copies the **old_file_descriptor** into the **new_file_descriptor**. If the **new_file_descriptor** already exists, then it’s automatically closed and then the **old_file_descriptor** is copied to it.
+
+On success, the **dup2()** function returns the new file descriptor. If an error occurs, **dup2()** returns -1.
