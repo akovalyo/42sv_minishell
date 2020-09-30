@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 16:13:47 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 14:46:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_env(char **env)
 	{
 		
 		if (!(g_sh.env[i] = ft_strdup(env[i])))
-			exit_shell(NULL);
+			exit_shell(errno);
 		i++;
 	}
 }

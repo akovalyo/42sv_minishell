@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 12:14:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 15:08:50 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	**read_input(void)
 
 	i = 0;
 	if ((ret = get_next_line(0, &(g_sh.input))) < 0)
-		exit_shell("read error");
+		exit_shell(errno);
 	else if (ret == 0)
-		exit_shell(NULL);
+		exit_shell(errno);
 	tab_input = ft_strsplit(g_sh.input, ';');
 	free(g_sh.input);
 	g_sh.input = NULL;
@@ -70,7 +70,7 @@ void		comm_pwd(int map_i)
 		ft_printf("%s\n", g_sh.pwd);
 	}
 	else
-		ft_printf("minishell: too many arguments\n");	
+		print_error("too many arguments");	
 }
 
 void		comm_cd(int map_i)
@@ -111,7 +111,7 @@ void		comm_sh(int map_i)
 		execve(arg[0], arg, g_sh.env);
 	}
 	else if (pid < 0)
-		ft_printf("minishell: failed to create a new process\n");
+		print_error("failed to create a new process");
 	wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
 	ft_strarr_free(arg);
@@ -154,7 +154,8 @@ void redirection_sign(t_list **lstptr)
 	//*lstptr = (*lstptr)->next;
 	if (!((*lstptr)->next))
 	{
-		g_sh.error = ft_strdup("minishell: syntax error near unexpected token 'newline'");
+		print_error("syntax error near unexpected token 'newline'");
+		g_sh.error = 1;
 		return ;
 	}
 	if (g_sh.redirect)
@@ -287,7 +288,7 @@ void	exec_input(void)
 		parser(g_sh.input_tab[i]);
 		if (g_sh.exit)
 		{
-			exit_shell(NULL);
+			exit_shell(errno);
 		}
 		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
 		ft_lstclear(&(g_sh.tokens), free);
@@ -307,8 +308,6 @@ int		main(int argc, char **argv, char **env)
 		signal(SIGQUIT, sig_sl);
 		g_sh.input_tab = read_input();
 		exec_input();
-		if (g_sh.error)
-			ft_printf("%s\n", g_sh.error);
 		clear_shell();
 	}
 	ft_strarr_free(g_sh.env);

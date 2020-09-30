@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 12:13:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 15:06:02 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <dirent.h>
 # include <string.h>
 # include <errno.h>
+# include <stdio.h>
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -30,7 +31,7 @@ typedef struct		s_shell
 	char			*input;
 	char			**input_tab;
 	char			*pwd;
-	char			*error;
+	int				error : 1;
 	int				sn_qt;
 	int				db_qt;
 	int				exit : 1;
@@ -109,7 +110,8 @@ int 				isquote(char c);
 */
 
 char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
-void				exit_shell(char *message);
+void				print_error(char *err);
+void				exit_shell(int err);
 
 /*
 ** env.c

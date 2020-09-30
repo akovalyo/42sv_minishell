@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 11:32:13 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 15:06:36 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_shell(void)
 	clear_scr();
 	g_sh.pwd = NULL;
 	g_sh.input_tab = NULL;
-	g_sh.error = NULL;
+	g_sh.error = 0;
 	g_sh.sn_qt = 0;
 	g_sh.db_qt = 0;
 	g_sh.exit = 0;
@@ -52,8 +52,7 @@ void	clear_shell(void)
 	g_sh.red_count = 0;
 	free(g_sh.redirect);
 	g_sh.redirect = NULL;
-	free(g_sh.error);
-	g_sh.error = NULL;
+	g_sh.error = 0;
 	free(g_sh.map);
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
