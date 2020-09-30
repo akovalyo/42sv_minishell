@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 11:27:39 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:39:13 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct		s_shell
 	char			*redirect;
 	int				rewrite : 1;
 	int				red_count;
+	t_list			**map;
+	int				map_i;
 
 }                   t_shell;
 
@@ -59,6 +61,9 @@ t_shell				g_sh;
 /*
 ** main.c
 */
+
+void				add_to_map(t_list *new);
+
 
 char				**read_input(void);
 void				comm_void(void);

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strarraylen.c                                   :+:      :+:    :+:   */
+/*   ft_arraylen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 11:00:32 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/05/18 17:18:25 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:12:43 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strarraylen(char **arr)
+size_t	ft_arraylen(void **arr)
 {
 	size_t i;
 

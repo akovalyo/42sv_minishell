@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 15:52:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:11:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char				*signific_handler(long double nbr, int precis,
 char				*ft_ftoa_long(long double nbr, int precis, int sign);
 char				*ft_ftoa(double nbr, int precis);
 int					ft_strchr_ind(const char *s, char c);
-size_t				ft_strarraylen(char **arr);
+size_t				ft_arraylen(void **arr);
 float				ft_atof(char *nptr);
 int					ft_atoi_base(char *str, char *base);
 void				*ft_realloc(void *ptr, size_t n);

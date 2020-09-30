@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 11:53:41 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:09:05 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:11:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list		*ft_strsplit_lst(char const *s, char c)
 
 	result = NULL;
 	arr = ft_strsplit(s, c);
-	arr_len = ft_strarraylen(arr);
+	arr_len = ft_arraylen((void **)arr);
 	i = 0;
 	while (i < arr_len)
 	{

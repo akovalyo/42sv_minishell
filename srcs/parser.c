@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/28 17:06:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 17:05:25 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,40 @@ char *get_first_arg(char *str, int *i)
 	return (arg);
 }
 
+void parser_rest()
+{
+	
+}
+
+void	add_to_map(t_list *new)
+{
+	t_list **tmp;
+	int		size;
+	int		i;
+
+	if (!g_sh.map)
+	{
+		g_sh.map = malloc(sizeof(t_list *) * 2);
+		g_sh.map[1] = NULL;
+		g_sh.map[0] = new;
+	}
+	else
+	{
+		i = 0;
+		size = ft_arraylen((void **)g_sh.map) + 2;
+		tmp = g_sh.map;
+		g_sh.map = malloc(sizeof(t_list **) * size);
+		g_sh.map[size - 1] = NULL;
+		while (i < size - 2)
+		{
+			g_sh.map[i] = tmp[i];
+			i++;
+		}
+		g_sh.map[i] = new;
+		free(tmp);
+	}
+}
+
 
 void 	parser(char *str)
 {
@@ -49,6 +83,10 @@ void 	parser(char *str)
 	if (!arg)
 		return ;
 	addnode_comm(arg);
+
+
+
+	//ft_printf("%d-%s\n", ft_arraylen((void **)g_sh.map), g_sh.map[0]->content);
 	while (str[i])
 	{
 		if (ft_isspace(str[i]))

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 10:46:37 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 17:09:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void		addnode_comm(char *comm)
 	new->atr = g_sh.n_comm;
 	new->next = NULL;
 	ft_lstadd_back(&(g_sh.tokens), new);
+	if (!g_sh.map)
+		add_to_map(new);
 }
 
 

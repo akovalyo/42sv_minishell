@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 13:27:29 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:38:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		comm_echo(void)
 	int len;
 
 	i = 0;
-	// if (ft_strarraylen(tab_comm) == 1)
+	// if (ft_arraylen(tab_comm) == 1)
 	// 	ft_printf("\n");
 	// else
 	// {
@@ -285,7 +285,6 @@ void	exec_input(void)
 		parser(g_sh.input_tab[i]);
 		if (g_sh.exit)
 		{
-
 			exit_shell(NULL);
 		}
 		exec_comm[g_sh.comm]();
@@ -296,6 +295,7 @@ void	exec_input(void)
 
 int		main(int argc, char **argv, char **env)
 {
+	
 	init_shell();
 	init_env(env);
 	while (1)

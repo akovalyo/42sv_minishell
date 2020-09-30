@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/24 22:50:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/29 16:13:47 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_env(char **env)
 	int i;
 
 	i = 0;
-	g_sh.env = ft_memalloc(sizeof(char *) * (ft_strarraylen(env) + 1));
+	g_sh.env = ft_memalloc(sizeof(char *) * (ft_arraylen((void **)env) + 1));
 	while (env[i])
 	{
 		
