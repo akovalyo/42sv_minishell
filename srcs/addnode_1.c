@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 12:06:13 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:50:09 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int		addnode_str(char *str, int i)
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
 	new->comm = VOID;
-	while (str[i] && !special_char(str[i]) && str[i] != '$' && !ft_isspace(str[i]))
+	while (str[i] && !special_char(str[i]) && !isredir(str[i]) && str[i] != '$' && !ft_isspace(str[i]))
 	{	
 		if (str[i] == '\\')
 			i++;

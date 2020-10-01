@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 11:05:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:53:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ t_list 	*specialch_create_node(char *str, int i)
 		new->ctg = DB_QT;
 		g_sh.db_qt += 1;
 	}
-	else if (str[i] == '<')
-		new->ctg = LESS_SIGN;
-	else if (str[i] == '>')
-	{
-		if (str[i + 1] == '>')
-			new->ctg = DB_GR_SIGN;
-		else
-			new->ctg = GR_SIGN;
-	}
+	// else if (str[i] == '<')
+	// 	new->ctg = LESS_SIGN;
+	// else if (str[i] == '>')
+	// {
+	// 	if (str[i + 1] == '>')
+	// 		new->ctg = DB_GR_SIGN;
+	// 	else
+	// 		new->ctg = GR_SIGN;
+	// }
 	else if (str[i] == '|')
 		new->ctg = PIPE;
 	return (new);
@@ -68,12 +68,6 @@ int		addnode_specialch(char *str, int i)
 		new->content = ft_strdup("'");
 	else if (new->ctg == DB_QT)
 		new->content = ft_strdup("\"");
-	else if (new->ctg == LESS_SIGN)
-		new->content = ft_strdup("<");
-	else if (new->ctg == GR_SIGN)
-		new->content = ft_strdup(">");
-	else if (new->ctg == DB_GR_SIGN)
-		new->content = ft_strdup(">>");
 	else if (new->ctg == PIPE)
 		new->content = ft_strdup("|");		
 	if (new->ctg == GR_SIGN || new->ctg == DB_GR_SIGN)
@@ -85,4 +79,52 @@ int		addnode_specialch(char *str, int i)
 	new->next = NULL;
 	ft_lstadd_back(&(g_sh.tokens), new);
 	return (new->ctg == DB_GR_SIGN ? i + 2 : i + 1);
+}
+
+int		handle_redir_sign(char *str, int *i)
+{
+	t_ctg = ctg;
+
+	if (str[*i] == '<')
+	{
+		ctg = LESS_SIGN;
+		(*i)++;
+	}
+	else if (str[*i] == '>')
+	{
+		(*i)++;
+		if (str[*i] == '>')
+			ctg = DB_GR_SIGN;
+		else
+			ctg = GR_SIGN;
+	}
+	return (ctg);
+}
+
+
+int		addnode_redir(char *str, int i)
+{
+	t_list	*new;
+	int		start;
+
+	new = malloc(sizeof(t_list));
+	new->ctg = handle_redir_sign(str, &i);
+	i = skip_spaces(str, i);
+	if (str[i] == '\0')
+	{
+		print_error("syntax error near unexpected token 'newline'"); //?
+		new->content = NULL;
+	}
+	while (str[i] && !ft_isspace(str[i]))
+	{	
+		if (str[i] == '\\')
+			i++;
+		new->content = ft_straddchr_free(new->content, str[i]);
+		i++;
+	}
+	new->next = NULL;
+	new->comm = VOID;
+	ft_lstadd_back(&(g_sh.tokens), new);
+	add_to_map(new);
+	return (i);
 }

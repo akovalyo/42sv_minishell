@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 11:04:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:19:53 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void 	parser(char *str)
 			i = addnode_envv(str, i);
 		else if (str[i] == '~')
 			i = addnode_tilde(str, i);
+		else if (isredir(str[i]) && ((g_sh.sn_q % 2) > 0 || (g_sh.sn_q % 2) > 0))
+			i = addnode_redir(str, i);
 		else if (special_char(str[i]))
 			i = addnode_specialch(str, i);
 		else

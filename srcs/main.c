@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 15:08:50 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:53:12 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,14 @@ void		comm_sh(int map_i)
 	pid_t	pid;
 	t_list 	*lstptr;
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-	lstptr = g_sh.tokens;
+	lstptr = g_sh.map[map_i];
 
 	arg = create_arg(&lstptr);
-	
+	if  (g_sh.error)
+		return ;
 	pid = fork();
 	if (pid == 0)
 	{
-		if (g_sh.error)
-			exit(0);
 		execve(arg[0], arg, g_sh.env);
 	}
 	else if (pid < 0)
@@ -155,7 +154,6 @@ void redirection_sign(t_list **lstptr)
 	if (!((*lstptr)->next))
 	{
 		print_error("syntax error near unexpected token 'newline'");
-		g_sh.error = 1;
 		return ;
 	}
 	if (g_sh.redirect)
@@ -219,7 +217,7 @@ char **create_arg(t_list **lstptr)
 }
 
 /*
-** Checks existing system executable for the first argument in the input
+** Checks existing system executable for the argument
 */
 
 int 		check_bin(char *comm)
@@ -246,6 +244,10 @@ int 		check_bin(char *comm)
 	ft_strarr_free(paths);
 	return (0);
 }
+
+/*
+** Checks builtin commands and existing system executable for the argument
+*/
 
 t_comm		check_builtins_and_bin(char *comm)
 {
@@ -274,24 +276,71 @@ t_comm		check_builtins_and_bin(char *comm)
 ** 
 */
 
+void 	set_fd()
+{
+	if ((g_sh.fd[0] = dup(0)) < 0)
+	{
+		print_error(strerror(errno));
+		return ;
+	}
+	if ((g_sh.fd[1] = dup(1)) < 0)
+	{
+		print_error(strerror(errno));
+		return ;
+	}
+
+}
+
+void	exec()
+{
+	static void		(*exec_comm[])(int) = {comm_void, comm_echo, comm_pwd,
+					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
+	pid_t			pid;
+	int				fd[2]
+
+	if (g_sh.map_i < g_sh.map_len == 1)
+	{
+
+	}
+
+	
+	pid = fork();
+	if (pid == 0)
+	{
+		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
+	}
+	else if (pid < 0)
+		print_error("failed to create a new process");
+	wait(&pid);
+	//ft_printf("%d\n", ft_strarraylen(argv));
+	ft_strarr_free(arg);
+
+	
+
+}
+
 void	exec_input(void)
 {
 	int				i;
-	//char			**tmp;
-	int				ret;
-	static void		(*exec_comm[])(int) = {comm_void, comm_echo, comm_pwd,
-					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
-	i = 0;
+
 	
+	i = 0;	
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
-		if (g_sh.exit)
+		set_fd();
+		g_sh.map_len = ft_arraylen((void **) g_sh.map);
+		
+		if (g_sh.error)
+			return ;
+		while (g_sh.map_i < g_sh.map_len)
 		{
-			exit_shell(errno);
+			if (g_sh.exit)
+				exit_shell(errno);
+			exec();
+			g_sh.map_i++;
 		}
-		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
-		ft_lstclear(&(g_sh.tokens), free);
+		clear_tokens();
 		i++;
 	}
 }

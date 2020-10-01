@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 15:06:36 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 16:52:50 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ void	init_shell(void)
 	g_sh.red_count = 0;
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
+	g_sh.map_len = 0;
 	g_sh.pipe = 0;
 }
 
 void	clear_shell(void)
 {
+	clear_tokens();
 	ft_strarr_free(g_sh.input_tab);
 	g_sh.input_tab = NULL;
 	g_sh.sn_qt = 0;
@@ -53,9 +55,8 @@ void	clear_shell(void)
 	free(g_sh.redirect);
 	g_sh.redirect = NULL;
 	g_sh.error = 0;
-	free(g_sh.map);
-	g_sh.map = NULL;
 	g_sh.map_i = 0;
+	g_sh.map_len = 0;
 	g_sh.pipe = 0;
 }
 

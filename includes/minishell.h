@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 15:06:02 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:10:49 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,26 @@
 
 typedef struct		s_shell
 {
+	t_list			*tokens;
+	t_list			**map;
+	int				fd[4];
 	char			**env;
 	char			*input;
 	char			**input_tab;
 	char			*pwd;
-	int				error : 1;
-	int				sn_qt;
-	int				db_qt;
+	char			*redirect;
+	int				error;
 	int				exit : 1;
-	int				n_comm : 8;
 	int				flag : 1;
 	int				fl_ignore : 1;
-	t_list			*tokens;
-	char			*redirect;
 	int				rewrite : 1;
-	int				red_count;
-	t_list			**map;
+	int				n_comm : 8;
+	int				sn_qt;
+	int				db_qt;
+	int				red_count;	
 	int				map_i;
+	int				map_len;
 	int				pipe;
-
 }                   t_shell;
 
 /*
@@ -104,6 +105,7 @@ void				prompt_msg(void);
 
 int 				special_char(char c);
 int 				isquote(char c);
+int 				isredir(char c);
 
 /*
 ** memory.c
@@ -111,6 +113,7 @@ int 				isquote(char c);
 
 char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
 void				print_error(char *err);
+void 				clear_tokens(void);
 void				exit_shell(int err);
 
 /*
