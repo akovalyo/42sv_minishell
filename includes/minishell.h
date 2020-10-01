@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 18:10:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/01 12:04:00 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void				comm_export(int map_i);
 void				comm_unset(int map_i);
 void				comm_env(int map_i);
 void				comm_sh(int map_i);
-char				**between_quotes(char **arr, t_list **lstptr);
+char				*between_quotes(char *str, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);
 char 				**add_to_arg_flag(char **arr, t_list **lstptr);
@@ -150,5 +150,6 @@ int					addnode_str(char *str, int i);
 int					addnode_spaces(char *str, int i);
 t_list 				*specialch_create_node(char *str, int i);
 int					addnode_specialch(char *str, int i);
+int					addnode_redir(char *str, int i);
 
 #endif

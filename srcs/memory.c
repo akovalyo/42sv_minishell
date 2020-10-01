@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 16:50:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/01 12:23:34 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	print_error(char *err)
 	g_sh.error = 1;
 	ft_printf("minishell: %s\n", err);
 }
+
 
 void 	clear_tokens(void)
 {

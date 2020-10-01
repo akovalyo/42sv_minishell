@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 18:53:12 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:57:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,37 +93,37 @@ void		comm_env(int map_i)
 	return ;
 }
 
+
 void		comm_sh(int map_i)
 {	
 	char	**arg;
-	pid_t	pid;
+	//pid_t	pid;
 	t_list 	*lstptr;
+
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
 	lstptr = g_sh.map[map_i];
 
 	arg = create_arg(&lstptr);
-	if  (g_sh.error)
-		return ;
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(arg[0], arg, g_sh.env);
-	}
-	else if (pid < 0)
-		print_error("failed to create a new process");
-	wait(&pid);
+	// if  (g_sh.error)
+	// 	return ;
+	// pid = fork();
+	// if (pid == 0)
+	// {
+	execve(arg[0], arg, g_sh.env);
+	// }
+	// else if (pid < 0)
+	// 	print_error("failed to create a new process");
+	// wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
 	ft_strarr_free(arg);
 	
 }
 
-char	**between_quotes(char **arr, t_list **lstptr)
+char	*between_quotes(char *str, t_list **lstptr)
 {
-	char *new;
 	char *tmp;
 	int qt;
 
-	new = NULL;
 	qt = (*lstptr)->ctg;
 	*lstptr = (*lstptr)->next;
 	while (*lstptr && (*lstptr)->ctg != qt)
@@ -131,19 +131,19 @@ char	**between_quotes(char **arr, t_list **lstptr)
 		if ((*lstptr)->ctg == SP)
 		{
 			while ((*lstptr)->atr-- > 0)
-				new = ft_straddchr_free(new, ' ');
+				str = ft_straddchr_free(str, ' ');
 		}
 		else
 		{
-			tmp = new;
-			new = ft_strjoin(new, (*lstptr)->content);
+			tmp = str;
+			str = ft_strjoin(str, (*lstptr)->content);
 			free(tmp);
 		}
 		*lstptr = (*lstptr)->next;
 	}
-	*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
+	//*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	g_sh.flag = 0;
-	return (add_elem_to_arr(arr, new, free));
+	return (str);
 }
 
 void redirection_sign(t_list **lstptr)
@@ -181,11 +181,51 @@ char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 	return (arr);
 }
 
+// void	check_rest_lst(t_list **lstptr)
+// {
+// 	if (!(*lstptr))
+// 		return (NULL);
+// 	if ((*lstptr)->ctg == SP)
+// 		*lstptr = (*lstptr)->next;
+// 	if ((*lstptr)->ctg == COMM)
+// 		*lstptr = (*lstptr)->next;
+// 	}
+// }
+
+char	*strjoin_free(char *s1, char *s2)
+{
+	char *tmp;
+
+	tmp = s1;
+
+	s1 = ft_strjoin(s1, s2);
+	free(tmp);
+	return (s1);
+}
+
 char 	**add_to_arg_else(char **arr, t_list **lstptr)
 {
+	char *str;
 
-	arr = add_elem_to_arr(arr, (*lstptr)->content, NULL);
-	*lstptr = (*lstptr)->next;
+	str = NULL;
+	while ((*lstptr) && (*lstptr)->ctg != PIPE)
+	{
+		if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
+			str = between_quotes(str, lstptr);
+		else if ((*lstptr)->ctg == SP)
+			str = ft_straddchr_free(str, ' ');
+		else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
+			(*lstptr)->ctg == LESS_SIGN)
+		{
+			*lstptr = (*lstptr)->next;
+			// if ((*lstptr)->ctg == SP)
+			// 	*lstptr = (*lstptr)->next;
+		}
+		else
+			str = strjoin_free(str, (*lstptr)->content);
+		*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
+	}
+	arr = add_elem_to_arr(arr, str, NULL);
 	g_sh.flag = 0;
 	return (arr);
 }
@@ -195,7 +235,7 @@ char **create_arg(t_list **lstptr)
 	char	**arr;
 
 	arr = create_strarray_comm(lstptr);
-	while (*lstptr)
+	while ((*lstptr) && (*lstptr)->ctg != PIPE)
 	{
 		if ((*lstptr)->ctg == SP)
 			*lstptr = (*lstptr)->next;
@@ -203,13 +243,13 @@ char **create_arg(t_list **lstptr)
 			break ;
 		if ((*lstptr)->ctg == FLAG && g_sh.flag)
 			arr = add_to_arg_flag(arr, lstptr);
-		else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
-			arr = between_quotes(arr, lstptr);
-		else if (((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN) && (*lstptr)->atr == g_sh.red_count)
-		{
-			redirection_sign(lstptr);
-			return (arr);
-		}
+		// else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
+		// 	arr = between_quotes(arr, lstptr);
+		// else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
+		// 	(*lstptr)->ctg == LESS_SIGN || (*lstptr)->ctg == COMM)
+		// {
+		// 	*lstptr = (*lstptr)->next;
+		// }
 		else
 			arr = add_to_arg_else(arr, lstptr);
 	}
@@ -276,19 +316,64 @@ t_comm		check_builtins_and_bin(char *comm)
 ** 
 */
 
+
+
+void	output_redir(t_list *lst)
+{
+	if (lst->ctg == GR_SIGN)
+		g_sh.fd[1] = open(lst->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
+	else if (lst->ctg == DB_GR_SIGN)
+		g_sh.fd[1] = open(lst->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
+	if (g_sh.fd[1] < 0)
+	{
+		print_error(strerror(errno));
+		return ;
+	}
+	if((dup2(g_sh.fd[1], 1)) < 0)
+	{
+		
+		print_error(strerror(errno));
+		return ;
+		
+	}
+}
+
+void	restore_fd()
+{
+	if (g_sh.fd[0])
+	{
+		close(g_sh.fd[0]);
+		if ((dup2(0, g_sh.fd[2])) < 0)
+		{
+			print_error(strerror(errno));
+			return ;
+		}
+	}
+	if (g_sh.fd[1])
+	{
+		close(g_sh.fd[1]);
+		g_sh.fd[1] = 0;
+		close(1);
+		if ((dup2(g_sh.fd[3], 1)) < 0)
+		{
+			print_error(strerror(errno));
+			return ;
+		}
+	}
+}
+
 void 	set_fd()
 {
-	if ((g_sh.fd[0] = dup(0)) < 0)
-	{
-		print_error(strerror(errno));
-		return ;
-	}
-	if ((g_sh.fd[1] = dup(1)) < 0)
-	{
-		print_error(strerror(errno));
-		return ;
-	}
+	t_list *lst;
 
+	
+	if (g_sh.map_i + 1 < g_sh.map_len)
+	{
+		lst = g_sh.map[g_sh.map_i + 1];
+		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
+			output_redir(lst);
+
+	}
 }
 
 void	exec()
@@ -296,24 +381,18 @@ void	exec()
 	static void		(*exec_comm[])(int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
 	pid_t			pid;
-	int				fd[2]
+	int				fd[2];
 
-	if (g_sh.map_i < g_sh.map_len == 1)
-	{
-
-	}
-
-	
 	pid = fork();
 	if (pid == 0)
 	{
 		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
+		exit(0);
 	}
 	else if (pid < 0)
 		print_error("failed to create a new process");
 	wait(&pid);
-	//ft_printf("%d\n", ft_strarraylen(argv));
-	ft_strarr_free(arg);
+
 
 	
 
@@ -323,21 +402,21 @@ void	exec_input(void)
 {
 	int				i;
 
-	
 	i = 0;	
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
-		set_fd();
 		g_sh.map_len = ft_arraylen((void **) g_sh.map);
-		
 		if (g_sh.error)
 			return ;
+		//if (g_sh.map_len > 1)
 		while (g_sh.map_i < g_sh.map_len)
 		{
+			set_fd();
 			if (g_sh.exit)
 				exit_shell(errno);
 			exec();
+			restore_fd();
 			g_sh.map_i++;
 		}
 		clear_tokens();

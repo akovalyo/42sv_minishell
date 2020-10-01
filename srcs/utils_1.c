@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 16:52:50 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:21:36 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,26 @@ void	clear_scr(void)
 	ft_printf("\e[1;1H\e[2J");
 }
 
+void 	init_fd()
+{
+	if ((g_sh.fd[2] = dup(0)) < 0)
+	{
+		print_error(strerror(errno));
+		return ;
+	}
+	if ((g_sh.fd[3] = dup(1)) < 0)
+	{
+		print_error(strerror(errno));
+		return ;
+	}
+	g_sh.fd[0] = 0;
+	g_sh.fd[1] = 0;
+}
+
 void	init_shell(void)
 {
 	clear_scr();
+	init_fd();
 	g_sh.pwd = NULL;
 	g_sh.input_tab = NULL;
 	g_sh.error = 0;

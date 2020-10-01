@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 18:53:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:53:10 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		addnode_specialch(char *str, int i)
 
 int		handle_redir_sign(char *str, int *i)
 {
-	t_ctg = ctg;
+	t_ctg ctg;
 
 	if (str[*i] == '<')
 	{
@@ -94,7 +94,10 @@ int		handle_redir_sign(char *str, int *i)
 	{
 		(*i)++;
 		if (str[*i] == '>')
+		{
 			ctg = DB_GR_SIGN;
+			(*i)++;
+		}
 		else
 			ctg = GR_SIGN;
 	}
@@ -108,6 +111,7 @@ int		addnode_redir(char *str, int i)
 	int		start;
 
 	new = malloc(sizeof(t_list));
+	new->content = NULL;
 	new->ctg = handle_redir_sign(str, &i);
 	i = skip_spaces(str, i);
 	if (str[i] == '\0')
