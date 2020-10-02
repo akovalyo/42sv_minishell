@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 15:53:10 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 11:58:10 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int		addnode_redir(char *str, int i)
 	i = skip_spaces(str, i);
 	if (str[i] == '\0')
 	{
-		print_error("syntax error near unexpected token 'newline'"); //?
+		print_error("syntax error near unexpected token 'newline'", 1); //?
 		new->content = NULL;
 	}
 	while (str[i] && !ft_isspace(str[i]))
@@ -131,4 +131,17 @@ int		addnode_redir(char *str, int i)
 	ft_lstadd_back(&(g_sh.tokens), new);
 	add_to_map(new);
 	return (i);
+}
+
+int		addnode_status(char *str, int i)
+{
+	t_list	*new;
+	new = malloc(sizeof(t_list));
+	new->atr = 0;
+	new->next = NULL;
+	new->content = ft_itoa(g_sh.status[1]);
+	new->ctg = STR;
+	new->comm = VOID;
+	ft_lstadd_back(&(g_sh.tokens), new);
+	return (i + 2);
 }

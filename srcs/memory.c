@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 12:23:34 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 11:59:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ char	**add_elem_to_arr(char **arr, char *str, void (*del)(void *))
 	return (new);
 }
 
-void	print_error(char *err)
+void	print_error(char *err, int err_n)
 {
 	g_sh.error = 1;
+	g_sh.status[0] = err_n;
 	ft_printf("minishell: %s\n", err);
 }
 
@@ -58,7 +59,8 @@ void 	clear_tokens(void)
 void	exit_shell(int err)
 {
 	if (err)
-		print_error(strerror(err));
+		print_error(strerror(err), err);
+
 	clear_tokens();
 	free(g_sh.input);
 	ft_strarr_free(g_sh.input_tab);

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 14:55:26 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:54:24 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void 	parser(char *str)
 			i = addnode_spaces(str, i);
 		else if (str[i] == '-' && !g_sh.fl_ignore)
 			i = addnode_flags(str, i);
+		else if (ft_strncmp(&str[i], "$?", 2) == 0)
+			i = addnode_status(str, i);
 		else if (str[i] == '$')
 			i = addnode_envv(str, i);
 		else if (str[i] == '~')

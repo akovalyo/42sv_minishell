@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 15:57:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 11:59:02 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**read_input(void)
 	return (tab_input);
 }
 
-void	comm_void(int map_i)
+void	comm_void(char **arg, int map_i)
 {
 	if (g_sh.map[map_i]->comm == VOID)
 		ft_printf("");
@@ -38,7 +38,7 @@ void	comm_void(int map_i)
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 }
 
-void		comm_echo(int map_i)
+void		comm_echo(char **arg, int map_i)
 {
 	int j;
 	int len;
@@ -62,48 +62,51 @@ void		comm_echo(int map_i)
 	// }
 }
 
-void		comm_pwd(int map_i)
+void		comm_pwd(char **arg, int map_i)
 {
-	if (g_sh.map[map_i]->next == NULL || (ft_lstsize(g_sh.map[map_i]) == 2 && g_sh.map[map_i]->next->ctg == SP))
+	int arg_len;
+
+	arg_len = ft_arraylen((void **)arg);
+	if (arg_len == 1)
 	{
 		update_pwd();
 		ft_printf("%s\n", g_sh.pwd);
 	}
 	else
-		print_error("too many arguments");	
+		print_error("too many arguments", 1);	
 }
 
-void		comm_cd(int map_i)
+void		comm_cd(char **arg, int map_i)
 {
 	return ;
 }
 
-void		comm_export(int map_i)
+void		comm_export(char **arg, int map_i)
 {
 	return ;
 }
 
-void		comm_unset(int map_i)
+void		comm_unset(char **arg, int map_i)
 {
 	return ; 
 }
 
-void		comm_env(int map_i)
+void		comm_env(char **arg, int map_i)
 {
 	return ;
 }
 
 
-void		comm_sh(int map_i)
+void		comm_sh(char **arg, int map_i)
 {	
-	char	**arg;
+	// char	**arg;
 	//pid_t	pid;
-	t_list 	*lstptr;
+	// t_list 	*lstptr;
 
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-	lstptr = g_sh.map[map_i];
+	// lstptr = g_sh.map[map_i];
 
-	arg = create_arg(&lstptr);
+	// arg = create_arg(&lstptr);
 	// if  (g_sh.error)
 	// 	return ;
 	// pid = fork();
@@ -115,7 +118,7 @@ void		comm_sh(int map_i)
 	// 	print_error("failed to create a new process");
 	// wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
-	ft_strarr_free(arg);
+	//ft_strarr_free(arg);
 	
 }
 
@@ -153,7 +156,7 @@ void redirection_sign(t_list **lstptr)
 	//*lstptr = (*lstptr)->next;
 	if (!((*lstptr)->next))
 	{
-		print_error("syntax error near unexpected token 'newline'");
+		print_error("syntax error near unexpected token 'newline'", 1);
 		return ;
 	}
 	if (g_sh.redirect)
@@ -326,13 +329,13 @@ void	output_redir(t_list *lst)
 		g_sh.fd[1] = open(lst->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
 	if (g_sh.fd[1] < 0)
 	{
-		print_error(strerror(errno));
+		print_error(strerror(errno), errno);
 		return ;
 	}
 	if((dup2(g_sh.fd[1], 1)) < 0)
 	{
 		
-		print_error(strerror(errno));
+		print_error(strerror(errno), errno);
 		return ;
 		
 	}
@@ -345,7 +348,7 @@ void	restore_fd()
 		close(g_sh.fd[0]);
 		if ((dup2(0, g_sh.fd[2])) < 0)
 		{
-			print_error(strerror(errno));
+			print_error(strerror(errno), errno);
 			return ;
 		}
 	}
@@ -356,7 +359,7 @@ void	restore_fd()
 		close(1);
 		if ((dup2(g_sh.fd[3], 1)) < 0)
 		{
-			print_error(strerror(errno));
+			print_error(strerror(errno), errno);
 			return ;
 		}
 	}
@@ -378,21 +381,41 @@ void 	set_fd()
 
 void	exec()
 {
-	static void		(*exec_comm[])(int) = {comm_void, comm_echo, comm_pwd,
+	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
 	pid_t			pid;
-	int				fd[2];
+	int				p[2];
+	char			buff;
 
+
+
+	if (pipe(p) < 0)
+		exit (1);
+
+	char	**arg;
+	//pid_t	pid;
+	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
+
+	t_list 	*lstptr;
+
+	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
+	lstptr = g_sh.map[g_sh.map_i];
+
+	arg = create_arg(&lstptr);
 	pid = fork();
 	if (pid == 0)
 	{
-		exec_comm[g_sh.map[g_sh.map_i]->comm](g_sh.map_i);
+		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
+		close(p[0]);
+		write(p[1], &g_sh.status[0], 1);
 		exit(0);
 	}
 	else if (pid < 0)
-		print_error("failed to create a new process");
+		print_error("failed to create a new process", 1);
+	close(p[1]);
 	wait(&pid);
-
+	read(p[0], &g_sh.status[0], 1);
+	ft_strarr_free(arg);
 
 	
 

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 12:04:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 11:51:30 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct		s_shell
 	int				map_i;
 	int				map_len;
 	int				pipe;
+	int				status[2];
 }                   t_shell;
 
 /*
@@ -63,14 +64,14 @@ void				add_to_map(t_list *new);
 
 
 char				**read_input(void);
-void				comm_void(int map_i);
-void				comm_echo(int map_i);
-void				comm_pwd(int map_i);
-void				comm_cd(int imap_i);
-void				comm_export(int map_i);
-void				comm_unset(int map_i);
-void				comm_env(int map_i);
-void				comm_sh(int map_i);
+void				comm_void(char **arg, int map_i);
+void				comm_echo(char **arg, int map_i);
+void				comm_pwd(char **arg, int map_i);
+void				comm_cd(char **arg, int imap_i);
+void				comm_export(char **arg, int map_i);
+void				comm_unset(char **arg, int map_i);
+void				comm_env(char **arg, int map_i);
+void				comm_sh(char **arg, int map_i);
 char				*between_quotes(char *str, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);
@@ -112,7 +113,7 @@ int 				isredir(char c);
 */
 
 char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
-void				print_error(char *err);
+void				print_error(char *err, int err_n);
 void 				clear_tokens(void);
 void				exit_shell(int err);
 
@@ -151,5 +152,6 @@ int					addnode_spaces(char *str, int i);
 t_list 				*specialch_create_node(char *str, int i);
 int					addnode_specialch(char *str, int i);
 int					addnode_redir(char *str, int i);
+int					addnode_status(char *str, int i);
 
 #endif

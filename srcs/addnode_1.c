@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 18:50:09 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:54:22 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int		addnode_flags(char *str, int i)
 	g_sh.fl_ignore = 1;
 	return (start);
 }
+
+
 
 int		addnode_envv(char *str, int i)
 {

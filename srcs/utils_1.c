@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/01 15:21:36 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 11:59:25 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void 	init_fd()
 {
 	if ((g_sh.fd[2] = dup(0)) < 0)
 	{
-		print_error(strerror(errno));
+		print_error(strerror(errno), errno);
 		return ;
 	}
 	if ((g_sh.fd[3] = dup(1)) < 0)
 	{
-		print_error(strerror(errno));
+		print_error(strerror(errno), errno);
 		return ;
 	}
 	g_sh.fd[0] = 0;
@@ -54,6 +54,8 @@ void	init_shell(void)
 	g_sh.map_i = 0;
 	g_sh.map_len = 0;
 	g_sh.pipe = 0;
+	g_sh.status[0] = 0;
+	g_sh.status[1] = 0;
 }
 
 void	clear_shell(void)
@@ -75,6 +77,9 @@ void	clear_shell(void)
 	g_sh.map_i = 0;
 	g_sh.map_len = 0;
 	g_sh.pipe = 0;
+	g_sh.status[1] = g_sh.status[0];
+	g_sh.status[0] = 0;
+
 }
 
 void update_pwd(void)
