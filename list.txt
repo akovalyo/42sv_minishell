@@ -1,0 +1,24 @@
+total 5286
+drwxr-xr-x   9 akovalyo  2019_october     4096 Oct  2 12:42 .
+drwxr-xr-x  36 akovalyo  2019_october     4096 Sep 21 18:02 ..
+-rw-r--r--@  1 akovalyo  2019_october     6148 Aug 31 13:20 .DS_Store
+-rw-r--r--   1 akovalyo  2019_october     4096 Aug 31 10:44 ._.DS_Store
+-rw-r--r--   1 akovalyo  2019_october     4096 Aug 10 15:50 ._how_to.pdf
+-rw-r--r--   1 akovalyo  2019_october     4096 Oct  2 09:24 ._minishell.pdf
+drwxr-xr-x   7 akovalyo  2019_october     4096 Oct  2 12:32 .git
+-rw-r--r--   1 akovalyo  2019_october       77 Sep 25 18:53 .gitignore
+drwxr-xr-x   2 akovalyo  2019_october     4096 Sep 25 18:54 .vscode
+-rw-r--r--   1 akovalyo  2019_october     2116 Sep 25 16:44 Makefile
+-rw-r--r--   1 akovalyo  2019_october     8754 Sep 30 12:47 README.md
+-rwxr-xr-x   1 akovalyo  2019_october    10768 Sep 30 16:29 a.out
+drwxr-xr-x   3 akovalyo  2019_october     4096 Sep 30 16:29 a.out.dSYM
+-rw-r--r--@  1 akovalyo  2019_october  1258134 Aug 10 15:50 how_to.pdf
+drwxr-xr-x   2 akovalyo  2019_october     4096 Oct  2 09:24 includes
+drwxr-xr-x   4 akovalyo  2019_october     4096 Sep 30 11:38 libft
+-rw-r--r--   1 akovalyo  2019_october        0 Oct  2 12:42 list.txt
+-rwxr-xr-x   1 akovalyo  2019_october    92060 Oct  2 12:41 minishell
+drwxr-xr-x   3 akovalyo  2019_october     4096 Sep 25 14:09 minishell.dSYM
+-rw-r--r--@  1 akovalyo  2019_october  1275142 Aug 10 15:20 minishell.pdf
+-rw-r--r--   1 akovalyo  2019_october      134 Aug 31 13:21 rot.sh
+drwxr-xr-x   2 akovalyo  2019_october     4096 Oct  2 09:24 srcs
+-rw-r--r--   1 akovalyo  2019_october      350 Sep 30 16:26 test.c

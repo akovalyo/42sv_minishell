@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 12:32:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:41:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,19 +234,19 @@ char 	**add_to_arg_else(char **arr, t_list **lstptr)
 	return (arr);
 }
 
-char **create_arg(t_list **lstptr)
+char **create_arg(t_list *lstptr)
 {
 	char	**arr;
 
-	arr = create_strarray_comm(lstptr);
-	while ((*lstptr) && (*lstptr)->ctg != PIPE)
+	arr = create_strarray_comm(&lstptr);
+	while (lstptr && lstptr->ctg != PIPE)
 	{
-		if ((*lstptr)->ctg == SP)
-			*lstptr = (*lstptr)->next;
-		if (*lstptr == NULL)
+		if (lstptr->ctg == SP)
+			lstptr = lstptr->next;
+		if (lstptr == NULL)
 			break ;
-		if ((*lstptr)->ctg == FLAG && g_sh.flag)
-			arr = add_to_arg_flag(arr, lstptr);
+		if (lstptr->ctg == FLAG && g_sh.flag)
+			arr = add_to_arg_flag(arr, &lstptr);
 		// else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
 		// 	arr = between_quotes(arr, lstptr);
 		// else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
@@ -255,7 +255,7 @@ char **create_arg(t_list **lstptr)
 		// 	*lstptr = (*lstptr)->next;
 		// }
 		else
-			arr = add_to_arg_else(arr, lstptr);
+			arr = add_to_arg_else(arr, &lstptr);
 	}
 	return (arr);
 }
@@ -391,7 +391,7 @@ void	exec()
 	if (pipe(g_sh.p) < 0)
 		exit (1);
 	lstptr = g_sh.map[g_sh.map_i];
-	arg = create_arg(&lstptr);
+	arg = create_arg(g_sh.map[g_sh.map_i]);
 	pid = fork();
 	if (pid == 0)
 	{

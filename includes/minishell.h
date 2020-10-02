@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 12:29:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:41:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);
 char 				**add_to_arg_flag(char **arr, t_list **lstptr);
 char 				**add_to_arg_else(char **arr, t_list **lstptr);
-char 				**create_arg(t_list **lstptr);
+char 				**create_arg(t_list *lstptr);
 int 				check_bin(char *comm);
 t_comm				check_builtins_and_bin(char *comm);
 void				exec_input(void);
