@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 11:51:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:29:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct		s_shell
 	int				map_len;
 	int				pipe;
 	int				status[2];
+	int				p[2];
 }                   t_shell;
 
 /*

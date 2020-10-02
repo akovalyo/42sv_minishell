@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 11:59:02 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:32:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,27 @@ void	comm_void(char **arg, int map_i)
 
 void		comm_echo(char **arg, int map_i)
 {
-	int j;
+	int i;
 	int len;
 
-	j = 0;
-	// if (ft_arraylen(tab_comm) == 1)
-	// 	ft_printf("\n");
-	// else
-	// {
-	// 	len = ft_strlen(tab_comm[1]);
-	// 	if (ft_strncmp(tab_comm[1], "-n ", 3) == 0)
-	// 	{
-	// 		//g_sh.n = 1;
-	// 		i = 3;
-	// 	}
-	// 	while (i < len)
-	// 	{
+	i = 1;
+	len = ft_arraylen((void **)arg);
 
-	// 	}
-	// 	ft_printf("%s\n", tab_comm[1]);
-	// }
+	if (len == 1)
+		ft_printf("\n");
+	else
+	{
+		if (ft_strncmp(arg[1], "-n", 3) == 0)
+			i++;
+		while (i < len)
+		{
+			ft_printf("%s", arg[i]);
+			i++;
+		}
+		if (ft_strncmp(arg[1], "-n", 3) != 0)
+			ft_printf("\n");
+
+	}
 }
 
 void		comm_pwd(char **arg, int map_i)
@@ -375,7 +376,6 @@ void 	set_fd()
 		lst = g_sh.map[g_sh.map_i + 1];
 		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
 			output_redir(lst);
-
 	}
 }
 
@@ -384,41 +384,28 @@ void	exec()
 	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
 	pid_t			pid;
-	int				p[2];
 	char			buff;
+	char			**arg;
+	t_list 			*lstptr;
 
-
-
-	if (pipe(p) < 0)
+	if (pipe(g_sh.p) < 0)
 		exit (1);
-
-	char	**arg;
-	//pid_t	pid;
-	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-
-	t_list 	*lstptr;
-
-	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
 	lstptr = g_sh.map[g_sh.map_i];
-
 	arg = create_arg(&lstptr);
 	pid = fork();
 	if (pid == 0)
 	{
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
-		close(p[0]);
-		write(p[1], &g_sh.status[0], 1);
+		close(g_sh.p[0]);
+		write(g_sh.p[1], &g_sh.status[0], 1);
 		exit(0);
 	}
 	else if (pid < 0)
 		print_error("failed to create a new process", 1);
-	close(p[1]);
+	close(g_sh.p[1]);
 	wait(&pid);
-	read(p[0], &g_sh.status[0], 1);
+	read(g_sh.p[0], &g_sh.status[0], 1);
 	ft_strarr_free(arg);
-
-	
-
 }
 
 void	exec_input(void)
