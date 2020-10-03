@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 12:41:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 17:30:45 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,21 +150,21 @@ char	*between_quotes(char *str, t_list **lstptr)
 	return (str);
 }
 
-void redirection_sign(t_list **lstptr)
-{
-	if ((*lstptr)->ctg == GR_SIGN)
-		g_sh.rewrite = 1;
-	//*lstptr = (*lstptr)->next;
-	if (!((*lstptr)->next))
-	{
-		print_error("syntax error near unexpected token 'newline'", 1);
-		return ;
-	}
-	if (g_sh.redirect)
-		free(g_sh.redirect);
-	g_sh.redirect = ft_strdup((*lstptr)->next->content);
-	//*lstptr = (*lstptr)->next;
-}
+// void redirection_sign(t_list **lstptr)
+// {
+// 	if ((*lstptr)->ctg == GR_SIGN)
+// 		g_sh.rewrite = 1;
+// 	//*lstptr = (*lstptr)->next;
+// 	if (!((*lstptr)->next))
+// 	{
+// 		print_error("syntax error near unexpected token 'newline'", 1);
+// 		return ;
+// 	}
+// 	if (g_sh.redirect)
+// 		free(g_sh.redirect);
+// 	g_sh.redirect = ft_strdup((*lstptr)->next->content);
+// 	//*lstptr = (*lstptr)->next;
+// }
 
 char **create_strarray_comm(t_list **lstptr)
 {
@@ -322,6 +322,21 @@ t_comm		check_builtins_and_bin(char *comm)
 
 
 
+void	input_redir(t_list *lst)
+{
+	g_sh.fd[0] = open(lst->content, O_RDONLY);
+	if (g_sh.fd[0] < 0)
+	{
+		print_error(strerror(errno), errno);
+		return ;
+	}
+	if((dup2(g_sh.fd[0], 0)) < 0)
+	{
+		print_error(strerror(errno), errno);
+		return ;
+	}
+}
+
 void	output_redir(t_list *lst)
 {
 	if (lst->ctg == GR_SIGN)
@@ -335,19 +350,20 @@ void	output_redir(t_list *lst)
 	}
 	if((dup2(g_sh.fd[1], 1)) < 0)
 	{
-		
 		print_error(strerror(errno), errno);
 		return ;
-		
 	}
 }
 
 void	restore_fd()
 {
+	
 	if (g_sh.fd[0])
 	{
 		close(g_sh.fd[0]);
-		if ((dup2(0, g_sh.fd[2])) < 0)
+		g_sh.fd[0] = 0;
+		close(0);
+		if ((dup2(g_sh.fd[2], 0)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
@@ -364,6 +380,7 @@ void	restore_fd()
 			return ;
 		}
 	}
+	
 }
 
 void 	set_fd()
@@ -376,6 +393,8 @@ void 	set_fd()
 		lst = g_sh.map[g_sh.map_i + 1];
 		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
 			output_redir(lst);
+		else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm != VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
+			input_redir(lst);
 	}
 }
 
@@ -408,18 +427,55 @@ void	exec()
 	ft_strarr_free(arg);
 }
 
+// char	**strip(char **arr)
+// {
+// 	int i;
+// 	char *tmp;
+
+// 	i = 0;
+// 	tmp = NULL;
+// 	while (arr[i])
+// 	{
+// 		if (ft_isspace(arr[i][0]))
+// 		{
+// 			tmp = arr[i];
+// 			arr[i] = ft_strtrim(arr[i]);
+// 			free(tmp);
+// 		}
+// 		i++;
+// 	}
+// 	return (arr);
+// }
+
+void increment_mapi(void)
+{
+	t_list *lst;
+	
+	if (g_sh.map_i + 1 < g_sh.map_len)
+	{
+		lst = g_sh.map[g_sh.map_i + 1];
+		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN || lst->ctg == LESS_SIGN)
+			g_sh.map_i += 2;
+		else
+			g_sh.map_i++;
+	}
+	else
+		g_sh.map_i++;
+}
+
 void	exec_input(void)
 {
 	int				i;
 
-	i = 0;	
+	i = 0;
+	//g_sh.input_tab = strip(g_sh.input_tab);
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
 		g_sh.map_len = ft_arraylen((void **) g_sh.map);
 		if (g_sh.error)
 			return ;
-		//if (g_sh.map_len > 1)
+		//while (g_sh.map_i < g_sh.map_len)
 		while (g_sh.map_i < g_sh.map_len)
 		{
 			set_fd();
@@ -427,7 +483,7 @@ void	exec_input(void)
 				exit_shell(errno);
 			exec();
 			restore_fd();
-			g_sh.map_i++;
+			increment_mapi();
 		}
 		clear_tokens();
 		i++;

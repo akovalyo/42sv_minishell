@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 11:58:10 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:56:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ int		addnode_specialch(char *str, int i)
 		new->content = ft_strdup("\"");
 	else if (new->ctg == PIPE)
 		new->content = ft_strdup("|");		
-	if (new->ctg == GR_SIGN || new->ctg == DB_GR_SIGN)
-	{
-		g_sh.red_count++;
-		new->atr = g_sh.red_count;
-	}
 	new->content_size = 0;
 	new->next = NULL;
 	ft_lstadd_back(&(g_sh.tokens), new);
@@ -115,10 +110,7 @@ int		addnode_redir(char *str, int i)
 	new->ctg = handle_redir_sign(str, &i);
 	i = skip_spaces(str, i);
 	if (str[i] == '\0')
-	{
-		print_error("syntax error near unexpected token 'newline'", 1); //?
-		new->content = NULL;
-	}
+		print_error("syntax error near unexpected token 'newline'", 1);
 	while (str[i] && !ft_isspace(str[i]))
 	{	
 		if (str[i] == '\\')
@@ -126,8 +118,10 @@ int		addnode_redir(char *str, int i)
 		new->content = ft_straddchr_free(new->content, str[i]);
 		i++;
 	}
+	g_sh.red_count++;
 	new->next = NULL;
 	new->comm = VOID;
+	//g_sh.map_next = (g_sh.red_count > 1) ? g_sh.map_next + 1 : g_sh.map_next;
 	ft_lstadd_back(&(g_sh.tokens), new);
 	add_to_map(new);
 	return (i);

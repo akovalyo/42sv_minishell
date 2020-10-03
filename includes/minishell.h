@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 12:41:17 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:42:40 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct		s_shell
 	char			*input;
 	char			**input_tab;
 	char			*pwd;
-	char			*redirect;
+	char			**redirection;
 	int				error;
 	int				exit : 1;
 	int				flag : 1;
@@ -46,6 +46,7 @@ typedef struct		s_shell
 	int				red_count;	
 	int				map_i;
 	int				map_len;
+	int				map_next;
 	int				pipe;
 	int				status[2];
 	int				p[2];

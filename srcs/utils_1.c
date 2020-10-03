@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 11:59:25 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 15:50:06 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ void	init_shell(void)
 	g_sh.tokens = NULL;
 	g_sh.flag = 1;
 	g_sh.fl_ignore = 0;
-	g_sh.redirect = NULL;
+	//g_sh.redirect = NULL;
 	g_sh.rewrite = 0;
 	g_sh.red_count = 0;
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
 	g_sh.map_len = 0;
+	g_sh.map_next = 0;
 	g_sh.pipe = 0;
 	g_sh.status[0] = 0;
 	g_sh.status[1] = 0;
@@ -70,13 +71,9 @@ void	clear_shell(void)
 	g_sh.flag = 1;
 	g_sh.fl_ignore = 0;
 	g_sh.rewrite = 0;
-	g_sh.red_count = 0;
-	free(g_sh.redirect);
-	g_sh.redirect = NULL;
+	//free(g_sh.redirect);
+	//g_sh.redirect = NULL;
 	g_sh.error = 0;
-	g_sh.map_i = 0;
-	g_sh.map_len = 0;
-	g_sh.pipe = 0;
 	g_sh.status[1] = g_sh.status[0];
 	g_sh.status[0] = 0;
 

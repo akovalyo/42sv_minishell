@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 09:54:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/02 14:52:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,8 @@ void	add_to_map(t_list *new)
 void 	parser(char *str)
 {
 	int i;
-	//char *arg;
 
 	i = 0;
-	//arg = NULL;
-	//i = skip_spaces(str, i);
-	// if (!(ft_strlen(&str[i])))
-	// 	return ;
 	while (str[i])
 	{
 		if (!g_sh.tokens || (str[i] == '|' && g_sh.n_comm > 0))
@@ -116,9 +111,6 @@ void 	parser(char *str)
 			i = addnode_specialch(str, i);
 		else
 			i = addnode_str(str, i);
-	
 	}
-	//ft_printf("%d-%s\n", ft_arraylen((void **)g_sh.map), g_sh.map[0]->content);
-	
-	//free(arg);
+
 }
