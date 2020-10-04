@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 17:30:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/03 15:18:10 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,49 +38,7 @@ void	comm_void(char **arg, int map_i)
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 }
 
-void		comm_echo(char **arg, int map_i)
-{
-	int i;
-	int len;
 
-	i = 1;
-	len = ft_arraylen((void **)arg);
-
-	if (len == 1)
-		ft_printf("\n");
-	else
-	{
-		if (ft_strncmp(arg[1], "-n", 3) == 0)
-			i++;
-		while (i < len)
-		{
-			ft_printf("%s", arg[i]);
-			i++;
-		}
-		if (ft_strncmp(arg[1], "-n", 3) != 0)
-			ft_printf("\n");
-
-	}
-}
-
-void		comm_pwd(char **arg, int map_i)
-{
-	int arg_len;
-
-	arg_len = ft_arraylen((void **)arg);
-	if (arg_len == 1)
-	{
-		update_pwd();
-		ft_printf("%s\n", g_sh.pwd);
-	}
-	else
-		print_error("too many arguments", 1);	
-}
-
-void		comm_cd(char **arg, int map_i)
-{
-	return ;
-}
 
 void		comm_export(char **arg, int map_i)
 {
@@ -101,7 +59,7 @@ void		comm_env(char **arg, int map_i)
 void		comm_sh(char **arg, int map_i)
 {	
 	// char	**arg;
-	//pid_t	pid;
+	pid_t	pid;
 	// t_list 	*lstptr;
 
 	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
@@ -110,14 +68,14 @@ void		comm_sh(char **arg, int map_i)
 	// arg = create_arg(&lstptr);
 	// if  (g_sh.error)
 	// 	return ;
-	// pid = fork();
-	// if (pid == 0)
-	// {
+	pid = fork();
+		if (pid == 0)
+	{
 	execve(arg[0], arg, g_sh.env);
-	// }
-	// else if (pid < 0)
-	// 	print_error("failed to create a new process");
-	// wait(&pid);
+	}
+	else if (pid < 0)
+		print_error("failed to create a new process", 1);
+	wait(&pid);
 	//ft_printf("%d\n", ft_strarraylen(argv));
 	//ft_strarr_free(arg);
 	
@@ -201,7 +159,6 @@ char	*strjoin_free(char *s1, char *s2)
 	char *tmp;
 
 	tmp = s1;
-
 	s1 = ft_strjoin(s1, s2);
 	free(tmp);
 	return (s1);
@@ -229,7 +186,7 @@ char 	**add_to_arg_else(char **arr, t_list **lstptr)
 			str = strjoin_free(str, (*lstptr)->content);
 		*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	}
-	arr = add_elem_to_arr(arr, str, NULL);
+	arr = add_elem_to_arr(arr, str, free);
 	g_sh.flag = 0;
 	return (arr);
 }
@@ -402,28 +359,28 @@ void	exec()
 {
 	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
-	pid_t			pid;
+	// pid_t			pid;
 	char			buff;
 	char			**arg;
 	t_list 			*lstptr;
 
-	if (pipe(g_sh.p) < 0)
-		exit (1);
+	// if (pipe(g_sh.p) < 0)
+	// 	exit (1);
 	lstptr = g_sh.map[g_sh.map_i];
 	arg = create_arg(g_sh.map[g_sh.map_i]);
-	pid = fork();
-	if (pid == 0)
-	{
+	// pid = fork();
+	// if (pid == 0)
+	// {
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
-		close(g_sh.p[0]);
-		write(g_sh.p[1], &g_sh.status[0], 1);
-		exit(0);
-	}
-	else if (pid < 0)
-		print_error("failed to create a new process", 1);
-	close(g_sh.p[1]);
-	wait(&pid);
-	read(g_sh.p[0], &g_sh.status[0], 1);
+	// 	close(g_sh.p[0]);
+	// 	write(g_sh.p[1], &g_sh.status[0], 1);
+	// 	exit(0);
+	// }
+	// else if (pid < 0)
+	// 	print_error("failed to create a new process", 1);
+	// close(g_sh.p[1]);
+	// wait(&pid);
+	// read(g_sh.p[0], &g_sh.status[0], 1);
 	ft_strarr_free(arg);
 }
 

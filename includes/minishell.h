@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 16:42:40 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/03 15:21:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ void				add_to_map(t_list *new);
 
 char				**read_input(void);
 void				comm_void(char **arg, int map_i);
-void				comm_echo(char **arg, int map_i);
-void				comm_pwd(char **arg, int map_i);
-void				comm_cd(char **arg, int imap_i);
 void				comm_export(char **arg, int map_i);
 void				comm_unset(char **arg, int map_i);
 void				comm_env(char **arg, int map_i);
@@ -155,5 +152,19 @@ t_list 				*specialch_create_node(char *str, int i);
 int					addnode_specialch(char *str, int i);
 int					addnode_redir(char *str, int i);
 int					addnode_status(char *str, int i);
+
+/*
+** builtins.c
+*/
+
+void				comm_echo(char **arg, int map_i);
+void				comm_pwd(char **arg, int map_i);
+
+/*
+** builtin_cd.c
+*/
+
+void 				cd_home(void);
+void				comm_cd(char **arg, int imap_i);
 
 #endif
