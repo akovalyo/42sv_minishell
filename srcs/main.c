@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/03 15:18:10 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/04 21:13:44 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,6 @@ void		comm_env(char **arg, int map_i)
 }
 
 
-void		comm_sh(char **arg, int map_i)
-{	
-	// char	**arg;
-	pid_t	pid;
-	// t_list 	*lstptr;
-
-	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-	// lstptr = g_sh.map[map_i];
-
-	// arg = create_arg(&lstptr);
-	// if  (g_sh.error)
-	// 	return ;
-	pid = fork();
-		if (pid == 0)
-	{
-	execve(arg[0], arg, g_sh.env);
-	}
-	else if (pid < 0)
-		print_error("failed to create a new process", 1);
-	wait(&pid);
-	//ft_printf("%d\n", ft_strarraylen(argv));
-	//ft_strarr_free(arg);
-	
-}
 
 char	*between_quotes(char *str, t_list **lstptr)
 {
@@ -277,6 +253,99 @@ t_comm		check_builtins_and_bin(char *comm)
 ** 
 */
 
+void		comm_sh(char **arg, int map_i)
+{	
+	// char	**arg;
+	pid_t	pid;
+	// t_list 	*lstptr;
+
+	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
+	// lstptr = g_sh.map[map_i];
+
+	// arg = create_arg(&lstptr);
+	// if  (g_sh.error)
+	// 	return ;
+
+	
+	//ft_printf("befor fork %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
+	pid = fork();
+	if (pid < 0)
+		print_error("failed to create a new process", 1);
+	else if (pid == 0)
+	{
+		if (g_sh.pipefd2 == 0)
+		{
+			//ft_printf("child 1 %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
+			close(g_sh.pipefd1[0]);
+			dup2(g_sh.pipefd1[1], 1);
+			close(g_sh.pipefd1[1]);
+		}
+		else if (g_sh.pipefd2)
+		{
+			//ft_printf("child 2 %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
+			close(g_sh.pipefd1[1]);
+			dup2(g_sh.pipefd1[0], 0);
+			close(g_sh.pipefd1[0]);
+		}
+		//ft_printf("child %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);	
+		// if (!(g_sh.pipefd2))
+		// 	close(g_sh.pipefd1[0]);
+		execve(arg[0], arg, g_sh.env);
+		
+	}
+	else 
+	{
+
+		// int		status;
+		// int		exit;
+
+		
+		// while (1)
+		// {
+		// 	wait(&status);
+		// 	if (WIFEXITED(status))
+		// 	{
+		// 		exit = WEXITSTATUS(status);
+				
+		// 		return ;
+		// 	}
+		// 	if (WIFSIGNALED(status))
+		// 	{
+		// 		ft_printf("\n");
+		// 		exit = WTERMSIG(status);
+		// 		return ;
+		// 	}
+		// }
+		if (g_sh.pipefd2 == 0)
+			return ;
+		wait(&pid);
+		
+		
+		
+		// ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
+		// if (g_sh.pipefd2 == 1)
+		// {
+		// 	close(g_sh.pipefd1[0]);
+		// 	close(g_sh.pipefd1[1]);
+		// }
+		//ft_printf("parent %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
+		// 	ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
+		// 	close(pipefd[1]);
+		// 	ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
+		// 	dup2(pipefd[0], g_sh.pipefd1[0]);
+		// 	ft_printf("%d", g_sh.pipefd1[0]);
+		// 	close(pipefd[0]);
+		// }	
+		
+		
+
+	}
+	//ft_printf("%d\n", ft_strarraylen(argv));
+	//ft_strarr_free(arg);
+	
+}
+
+
 
 
 void	input_redir(t_list *lst)
@@ -340,6 +409,44 @@ void	restore_fd()
 	
 }
 
+void pipe_redir1()
+{
+	pipe(g_sh.pipefd1);
+	ft_printf("%d", g_sh.pipefd2);
+	// if(!g_sh.pipefd2)
+	// {
+		//pipe(g_sh.pipefd1);
+		//dup2(g_sh.pipefd1[1], 1);
+		//dup2(g_sh.pipefd1[1], g_sh.fd[5]);
+		//dup2(g_sh.pipefd1[0], g_sh.fd[4]);
+	// }
+	//close(g_sh.pipefd[0]);
+	//close(g_sh.pipefd[1]);
+	//dup2(g_sh.pipefd[4], 1);
+	//close(g_sh.fd[4]);
+	//g_sh.fd[4] = 0;
+
+}
+
+
+void pipe_redir2()
+{
+	
+	g_sh.pipefd2 = 1;
+	//pipe(g_sh.pipefd2);
+	//dup2(g_sh.pipefd1[0], 0);
+		//dup2(g_sh.pipefd1[1], g_sh.fd[5]);
+		//dup2(g_sh.pipefd1[0], g_sh.fd[4]);
+	
+	//close(g_sh.pipefd[0]);
+	//close(g_sh.pipefd[1]);
+	//dup2(g_sh.pipefd[4], 1);
+	//close(g_sh.fd[4]);
+	//g_sh.fd[4] = 0;
+
+}
+
+
 void 	set_fd()
 {
 	t_list *lst;
@@ -352,13 +459,17 @@ void 	set_fd()
 			output_redir(lst);
 		else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm != VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
 			input_redir(lst);
+		else if (lst->ctg == PIPE)
+			pipe_redir1();
 	}
+	if (g_sh.map[g_sh.map_i]->ctg == PIPE)
+		pipe_redir2();
 }
 
 void	exec()
 {
 	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
-					comm_cd, comm_export, comm_unset, comm_env, comm_sh, comm_void};
+					comm_cd, comm_export, comm_unset, comm_env, comm_void};
 	// pid_t			pid;
 	char			buff;
 	char			**arg;
@@ -368,9 +479,13 @@ void	exec()
 	// 	exit (1);
 	lstptr = g_sh.map[g_sh.map_i];
 	arg = create_arg(g_sh.map[g_sh.map_i]);
+
+	if (g_sh.map[g_sh.map_i]->comm == SH)
+		comm_sh(arg, g_sh.map_i);
 	// pid = fork();
 	// if (pid == 0)
 	// {
+	else
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
 	// 	close(g_sh.p[0]);
 	// 	write(g_sh.p[1], &g_sh.status[0], 1);

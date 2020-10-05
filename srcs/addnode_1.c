@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 09:54:22 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/04 16:46:02 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ int		addnode_comm(char *str, int i)
 
 	new = malloc(sizeof(t_list));
 	if (str[i] == '|')
+	{
 		g_sh.pipe++;
+		i++;
+		new->ctg = PIPE;
+	}
 	i = skip_spaces(str, i++);
 	start = i;
 	while (str[i] && !ft_isspace(str[i]))
@@ -27,7 +31,7 @@ int		addnode_comm(char *str, int i)
 	new->content = ft_strsub(str, start, i - start);
 	new->comm = (i == start) ? VOID : check_builtins_and_bin(new->content);
 	new->next = NULL;
-	if (new->comm != VOID && new->comm != NOCOMM)
+	if (new->comm != VOID && new->comm != NOCOMM && new->ctg != PIPE)
 	{
 		new->ctg = COMM;
 		g_sh.n_comm++;
@@ -132,7 +136,7 @@ int		addnode_str(char *str, int i)
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
 	new->comm = VOID;
-	while (str[i] && !special_char(str[i]) && !isredir(str[i]) && str[i] != '$' && !ft_isspace(str[i]))
+	while (str[i] && !special_char(str[i]) && !isredir(str[i]) && str[i] != '$' && !ft_isspace(str[i]) && str[i] != '|')
 	{	
 		if (str[i] == '\\')
 			i++;

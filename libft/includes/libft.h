@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/30 11:28:29 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/04 11:29:24 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef enum		e_comm
 {
-	VOID, ECHO, PWD, CD, EXPORT, UNSET, ENV, SH, NOCOMM
+	VOID, ECHO, PWD, CD, EXPORT, UNSET, ENV, NOCOMM, SH
 }					t_comm;
 
 typedef enum		e_ctg
