@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/04 21:13:44 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 12:36:36 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,16 @@ char	*strjoin_free(char *s1, char *s2)
 	return (s1);
 }
 
+char	*strtrim_free(char *s1)
+{
+	char *tmp;
+
+	tmp = s1;
+	s1 = ft_strtrim(s1);
+	free(tmp);
+	return (s1);
+}
+
 char 	**add_to_arg_else(char **arr, t_list **lstptr)
 {
 	char *str;
@@ -153,15 +163,12 @@ char 	**add_to_arg_else(char **arr, t_list **lstptr)
 			str = ft_straddchr_free(str, ' ');
 		else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
 			(*lstptr)->ctg == LESS_SIGN)
-		{
 			*lstptr = (*lstptr)->next;
-			// if ((*lstptr)->ctg == SP)
-			// 	*lstptr = (*lstptr)->next;
-		}
 		else
 			str = strjoin_free(str, (*lstptr)->content);
 		*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	}
+	str = strtrim_free(str);
 	arr = add_elem_to_arr(arr, str, free);
 	g_sh.flag = 0;
 	return (arr);
@@ -255,98 +262,19 @@ t_comm		check_builtins_and_bin(char *comm)
 
 void		comm_sh(char **arg, int map_i)
 {	
-	// char	**arg;
 	pid_t	pid;
-	// t_list 	*lstptr;
-
-	//char	*argv2[] = {"/bin/echo", "hello  > text", NULL};
-	// lstptr = g_sh.map[map_i];
-
-	// arg = create_arg(&lstptr);
-	// if  (g_sh.error)
-	// 	return ;
-
-	
-	//ft_printf("befor fork %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
 	pid = fork();
 	if (pid < 0)
 		print_error("failed to create a new process", 1);
 	else if (pid == 0)
 	{
-		if (g_sh.pipefd2 == 0)
-		{
-			//ft_printf("child 1 %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
-			close(g_sh.pipefd1[0]);
-			dup2(g_sh.pipefd1[1], 1);
-			close(g_sh.pipefd1[1]);
-		}
-		else if (g_sh.pipefd2)
-		{
-			//ft_printf("child 2 %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
-			close(g_sh.pipefd1[1]);
-			dup2(g_sh.pipefd1[0], 0);
-			close(g_sh.pipefd1[0]);
-		}
-		//ft_printf("child %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);	
-		// if (!(g_sh.pipefd2))
-		// 	close(g_sh.pipefd1[0]);
 		execve(arg[0], arg, g_sh.env);
-		
 	}
 	else 
 	{
-
-		// int		status;
-		// int		exit;
-
-		
-		// while (1)
-		// {
-		// 	wait(&status);
-		// 	if (WIFEXITED(status))
-		// 	{
-		// 		exit = WEXITSTATUS(status);
-				
-		// 		return ;
-		// 	}
-		// 	if (WIFSIGNALED(status))
-		// 	{
-		// 		ft_printf("\n");
-		// 		exit = WTERMSIG(status);
-		// 		return ;
-		// 	}
-		// }
-		if (g_sh.pipefd2 == 0)
-			return ;
 		wait(&pid);
-		
-		
-		
-		// ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
-		// if (g_sh.pipefd2 == 1)
-		// {
-		// 	close(g_sh.pipefd1[0]);
-		// 	close(g_sh.pipefd1[1]);
-		// }
-		//ft_printf("parent %d-%d\n", g_sh.pipefd1[0], g_sh.pipefd1[1]);
-		// 	ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
-		// 	close(pipefd[1]);
-		// 	ft_printf("%d-%d\n", pipefd[0], pipefd[1]);
-		// 	dup2(pipefd[0], g_sh.pipefd1[0]);
-		// 	ft_printf("%d", g_sh.pipefd1[0]);
-		// 	close(pipefd[0]);
-		// }	
-		
-		
-
 	}
-	//ft_printf("%d\n", ft_strarraylen(argv));
-	//ft_strarr_free(arg);
-	
 }
-
-
-
 
 void	input_redir(t_list *lst)
 {
@@ -383,7 +311,6 @@ void	output_redir(t_list *lst)
 
 void	restore_fd()
 {
-	
 	if (g_sh.fd[0])
 	{
 		close(g_sh.fd[0]);
@@ -406,25 +333,41 @@ void	restore_fd()
 			return ;
 		}
 	}
+	if (g_sh.map_i == 0)
+	{
+
+		if ((dup2(g_sh.fd[3], 1)) < 0)
+		{
+			print_error(strerror(errno), errno);
+			return ;
+		}
+	}
+	if (g_sh.map_i > 0)
+	{
+		
+
+		if ((dup2(g_sh.fd[2], 0)) < 0)
+		{
+			print_error(strerror(errno), errno);
+			return ;
+		}
+	}
+
 	
 }
 
 void pipe_redir1()
 {
-	pipe(g_sh.pipefd1);
-	ft_printf("%d", g_sh.pipefd2);
-	// if(!g_sh.pipefd2)
-	// {
-		//pipe(g_sh.pipefd1);
-		//dup2(g_sh.pipefd1[1], 1);
-		//dup2(g_sh.pipefd1[1], g_sh.fd[5]);
-		//dup2(g_sh.pipefd1[0], g_sh.fd[4]);
-	// }
-	//close(g_sh.pipefd[0]);
-	//close(g_sh.pipefd[1]);
-	//dup2(g_sh.pipefd[4], 1);
-	//close(g_sh.fd[4]);
-	//g_sh.fd[4] = 0;
+	int pipefd[2];
+
+	pipe(pipefd);
+
+	g_sh.pipefd1[0] = 1;
+	g_sh.pipefd1[1] = pipefd[1];
+	g_sh.pipefd2[2] = 1;
+	g_sh.pipefd2[3] = pipefd[0];
+	dup2(g_sh.pipefd1[1], 1);
+	close(g_sh.pipefd1[1]);
 
 }
 
@@ -432,17 +375,8 @@ void pipe_redir1()
 void pipe_redir2()
 {
 	
-	g_sh.pipefd2 = 1;
-	//pipe(g_sh.pipefd2);
-	//dup2(g_sh.pipefd1[0], 0);
-		//dup2(g_sh.pipefd1[1], g_sh.fd[5]);
-		//dup2(g_sh.pipefd1[0], g_sh.fd[4]);
-	
-	//close(g_sh.pipefd[0]);
-	//close(g_sh.pipefd[1]);
-	//dup2(g_sh.pipefd[4], 1);
-	//close(g_sh.fd[4]);
-	//g_sh.fd[4] = 0;
+	dup2(g_sh.pipefd2[3], 0);
+	close(g_sh.pipefd2[3]);
 
 }
 
@@ -470,32 +404,17 @@ void	exec()
 {
 	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_void};
-	// pid_t			pid;
 	char			buff;
 	char			**arg;
 	t_list 			*lstptr;
 
-	// if (pipe(g_sh.p) < 0)
-	// 	exit (1);
 	lstptr = g_sh.map[g_sh.map_i];
 	arg = create_arg(g_sh.map[g_sh.map_i]);
 
 	if (g_sh.map[g_sh.map_i]->comm == SH)
 		comm_sh(arg, g_sh.map_i);
-	// pid = fork();
-	// if (pid == 0)
-	// {
 	else
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
-	// 	close(g_sh.p[0]);
-	// 	write(g_sh.p[1], &g_sh.status[0], 1);
-	// 	exit(0);
-	// }
-	// else if (pid < 0)
-	// 	print_error("failed to create a new process", 1);
-	// close(g_sh.p[1]);
-	// wait(&pid);
-	// read(g_sh.p[0], &g_sh.status[0], 1);
 	ft_strarr_free(arg);
 }
 
@@ -535,6 +454,35 @@ void increment_mapi(void)
 		g_sh.map_i++;
 }
 
+// void clean_list()
+// {
+// 	t_list *head;
+// 	t_list *prev;
+// 	t_list *next;
+
+// 	head = g_sh.tokens;
+// 	prev = head;
+// 	next = head->next;
+// 	if (head->ctg == COMM)
+// 	{
+// 		while (head && next)
+// 		{
+// 			prev = head;
+// 			head = head->next;
+// 			next = head->next;
+// 			if (head->ctg == SP && next && next->ctg == PIPE)
+// 			{	
+// 				prev->next = next;
+// 				ft_lstdelone(head, free);
+// 				head = next;
+// 				prev = next;
+// 				next = next->next;
+// 			}
+// 		}
+// 	}	
+// }
+
+
 void	exec_input(void)
 {
 	int				i;
@@ -544,6 +492,7 @@ void	exec_input(void)
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
+		// clean_list();
 		g_sh.map_len = ft_arraylen((void **) g_sh.map);
 		if (g_sh.error)
 			return ;

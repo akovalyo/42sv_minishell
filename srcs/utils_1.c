@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/04 18:19:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:11:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ void 	init_fd()
 	g_sh.fd[5] = 0;
 	g_sh.pipefd1[0] = 0;
 	g_sh.pipefd1[1] = 0;
-	g_sh.pipefd2 = 0;
+	g_sh.pipefd1[2] = 0;
+	g_sh.pipefd1[3] = 0;
+	g_sh.pipefd2[0] = 0;
+	g_sh.pipefd2[1] = 0;
+	g_sh.pipefd2[2] = 0;
+	g_sh.pipefd2[3] = 0;
+	// g_sh.pipefd2 = 0;
 }
 
 void	init_shell(void)

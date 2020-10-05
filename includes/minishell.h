@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/04 16:11:53 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:10:53 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef struct		s_shell
 	t_list			*tokens;
 	t_list			**map;
 	int				fd[6];
-	int				pipefd1[2];
-	int				pipefd2;
+	int				pipefd1[4];
+	int				pipefd2[4];
 	char			**env;
 	char			*input;
 	char			**input_tab;
