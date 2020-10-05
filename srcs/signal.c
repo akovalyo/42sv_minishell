@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <akovalyo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:22:19 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/14 15:40:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:36:02 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	sig_func(int sig)
 	if (sig == SIGINT)
 	{
 		ft_printf("\n");
-		prompt_msg();
+		ft_printf("%s: ", get_pwd());
 		signal(SIGINT, sig_func);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/03 15:17:09 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:37:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ void		comm_pwd(char **arg, int map_i)
 
 	arg_len = ft_arraylen((void **)arg);
 	if (arg_len == 1)
-	{
-		update_pwd();
-		ft_printf("%s\n", g_sh.pwd);
-	}
+		ft_printf("%s\n", get_pwd());
 	else
 		print_error("too many arguments", 1);	
 }

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 15:44:47 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:37:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,11 @@ typedef struct		s_shell
 {
 	t_list			*tokens;
 	t_list			**map;
-	int				fd[6];
+	int				fd[4];
 	int				fdio[2];
-	int				pipefd[8];
-	int				pipefd1[4];
-	int				pipefd2[4];
 	char			**env;
 	char			*input;
 	char			**input_tab;
-	char			*pwd;
 	char			**redirection;
 	int				error;
 	int				exit : 1;
@@ -100,8 +96,7 @@ void				sig_sl(int sig);
 void				clear_scr(void);
 void				init_shell(void);
 void				clear_shell(void);
-void				update_pwd(void);
-void				prompt_msg(void);
+char				*get_pwd(void);
 
 /*
 ** utils_2.c
@@ -170,5 +165,15 @@ void				comm_pwd(char **arg, int map_i);
 
 void 				cd_home(void);
 void				comm_cd(char **arg, int imap_i);
+
+/*
+** fd.c
+*/
+
+void				input_redir(t_list *lst);
+void				output_redir(t_list *lst);
+void				restore_fd(void);
+void 				pipe_connect(t_list *curr);
+void 				set_fd(void);
 
 #endif

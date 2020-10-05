@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/03 15:20:44 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/05 16:13:11 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC = main.c \
 		addnode_1.c \
 		addnode_2.c \
 		builtins.c \
-		builtin_cd.c
+		builtin_cd.c \
+		fd.c
 
 SRCS = ${addprefix ${SRCS_DIR}, ${SRC}}
 

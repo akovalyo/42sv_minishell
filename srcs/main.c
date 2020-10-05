@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 15:44:33 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:37:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	comm_void(char **arg, int map_i)
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 }
 
-
-
 void		comm_export(char **arg, int map_i)
 {
 	return ;
@@ -54,7 +52,6 @@ void		comm_env(char **arg, int map_i)
 {
 	return ;
 }
-
 
 
 char	*between_quotes(char *str, t_list **lstptr)
@@ -79,26 +76,9 @@ char	*between_quotes(char *str, t_list **lstptr)
 		}
 		*lstptr = (*lstptr)->next;
 	}
-	//*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	g_sh.flag = 0;
 	return (str);
 }
-
-// void redirection_sign(t_list **lstptr)
-// {
-// 	if ((*lstptr)->ctg == GR_SIGN)
-// 		g_sh.rewrite = 1;
-// 	//*lstptr = (*lstptr)->next;
-// 	if (!((*lstptr)->next))
-// 	{
-// 		print_error("syntax error near unexpected token 'newline'", 1);
-// 		return ;
-// 	}
-// 	if (g_sh.redirect)
-// 		free(g_sh.redirect);
-// 	g_sh.redirect = ft_strdup((*lstptr)->next->content);
-// 	//*lstptr = (*lstptr)->next;
-// }
 
 char **create_strarray_comm(t_list **lstptr)
 {
@@ -118,17 +98,6 @@ char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 	*lstptr = (*lstptr)->next;
 	return (arr);
 }
-
-// void	check_rest_lst(t_list **lstptr)
-// {
-// 	if (!(*lstptr))
-// 		return (NULL);
-// 	if ((*lstptr)->ctg == SP)
-// 		*lstptr = (*lstptr)->next;
-// 	if ((*lstptr)->ctg == COMM)
-// 		*lstptr = (*lstptr)->next;
-// 	}
-// }
 
 char	*strjoin_free(char *s1, char *s2)
 {
@@ -187,13 +156,6 @@ char **create_arg(t_list *lstptr)
 			break ;
 		if (lstptr->ctg == FLAG && g_sh.flag)
 			arr = add_to_arg_flag(arr, &lstptr);
-		// else if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
-		// 	arr = between_quotes(arr, lstptr);
-		// else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
-		// 	(*lstptr)->ctg == LESS_SIGN || (*lstptr)->ctg == COMM)
-		// {
-		// 	*lstptr = (*lstptr)->next;
-		// }
 		else
 			arr = add_to_arg_else(arr, &lstptr);
 	}
@@ -276,130 +238,7 @@ void		comm_sh(char **arg, int map_i)
 	}
 }
 
-void	input_redir(t_list *lst)
-{
-	g_sh.fd[0] = open(lst->content, O_RDONLY);
-	if (g_sh.fd[0] < 0)
-	{
-		print_error(strerror(errno), errno);
-		return ;
-	}
-	if((dup2(g_sh.fd[0], 0)) < 0)
-	{
-		print_error(strerror(errno), errno);
-		return ;
-	}
-}
-
-void	output_redir(t_list *lst)
-{
-	if (lst->ctg == GR_SIGN)
-		g_sh.fd[1] = open(lst->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
-	else if (lst->ctg == DB_GR_SIGN)
-		g_sh.fd[1] = open(lst->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
-	if (g_sh.fd[1] < 0)
-	{
-		print_error(strerror(errno), errno);
-		return ;
-	}
-	if((dup2(g_sh.fd[1], 1)) < 0)
-	{
-		print_error(strerror(errno), errno);
-		return ;
-	}
-}
-
-void	restore_fd()
-{
-	if (g_sh.fd[0])
-	{
-		close(g_sh.fd[0]);
-		g_sh.fd[0] = 0;
-		close(0);
-		if ((dup2(g_sh.fdio[0], 0)) < 0)
-		{
-			print_error(strerror(errno), errno);
-			return ;
-		}
-	}
-	if (g_sh.fd[1])
-	{
-		close(g_sh.fd[1]);
-		g_sh.fd[1] = 0;
-		close(1);
-		if ((dup2(g_sh.fdio[1], 1)) < 0)
-		{
-			print_error(strerror(errno), errno);
-			return ;
-		}
-	}
-	if (g_sh.pipefd[0])
-	{
-
-		if ((dup2(g_sh.fdio[1], 1)) < 0)
-		{
-			print_error(strerror(errno), errno);
-			return ;
-		}
-	}
-	if (g_sh.pipefd[6])
-	{
-		if ((dup2(g_sh.fdio[0], 0)) < 0)
-		{
-			print_error(strerror(errno), errno);
-			return ;
-		}
-	}
-
-	
-}
-
-void pipe_connect(t_list *curr)
-{
-	int pipefd[2];
-	
-	if (curr)
-	{
-
-		pipe(pipefd);
-
-		g_sh.pipefd[0] = 1;
-		g_sh.pipefd[1] = pipefd[1];
-		g_sh.pipefd[6] = 1;
-		g_sh.pipefd[7] = pipefd[0];
-		dup2(g_sh.pipefd[1], 1);
-		close(g_sh.pipefd[1]);
-	}
-	else
-	{
-		dup2(g_sh.pipefd[7], 0);
-		close(g_sh.pipefd[7]);
-	}
-
-}
-
-
-void 	set_fd()
-{
-	t_list *lst;
-
-	lst = NULL;
-	if (g_sh.map[g_sh.map_i]->ctg == PIPE)
-		pipe_connect(lst);
-	else if (g_sh.map_i + 1 < g_sh.map_len)
-	{
-		lst = g_sh.map[g_sh.map_i + 1];
-		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
-			output_redir(lst);
-		else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm != VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
-			input_redir(lst);
-		else if (lst->ctg == PIPE)
-			pipe_connect(lst);
-	}
-	
-}
-
-void	exec()
+void	exec(void)
 {
 	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_void};
@@ -465,7 +304,7 @@ int		main(int argc, char **argv, char **env)
 	init_env(env);
 	while (1)
 	{
-		prompt_msg();
+		ft_printf("%s: ", get_pwd());
 		signal(SIGINT, sig_func);
 		signal(SIGQUIT, sig_sl);
 		g_sh.input_tab = read_input();

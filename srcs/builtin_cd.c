@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_cd.c                                      :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/03 15:20:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:37:18 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void cd_home(void)
 		return ;
 	}
 	free(home);
-	update_pwd();
-	ft_printf("%s\n", g_sh.pwd);
+	//update_pwd();
 }
 
 void		comm_cd(char **arg, int map_i)
