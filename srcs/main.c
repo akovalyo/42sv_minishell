@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 12:36:36 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:44:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,7 @@ void	restore_fd()
 		close(g_sh.fd[0]);
 		g_sh.fd[0] = 0;
 		close(0);
-		if ((dup2(g_sh.fd[2], 0)) < 0)
+		if ((dup2(g_sh.fdio[0], 0)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
@@ -327,26 +327,24 @@ void	restore_fd()
 		close(g_sh.fd[1]);
 		g_sh.fd[1] = 0;
 		close(1);
-		if ((dup2(g_sh.fd[3], 1)) < 0)
+		if ((dup2(g_sh.fdio[1], 1)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
 		}
 	}
-	if (g_sh.map_i == 0)
+	if (g_sh.pipefd[0])
 	{
 
-		if ((dup2(g_sh.fd[3], 1)) < 0)
+		if ((dup2(g_sh.fdio[1], 1)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
 		}
 	}
-	if (g_sh.map_i > 0)
+	if (g_sh.pipefd[6])
 	{
-		
-
-		if ((dup2(g_sh.fd[2], 0)) < 0)
+		if ((dup2(g_sh.fdio[0], 0)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
@@ -356,27 +354,27 @@ void	restore_fd()
 	
 }
 
-void pipe_redir1()
+void pipe_connect(t_list *curr)
 {
 	int pipefd[2];
-
-	pipe(pipefd);
-
-	g_sh.pipefd1[0] = 1;
-	g_sh.pipefd1[1] = pipefd[1];
-	g_sh.pipefd2[2] = 1;
-	g_sh.pipefd2[3] = pipefd[0];
-	dup2(g_sh.pipefd1[1], 1);
-	close(g_sh.pipefd1[1]);
-
-}
-
-
-void pipe_redir2()
-{
 	
-	dup2(g_sh.pipefd2[3], 0);
-	close(g_sh.pipefd2[3]);
+	if (curr)
+	{
+
+		pipe(pipefd);
+
+		g_sh.pipefd[0] = 1;
+		g_sh.pipefd[1] = pipefd[1];
+		g_sh.pipefd[6] = 1;
+		g_sh.pipefd[7] = pipefd[0];
+		dup2(g_sh.pipefd[1], 1);
+		close(g_sh.pipefd[1]);
+	}
+	else
+	{
+		dup2(g_sh.pipefd[7], 0);
+		close(g_sh.pipefd[7]);
+	}
 
 }
 
@@ -385,8 +383,10 @@ void 	set_fd()
 {
 	t_list *lst;
 
-	
-	if (g_sh.map_i + 1 < g_sh.map_len)
+	lst = NULL;
+	if (g_sh.map[g_sh.map_i]->ctg == PIPE)
+		pipe_connect(lst);
+	else if (g_sh.map_i + 1 < g_sh.map_len)
 	{
 		lst = g_sh.map[g_sh.map_i + 1];
 		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
@@ -394,10 +394,9 @@ void 	set_fd()
 		else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm != VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
 			input_redir(lst);
 		else if (lst->ctg == PIPE)
-			pipe_redir1();
+			pipe_connect(lst);
 	}
-	if (g_sh.map[g_sh.map_i]->ctg == PIPE)
-		pipe_redir2();
+	
 }
 
 void	exec()
@@ -418,26 +417,6 @@ void	exec()
 	ft_strarr_free(arg);
 }
 
-// char	**strip(char **arr)
-// {
-// 	int i;
-// 	char *tmp;
-
-// 	i = 0;
-// 	tmp = NULL;
-// 	while (arr[i])
-// 	{
-// 		if (ft_isspace(arr[i][0]))
-// 		{
-// 			tmp = arr[i];
-// 			arr[i] = ft_strtrim(arr[i]);
-// 			free(tmp);
-// 		}
-// 		i++;
-// 	}
-// 	return (arr);
-// }
-
 void increment_mapi(void)
 {
 	t_list *lst;
@@ -454,49 +433,17 @@ void increment_mapi(void)
 		g_sh.map_i++;
 }
 
-// void clean_list()
-// {
-// 	t_list *head;
-// 	t_list *prev;
-// 	t_list *next;
-
-// 	head = g_sh.tokens;
-// 	prev = head;
-// 	next = head->next;
-// 	if (head->ctg == COMM)
-// 	{
-// 		while (head && next)
-// 		{
-// 			prev = head;
-// 			head = head->next;
-// 			next = head->next;
-// 			if (head->ctg == SP && next && next->ctg == PIPE)
-// 			{	
-// 				prev->next = next;
-// 				ft_lstdelone(head, free);
-// 				head = next;
-// 				prev = next;
-// 				next = next->next;
-// 			}
-// 		}
-// 	}	
-// }
-
-
 void	exec_input(void)
 {
 	int				i;
 
 	i = 0;
-	//g_sh.input_tab = strip(g_sh.input_tab);
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
-		// clean_list();
 		g_sh.map_len = ft_arraylen((void **) g_sh.map);
 		if (g_sh.error)
 			return ;
-		//while (g_sh.map_i < g_sh.map_len)
 		while (g_sh.map_i < g_sh.map_len)
 		{
 			set_fd();

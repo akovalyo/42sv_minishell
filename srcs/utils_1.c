@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 10:11:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:34:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,19 @@ void	clear_scr(void)
 	ft_printf("\e[1;1H\e[2J");
 }
 
+// void	clean_fdpipe
+
 void 	init_fd()
 {
-	if ((g_sh.fd[2] = dup(0)) < 0)
+	int i;
+
+	
+	if ((g_sh.fdio[0] = dup(0)) < 0)
 	{
 		print_error(strerror(errno), errno);
 		return ;
 	}
-	if ((g_sh.fd[3] = dup(1)) < 0)
+	if ((g_sh.fdio[1] = dup(1)) < 0)
 	{
 		print_error(strerror(errno), errno);
 		return ;
@@ -33,15 +38,11 @@ void 	init_fd()
 	g_sh.fd[1] = 0;
 	g_sh.fd[4] = 0;
 	g_sh.fd[5] = 0;
-	g_sh.pipefd1[0] = 0;
-	g_sh.pipefd1[1] = 0;
-	g_sh.pipefd1[2] = 0;
-	g_sh.pipefd1[3] = 0;
-	g_sh.pipefd2[0] = 0;
-	g_sh.pipefd2[1] = 0;
-	g_sh.pipefd2[2] = 0;
-	g_sh.pipefd2[3] = 0;
-	// g_sh.pipefd2 = 0;
+	i = -1;
+	while (++i < 6)
+		g_sh.pipefd[i] = 0;
+	
+	
 }
 
 void	init_shell(void)
