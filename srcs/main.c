@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:13:21 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 08:09:20 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int 		check_bin(char *comm)
 	struct stat		buf;
 
 	i = 0;
-	if(!(paths = ft_strsplit(get_envv("PATH="), ':')))
+	if(!(paths = ft_strsplit(get_envv("PATH"), ':')))
 		return (0);
 	while (paths[i])
 	{
