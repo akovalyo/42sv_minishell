@@ -6,14 +6,14 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 16:37:16 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:44:41 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Changes the size of the array of strings
+** Adds str to the array of strings
 */
 
 char	**add_elem_to_arr(char **arr, char *str, void (*del)(void *))

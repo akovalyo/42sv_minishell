@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 16:37:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:44:43 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ t_shell				g_sh;
 
 void				add_to_map(t_list *new);
 
-
 char				**read_input(void);
 void				comm_void(char **arg, int map_i);
 void				comm_export(char **arg, int map_i);
@@ -120,8 +119,10 @@ void				exit_shell(int err);
 */
 
 void				init_env(char **env);
-int					addnode_envv(char *arg, int i);
-char				*get_env(char *var);
+char				*get_envv(char *var);
+int					get_envv_pos(char *var);
+void				change_envv(char *var, char *value);
+void				add_envv(char *var, char *value);
 
 /*
 ** parser.c

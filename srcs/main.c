@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 16:37:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:13:21 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ void	comm_void(char **arg, int map_i)
 	if (g_sh.map[map_i]->comm == VOID)
 		ft_printf("");
 	else if (g_sh.map[map_i]->comm == NOCOMM)
+	{
+		g_sh.error = 1;
+		g_sh.status[0] = 1;
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
+	}	
 }
 
 void		comm_export(char **arg, int map_i)
@@ -99,16 +103,6 @@ char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 	return (arr);
 }
 
-char	*strjoin_free(char *s1, char *s2)
-{
-	char *tmp;
-
-	tmp = s1;
-	s1 = ft_strjoin(s1, s2);
-	free(tmp);
-	return (s1);
-}
-
 char	*strtrim_free(char *s1)
 {
 	char *tmp;
@@ -134,7 +128,7 @@ char 	**add_to_arg_else(char **arr, t_list **lstptr)
 			(*lstptr)->ctg == LESS_SIGN)
 			*lstptr = (*lstptr)->next;
 		else
-			str = strjoin_free(str, (*lstptr)->content);
+			str = ft_strjoin_free(str, (*lstptr)->content);
 		*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	}
 	str = strtrim_free(str);
@@ -173,7 +167,7 @@ int 		check_bin(char *comm)
 	struct stat		buf;
 
 	i = 0;
-	if(!(paths = ft_strsplit(get_env("PATH="), ':')))
+	if(!(paths = ft_strsplit(get_envv("PATH="), ':')))
 		return (0);
 	while (paths[i])
 	{

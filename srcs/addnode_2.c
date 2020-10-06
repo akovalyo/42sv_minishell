@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 16:56:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:52:46 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int		addnode_redir(char *str, int i)
 int		addnode_status(char *str, int i)
 {
 	t_list	*new;
+
 	new = malloc(sizeof(t_list));
 	new->atr = 0;
 	new->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 16:39:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 17:35:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,7 @@ char	*get_pwd(void)
 {
 	char *pwd;
 
-	pwd = get_env("PWD");
-	if (pwd)
-		return (pwd);
-	else
-	{
-		print_error("failed to load env variable", 1);
+	if (!(pwd = get_envv("PWD")))
 		return (NULL);
-	}
-
+	return (pwd);
 }

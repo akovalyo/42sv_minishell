@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/04 11:29:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:11:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void				*ft_realloc(void *ptr, size_t n);
 int					ft_isspace(int c);
 char				**ft_strsplit_space(char const *s);
 void				ft_strarr_free(char **arr);
-char				*ft_strip(char *str);
 int					ft_strnequ_alpha(const char *s1, const char *s2, size_t n);
+char				*ft_strjoin_free(char *s1, char *s2);
 
 #endif

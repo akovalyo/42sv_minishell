@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/09/29 16:12:50 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/05 18:11:18 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC = ft_memset.c \
 	  ft_strnequ.c \
 	  ft_strsub.c \
       ft_strjoin.c \
+	  ft_strjoin_free.c \
 	  ft_strtrim.c \
       ft_strsplit.c \
       ft_itoa.c \
@@ -97,7 +98,6 @@ SRC = ft_memset.c \
 	  ft_strsplit_space.c \
 	  ft_strsplit_lst.c \
 	  ft_strarr_free.c \
-	  ft_strip.c \
 	  ft_strnequ_alpha.c \
 	  pf_get_c.c \
 	  pf_get_s.c \

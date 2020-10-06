@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/04 16:46:02 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:01:03 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		addnode_envv(char *str, int i)
 	tmp = ft_strsub(str, start, i - start);
 	new->atr = 0;
 	new->next = NULL;
-	if ((ptr_env = get_env(tmp + 1)))
+	if ((ptr_env = get_envv(tmp + 1)))
 		new->content = ft_strdup(ptr_env);
 	else
 		new->content = ft_strdup(tmp);
@@ -110,7 +110,7 @@ int		addnode_tilde(char *str, int i)
 	while (str[i] && !special_char(str[i]) && !ft_isspace(str[i]))
 		i++;
 	new = malloc(sizeof(t_list));
-	ptr = get_env("HOME");
+	ptr = get_envv("HOME");
 	new->content = ft_strdup(ptr);
 	if (start != i)
 	{
