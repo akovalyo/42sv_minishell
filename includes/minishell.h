@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:44:43 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 11:44:54 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,22 @@ typedef struct		s_shell
 {
 	t_list			*tokens;
 	t_list			**map;
-	int				fd[4];
 	int				fdio[2];
+	int				**gfd;
 	char			**env;
 	char			*input;
 	char			**input_tab;
-	char			**redirection;
 	int				error;
 	int				exit : 1;
 	int				flag : 1;
 	int				fl_ignore : 1;
-	int				rewrite : 1;
 	int				n_comm : 8;
 	int				sn_qt;
 	int				db_qt;
 	int				red_count;	
 	int				map_i;
 	int				map_len;
-	int				map_next;
-	int				pipe;
 	int				status[2];
-	int				p[2];
 }                   t_shell;
 
 /*
@@ -104,6 +99,7 @@ char				*get_pwd(void);
 int 				special_char(char c);
 int 				isquote(char c);
 int 				isredir(char c);
+int 				is_redirect_ctg(t_list *lst);
 
 /*
 ** memory.c
@@ -111,7 +107,7 @@ int 				isredir(char c);
 
 char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
 void				print_error(char *err, int err_n);
-void 				clear_tokens(void);
+void 				clear_inner(void);
 void				exit_shell(int err);
 
 /*
@@ -171,10 +167,10 @@ void				comm_cd(char **arg, int imap_i);
 ** fd.c
 */
 
-void				input_redir(t_list *lst);
-void				output_redir(t_list *lst);
-void				restore_fd(void);
-void 				pipe_connect(t_list *curr);
-void 				set_fd(void);
+void				input_redir(t_list *lst, int i);
+void				output_redir(t_list *lst, int i);
+void				restore_fd(int i);
+void 				pipe_connect(int i);
+void 				set_fd(int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 08:09:20 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 10:58:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,9 @@ void	exec(void)
 	t_list 			*lstptr;
 
 	lstptr = g_sh.map[g_sh.map_i];
+	if (is_redirect_ctg(lstptr))
+		return ;
+	
 	arg = create_arg(g_sh.map[g_sh.map_i]);
 
 	if (g_sh.map[g_sh.map_i]->comm == SH)
@@ -250,20 +253,61 @@ void	exec(void)
 	ft_strarr_free(arg);
 }
 
-void increment_mapi(void)
-{
-	t_list *lst;
+// void increment_mapi(void)
+// {
+// 	t_list *lst;
 	
-	if (g_sh.map_i + 1 < g_sh.map_len)
+// 	if (g_sh.map_i + 1 < g_sh.map_len)
+// 	{
+// 		lst = g_sh.map[g_sh.map_i + 1];
+// 		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN || lst->ctg == LESS_SIGN)
+// 			g_sh.map_i += 2;
+// 		else
+// 			g_sh.map_i++;
+// 	}
+// 	else
+// 		g_sh.map_i++;
+// }
+
+void 	allocate_fd(void)
+{
+	int i;
+
+	i = -1;
+	g_sh.gfd = malloc(sizeof(int *) * g_sh.map_len);
+	while (++i < g_sh.map_len)
 	{
-		lst = g_sh.map[g_sh.map_i + 1];
-		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN || lst->ctg == LESS_SIGN)
-			g_sh.map_i += 2;
-		else
-			g_sh.map_i++;
+		g_sh.gfd[i] = malloc(sizeof(int) * 4);
+		g_sh.gfd[i][0] = 0;
+		g_sh.gfd[i][1] = 0;
+		g_sh.gfd[i][2] = 0;
+		g_sh.gfd[i][3] = 0;
 	}
-	else
-		g_sh.map_i++;
+}
+
+void set_fd_global(void)
+{
+	int i;
+	t_list *lst;
+
+	i = -1;
+	if (g_sh.map_len > 1)
+	{
+		allocate_fd();
+		while(++i < g_sh.map_len)
+		{
+			if (g_sh.map[i]->ctg == PIPE)
+				pipe_connect(i);
+			if (i + 1 < g_sh.map_len)
+			{
+				lst = g_sh.map[i + 1];
+				if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
+					output_redir(lst, i);
+				else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm != VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
+					input_redir(lst, i);
+			}
+		}
+	}
 }
 
 void	exec_input(void)
@@ -275,18 +319,19 @@ void	exec_input(void)
 	{
 		parser(g_sh.input_tab[i]);
 		g_sh.map_len = ft_arraylen((void **) g_sh.map);
+		set_fd_global();
 		if (g_sh.error)
 			return ;
 		while (g_sh.map_i < g_sh.map_len)
 		{
-			set_fd();
+			set_fd(g_sh.map_i);
 			if (g_sh.exit)
 				exit_shell(errno);
 			exec();
-			restore_fd();
-			increment_mapi();
+			restore_fd(g_sh.map_i);
+			g_sh.map_i++;
 		}
-		clear_tokens();
+		clear_inner();
 		i++;
 	}
 }

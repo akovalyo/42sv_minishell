@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:44:41 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 11:44:11 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,29 @@ void	print_error(char *err, int err_n)
 	ft_printf("minishell: %s\n", err);
 }
 
-
-void 	clear_tokens(void)
+void	fd_free()
 {
+	int i;
+
+	if (!g_sh.gfd)
+		return ;
+	i = -1;
+	while (++i < g_sh.map_len)
+		free(g_sh.gfd[i]);
+	free(g_sh.gfd);
+	g_sh.gfd = 0;
+}
+
+
+void 	clear_inner(void)
+{
+	fd_free();
 	ft_lstclear(&(g_sh.tokens), free);
 	g_sh.tokens = NULL;
 	free(g_sh.map);
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
-	g_sh.map_len = 0;
-	g_sh.map_next = 0;
-	g_sh.red_count = 0;
-	g_sh.pipe = 0;
+	g_sh.map_len = 0;	
 }
 
 void	exit_shell(int err)
@@ -66,7 +77,7 @@ void	exit_shell(int err)
 	if (err)
 		print_error(strerror(err), err);
 
-	clear_tokens();
+	clear_inner();
 	free(g_sh.input);
 	ft_strarr_free(g_sh.input_tab);
 	//free(g_sh.redirect);

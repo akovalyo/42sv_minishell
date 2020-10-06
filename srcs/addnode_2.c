@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:52:46 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 11:42:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,8 @@ int		addnode_redir(char *str, int i)
 		new->content = ft_straddchr_free(new->content, str[i]);
 		i++;
 	}
-	g_sh.red_count++;
 	new->next = NULL;
 	new->comm = VOID;
-	//g_sh.map_next = (g_sh.red_count > 1) ? g_sh.map_next + 1 : g_sh.map_next;
 	ft_lstadd_back(&(g_sh.tokens), new);
 	add_to_map(new);
 	return (i);

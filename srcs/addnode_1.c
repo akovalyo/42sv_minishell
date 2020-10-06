@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:01:03 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 11:45:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int		addnode_comm(char *str, int i)
 	new = malloc(sizeof(t_list));
 	if (str[i] == '|')
 	{
-		g_sh.pipe++;
 		i++;
 		new->ctg = PIPE;
 	}
