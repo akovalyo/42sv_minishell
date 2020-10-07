@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 12:32:29 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 10:25:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		addnode_envv(char *str, int i)
 	
 	start = i;
 	i++;
-	while (str[i] && ft_isalpha(str[i]))
+	while (str[i] && ft_isprint(str[i]) && !ft_strchr(RESERVED, str[i]))
 		i++;
 	new = malloc(sizeof(t_list));
 	tmp = ft_strsub(str, start, i - start);

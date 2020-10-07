@@ -6,11 +6,15 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 11:31:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 12:52:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**
+*/
 
 void	input_redir(t_list *lst, int i)
 {
@@ -22,6 +26,10 @@ void	input_redir(t_list *lst, int i)
 	if (g_sh.gfd[i][3] < 0)
 		print_error(strerror(errno), errno);
 }
+
+/*
+**
+*/
 
 void	output_redir(t_list *lst, int i)
 {
@@ -38,6 +46,10 @@ void	output_redir(t_list *lst, int i)
 	if (g_sh.gfd[i][1] < 0)
 		print_error(strerror(errno), errno);
 }
+
+/*
+**
+*/
 
 void	restore_fd(int i)
 {
@@ -65,6 +77,10 @@ void pipe_connect(int i)
 	g_sh.gfd[i][2] = 1;
 	g_sh.gfd[i][3] = pipefd[0];	
 }
+
+/*
+**
+*/
 
 void 	set_fd(int i)
 {

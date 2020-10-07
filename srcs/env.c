@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/05 18:55:23 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 09:44:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	init_env(char **env)
 	g_sh.env = ft_memalloc(sizeof(char *) * (ft_arraylen((void **)env) + 1));
 	while (env[i])
 	{
-		
 		if (!(g_sh.env[i] = ft_strdup(env[i])))
 			exit_shell(errno);
 		i++;
@@ -32,13 +31,14 @@ void	init_env(char **env)
 }
 
 /*
-** Returns pointer to the value of the environment variable 'var' if found, else NULL
+** Returns pointer to the value of the environment variable 'var' if found,
+** else NULL
 */
 
-char		*get_envv(char *var)
+char	*get_envv(char *var)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	tmp = ft_straddchr(var, '=');
@@ -62,8 +62,8 @@ char		*get_envv(char *var)
 
 int		get_envv_pos(char *var)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	tmp = ft_straddchr(var, '=');
@@ -81,14 +81,15 @@ int		get_envv_pos(char *var)
 }
 
 /*
-** Replaces value of the environment variable 'var' with the 'value'. If 'var' not found, adds it.
+** Replaces value of the variable 'var' with the 'value' in the environment var.
+** If 'var' not found, adds it.
 */
 
 void	change_envv(char *var, char *value)
 {
-	int pos;
-	char *tmp;
-	char *new;
+	int		pos;
+	char	*tmp;
+	char	*new;
 
 	if ((pos = get_envv_pos(var)) < 0)
 		return (add_envv(var, value));
@@ -100,9 +101,14 @@ void	change_envv(char *var, char *value)
 	free(tmp);
 }
 
+/*
+** Adds value to the environment variable.
+*/
+
 void	add_envv(char *var, char *value)
 {
 	char *new;
+
 	new = ft_straddchr(var, '=');
 	new = ft_strjoin_free(new, value);
 	g_sh.env = add_elem_to_arr(g_sh.env, new, free);

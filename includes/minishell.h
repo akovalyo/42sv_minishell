@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 20:44:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 12:48:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft.h"
-# define RESERVED "<>:\"/\\|&*"
+# define RESERVED "<>:\"\'/\\|&*"
 
 typedef struct		s_shell
 {
@@ -102,6 +102,13 @@ int 				special_char(char c);
 int 				isquote(char c);
 int 				isredir(char c);
 int 				is_redirect_ctg(t_list *lst);
+
+/*
+** utils_cd.c
+*/
+
+int 				sh_chdir(char *path);
+void 				update_pwd_envv(void);
 
 /*
 ** memory.c

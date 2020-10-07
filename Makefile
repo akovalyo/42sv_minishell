@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/05 16:13:11 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/07 12:50:12 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC = main.c \
 		signal.c \
 		utils_1.c \
 		utils_2.c \
+		utils_cd.c \
 		memory.c \
 		env.c \
 		parser.c \

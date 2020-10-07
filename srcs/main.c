@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 21:37:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 12:33:00 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	comm_void(char **arg, int map_i)
 		ft_printf("");
 	else if (g_sh.map[map_i]->comm == NOCOMM)
 	{
-		g_sh.error = 1;
+		g_sh.error++;
 		g_sh.status[0] = 1;
 		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
 	}	

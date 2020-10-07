@@ -6,11 +6,15 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 11:42:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 12:52:46 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**
+*/
 
 int		addnode_spaces(char *str, int i)
 {
@@ -30,6 +34,10 @@ int		addnode_spaces(char *str, int i)
 	return (i);
 }
 
+/*
+**
+*/
+
 t_list 	*specialch_create_node(char *str, int i)
 {
 	t_list	*new;
@@ -45,19 +53,14 @@ t_list 	*specialch_create_node(char *str, int i)
 		new->ctg = DB_QT;
 		g_sh.db_qt += 1;
 	}
-	// else if (str[i] == '<')
-	// 	new->ctg = LESS_SIGN;
-	// else if (str[i] == '>')
-	// {
-	// 	if (str[i + 1] == '>')
-	// 		new->ctg = DB_GR_SIGN;
-	// 	else
-	// 		new->ctg = GR_SIGN;
-	// }
 	else if (str[i] == '|')
 		new->ctg = PIPE;
 	return (new);
 }
+
+/*
+**
+*/
 
 int		addnode_specialch(char *str, int i)
 {
@@ -75,6 +78,10 @@ int		addnode_specialch(char *str, int i)
 	ft_lstadd_back(&(g_sh.tokens), new);
 	return (new->ctg == DB_GR_SIGN ? i + 2 : i + 1);
 }
+
+/*
+**
+*/
 
 int		handle_redir_sign(char *str, int *i)
 {
@@ -99,6 +106,9 @@ int		handle_redir_sign(char *str, int *i)
 	return (ctg);
 }
 
+/*
+**
+*/
 
 int		addnode_redir(char *str, int i)
 {
@@ -124,6 +134,10 @@ int		addnode_redir(char *str, int i)
 	add_to_map(new);
 	return (i);
 }
+
+/*
+**
+*/
 
 int		addnode_status(char *str, int i)
 {

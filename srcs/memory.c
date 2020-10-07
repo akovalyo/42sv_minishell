@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 20:40:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 12:56:53 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,20 @@ char	**add_elem_to_arr(char **arr, char *str, void (*del)(void *))
 	return (new);
 }
 
+/*
+** Prints error and saves the error number to the 'g_sh' 
+*/
+
 void	print_error(char *err, int err_n)
 {
-	g_sh.error = 1;
+	g_sh.error++;
 	g_sh.status[0] = err_n;
 	ft_printf("minishell: %s\n", err);
 }
+
+/*
+** Frees memory of the fd array
+*/
 
 void	fd_free()
 {
@@ -60,6 +68,9 @@ void	fd_free()
 	g_sh.gfd = 0;
 }
 
+/*
+**
+*/
 
 void 	clear_inner(void)
 {
@@ -69,14 +80,18 @@ void 	clear_inner(void)
 	free(g_sh.map);
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
-	g_sh.map_len = 0;	
+	g_sh.map_len = 0;
+	g_sh.error = 0;
 }
+
+/*
+**
+*/
 
 void	exit_shell(int err)
 {
-	if (err)
+	if (err == 1)
 		print_error(strerror(err), err);
-
 	clear_inner();
 	free(g_sh.input);
 	ft_strarr_free(g_sh.input_tab);
