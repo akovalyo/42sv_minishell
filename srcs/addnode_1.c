@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 11:45:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 12:32:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int		addnode_comm(char *str, int i)
 	return (i);		
 }
 
-
 int		addnode_flags(char *str, int i)
 {
 	int 	start;
@@ -54,7 +53,6 @@ int		addnode_flags(char *str, int i)
 		while (str[i] && ft_isalpha(str[i]))
 			i++;
 		new = malloc(sizeof(t_list));
-		//g_sh.flags++;
 		new->content = ft_strsub(str, start, i - start);
 		new->content_size = i - start;
 		new->ctg = FLAG;
@@ -67,8 +65,6 @@ int		addnode_flags(char *str, int i)
 	g_sh.fl_ignore = 1;
 	return (start);
 }
-
-
 
 int		addnode_envv(char *str, int i)
 {

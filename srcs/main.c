@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 10:58:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 21:37:08 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void		comm_sh(char **arg, int map_i)
 	}
 	else 
 	{
+		signal_child();
 		wait(&pid);
 	}
 }
@@ -252,22 +253,6 @@ void	exec(void)
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
 	ft_strarr_free(arg);
 }
-
-// void increment_mapi(void)
-// {
-// 	t_list *lst;
-	
-// 	if (g_sh.map_i + 1 < g_sh.map_len)
-// 	{
-// 		lst = g_sh.map[g_sh.map_i + 1];
-// 		if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN || lst->ctg == LESS_SIGN)
-// 			g_sh.map_i += 2;
-// 		else
-// 			g_sh.map_i++;
-// 	}
-// 	else
-// 		g_sh.map_i++;
-// }
 
 void 	allocate_fd(void)
 {
@@ -344,8 +329,7 @@ int		main(int argc, char **argv, char **env)
 	while (1)
 	{
 		ft_printf("%s: ", get_pwd());
-		signal(SIGINT, sig_func);
-		signal(SIGQUIT, sig_sl);
+		signal_parent();
 		g_sh.input_tab = read_input();
 		exec_input();
 		clear_shell();

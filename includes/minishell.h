@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 11:44:54 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 20:44:06 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ void				exec_input(void);
 ** signal.c
 */
 
-
-void				sig_func(int sig);
-void				sig_sl(int sig);
+void				signal_sl(int sig);
+void				signal_in_parent(int sig);
+void				signal_in_child(int sig);
+void				signal_child(void);
+void				signal_parent(void);
 
 /*
 ** utils_1.c

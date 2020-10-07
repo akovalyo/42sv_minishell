@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/06 11:44:11 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/06 20:40:45 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	exit_shell(int err)
 	clear_inner();
 	free(g_sh.input);
 	ft_strarr_free(g_sh.input_tab);
-	//free(g_sh.redirect);
 	ft_strarr_free(g_sh.env);
 	exit(0);
 }
