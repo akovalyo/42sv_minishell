@@ -6,17 +6,17 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 12:51:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 14:56:30 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-**
+** Changes the current directory to the HOME directory
 */
 
-void 	cd_home(void)
+void	cd_home(void)
 {
 	char *home;
 
@@ -28,10 +28,11 @@ void 	cd_home(void)
 }
 
 /*
-**
+** Helper cd_above function, creates the new path to the directory one level
+** above the current.
 */
 
-char 	*cd_up_2(char **pwd_split, int len)
+char	*cd_above_2(char **pwd_split, int len)
 {
 	char	*new_path;
 	int		i;
@@ -47,20 +48,21 @@ char 	*cd_up_2(char **pwd_split, int len)
 }
 
 /*
-**
+** Changes the current directory to the directory above.
 */
 
-void 	cd_up()
+void	cd_above(void)
 {
-	char 	*pwd;
-	char 	**pwd_split;
-	char 	*new_path;
+	char	*pwd;
+	char	**pwd_split;
+	char	*new_path;
 	int		len;
 	int		i;
 
 	i = -1;
 	pwd = getcwd(NULL, 0);
 	pwd_split = ft_strsplit(pwd, '/');
+	free(pwd);
 	len = ft_arraylen((void **)pwd_split);
 	if (!len)
 		return ;
@@ -68,7 +70,7 @@ void 	cd_up()
 		chdir("/");
 	else
 	{
-		new_path = cd_up_2(pwd_split, len);
+		new_path = cd_above_2(pwd_split, len);
 		sh_chdir(new_path);
 		free(new_path);
 	}
@@ -76,15 +78,16 @@ void 	cd_up()
 }
 
 /*
-**
+** Root command for changing the current directory. Function updates
+** the environment variable.
 */
 
-void 	cd(char *path)
+void	cd(char *path)
 {
-	char *new_path;
+	char	*new_path;
 
 	if (ft_strncmp(path, "..", 3) == 0)
-		cd_up();
+		cd_above();
 	else if (ft_strncmp(path, "-", 2) == 0)
 		sh_chdir(get_envv("OLDPWD"));
 	else if (path[0] == '/')
@@ -104,14 +107,14 @@ void 	cd(char *path)
 }
 
 /*
-**
+** Executes the builtin cd command
 */
 
 void	comm_cd(char **argv, int map_i)
 {
-	int i;
-	int argc;
-	char **args;
+	int		i;
+	int		argc;
+	char	**args;
 
 	i = 0;
 	argc = ft_arraylen((void **)argv);
