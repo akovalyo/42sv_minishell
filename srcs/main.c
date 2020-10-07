@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 12:33:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 15:40:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ char	**read_input(void)
 	return (tab_input);
 }
 
-void	comm_void(char **arg, int map_i)
+void	comm_void(char **arg)
 {
-	if (g_sh.map[map_i]->comm == VOID)
+	if (g_sh.map[g_sh.map_i]->comm == VOID)
 		ft_printf("");
-	else if (g_sh.map[map_i]->comm == NOCOMM)
+	else if (g_sh.map[g_sh.map_i]->comm == NOCOMM)
 	{
 		g_sh.error++;
 		g_sh.status[0] = 1;
@@ -42,20 +42,17 @@ void	comm_void(char **arg, int map_i)
 	}	
 }
 
-void		comm_export(char **arg, int map_i)
+void		comm_export(char **arg)
 {
 	return ;
 }
 
-void		comm_unset(char **arg, int map_i)
+void		comm_unset(char **arg)
 {
 	return ; 
 }
 
-void		comm_env(char **arg, int map_i)
-{
-	return ;
-}
+
 
 
 char	*between_quotes(char *str, t_list **lstptr)
@@ -216,7 +213,7 @@ t_comm		check_builtins_and_bin(char *comm)
 ** 
 */
 
-void		comm_sh(char **arg, int map_i)
+void		comm_sh(char **arg)
 {	
 	pid_t	pid;
 	pid = fork();
@@ -235,7 +232,7 @@ void		comm_sh(char **arg, int map_i)
 
 void	exec(void)
 {
-	static void		(*exec_comm[])(char **arg, int) = {comm_void, comm_echo, comm_pwd,
+	static void		(*exec_comm[])(char **arg) = {comm_void, comm_echo, comm_pwd,
 					comm_cd, comm_export, comm_unset, comm_env, comm_void};
 	char			buff;
 	char			**arg;
@@ -248,9 +245,9 @@ void	exec(void)
 	arg = create_arg(g_sh.map[g_sh.map_i]);
 
 	if (g_sh.map[g_sh.map_i]->comm == SH)
-		comm_sh(arg, g_sh.map_i);
+		comm_sh(arg);
 	else
-		exec_comm[g_sh.map[g_sh.map_i]->comm](arg, g_sh.map_i);
+		exec_comm[g_sh.map[g_sh.map_i]->comm](arg);
 	ft_strarr_free(arg);
 }
 
@@ -328,7 +325,7 @@ int		main(int argc, char **argv, char **env)
 	init_env(env);
 	while (1)
 	{
-		ft_printf("%s: ", get_pwd());
+		ft_printf("\033[1;34m%s: \033[0m", get_pwd());
 		signal_parent();
 		g_sh.input_tab = read_input();
 		exec_input();

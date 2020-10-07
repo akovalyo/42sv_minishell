@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 14:56:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 15:16:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	cd(char *path)
 ** Executes the builtin cd command
 */
 
-void	comm_cd(char **argv, int map_i)
+void	comm_cd(char **argv)
 {
 	int		i;
 	int		argc;

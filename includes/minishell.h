@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 14:57:41 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 15:40:08 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ t_shell				g_sh;
 void				add_to_map(t_list *new);
 
 char				**read_input(void);
-void				comm_void(char **arg, int map_i);
-void				comm_export(char **arg, int map_i);
-void				comm_unset(char **arg, int map_i);
-void				comm_env(char **arg, int map_i);
-void				comm_sh(char **arg, int map_i);
+void				comm_void(char **arg);
+void				comm_export(char **arg);
+void				comm_unset(char **arg);
+void				comm_env(char **arg);
+void				comm_sh(char **arg);
 char				*between_quotes(char *str, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
 char 				**create_strarray_comm(t_list **lstptr);
@@ -162,15 +162,16 @@ int					addnode_status(char *str, int i);
 ** builtins.c
 */
 
-void				comm_echo(char **arg, int map_i);
-void				comm_pwd(char **arg, int map_i);
+void				comm_echo(char **arg);
+void				comm_pwd(char **arg);
+void				comm_env(char **arg);
 
 /*
 ** builtin_cd.c
 */
 
 void 				cd_home(void);
-void				comm_cd(char **arg, int imap_i);
+void				comm_cd(char **arg);
 
 /*
 ** fd.c
