@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 17:59:29 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 22:50:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,26 +284,6 @@ void	exec(void)
 **
 */
 
-void 	allocate_fd(void)
-{
-	int i;
-
-	i = -1;
-	g_sh.gfd = malloc(sizeof(int *) * g_sh.map_len);
-	while (++i < g_sh.map_len)
-	{
-		g_sh.gfd[i] = malloc(sizeof(int) * 4);
-		g_sh.gfd[i][0] = 0;
-		g_sh.gfd[i][1] = 0;
-		g_sh.gfd[i][2] = 0;
-		g_sh.gfd[i][3] = 0;
-	}
-}
-
-/*
-**
-*/
-
 void set_fd_global(void)
 {
 	int i;
@@ -330,7 +310,7 @@ void set_fd_global(void)
 }
 
 /*
-**
+** Process every command in the command's queue.
 */
 
 void	exec_input(void)
@@ -360,17 +340,17 @@ void	exec_input(void)
 }
 
 /*
-**
+** Starts, initializes minishell. Gets input from user and
+** splits if needed into multiple commands.
 */
 
 int		main(int argc, char **argv, char **env)
 {
-	
 	init_shell();
 	init_env(env);
 	while (1)
 	{
-		ft_printf("\033[1;34m%s: \033[0m", get_pwd());
+		ft_printf("\033[1;35m%s: \033[0m", get_pwd());
 		signal_parent();
 		g_sh.input_tab = read_input();
 		exec_input();

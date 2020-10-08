@@ -6,13 +6,13 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 11:53:41 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/09/29 16:11:31 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 23:13:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	add_node(t_list **result, char *str)
+static void	add_token(t_list **result, char *str)
 {
 	t_list	*new;
 
@@ -37,7 +37,7 @@ t_list		*ft_strsplit_lst(char const *s, char c)
 	i = 0;
 	while (i < arr_len)
 	{
-		add_node(&result, arr[i]);
+		add_token(&result, arr[i]);
 		i++;
 	}
 	ft_strarr_free(arr);

@@ -1,6 +1,6 @@
 # 42sv_minishell
 
-:building_construction: **In process** :yellow_circle:
+:building_construction: **In progress** 95% :green_circle: 
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)
 

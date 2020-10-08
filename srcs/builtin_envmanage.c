@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 16:00:17 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 18:53:29 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 22:17:25 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ void		comm_unset(char **argv)
 		if (ft_isspace(argv[1][i]))
 			return ;
 		if ((env_ind = get_envv_pos(argv[1])) >= 0)
-		{
-			free(g_sh.env[env_ind]);
-			g_sh.env[env_ind] = NULL;
-		}
+			g_sh.env = remove_envv(env_ind);
 	}
 	else
 		return (print_error("usage: unset KEY", 1));

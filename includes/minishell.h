@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 18:53:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 23:50:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_shell				g_sh;
 */
 
 void				add_to_map(t_list *new);
-
 char				**read_input(void);
 void				comm_void(char **arg);
 void				comm_sh(char **arg);
@@ -73,10 +72,17 @@ t_comm				check_builtins_and_bin(char *comm);
 void				exec_input(void);
 
 /*
+** init.c
+*/
+
+void				init_env(char **env);
+void 				init_fd(void);
+void				init_shell(void);
+
+/*
 ** signal.c
 */
 
-void				signal_sl(int sig);
 void				signal_in_parent(int sig);
 void				signal_in_child(int sig);
 void				signal_child(void);
@@ -87,7 +93,7 @@ void				signal_parent(void);
 */
 
 void				clear_scr(void);
-void				init_shell(void);
+
 void				clear_shell(void);
 char				*get_pwd(void);
 
@@ -108,9 +114,18 @@ int 				sh_chdir(char *path);
 void 				update_pwd_envv(void);
 
 /*
+** utils_addtoken.c
+*/
+
+int					handle_redir_sign(char *str, int *i);
+t_list 				*specialch_create_token(char *str, int i);
+void				token_tilde_init(t_list **token);
+
+/*
 ** memory.c
 */
 
+void 				allocate_fd(void);
 char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
 void				print_error(char *err, int err_n);
 void 				clear_inner(void);
@@ -120,11 +135,12 @@ void				exit_shell(int err);
 ** env.c
 */
 
-void				init_env(char **env);
+
 char				*get_envv(char *var);
 int					get_envv_pos(char *var);
 void				change_envv(char *key, char *value);
 void				add_envv(char *key, char *value);
+char				**remove_envv(int pos);
 
 /*
 ** parser.c
@@ -135,25 +151,25 @@ void				parser(char *arg);
 
 
 /*
-** addnode_1.c
+** addtoken_1.c
 */
 
-int					addnode_comm(char *str, int i);
-int					addnode_flags(char *str, int i);
-int					addnode_envv(char *str, int i);
-int					addnode_tilde(char *str, int i);
-int					addnode_str(char *str, int i);
+int					addtoken_comm(char *str, int i);
+int					addtoken_flags(char *str, int i);
+int					addtoken_envv(char *str, int i);
+int					addtoken_tilde(char *str, int i);
+int					addtoken_str(char *str, int i);
 
 
 /*
-** addnode_2.c
+** addtoken_2.c
 */
 
-int					addnode_spaces(char *str, int i);
-t_list 				*specialch_create_node(char *str, int i);
-int					addnode_specialch(char *str, int i);
-int					addnode_redir(char *str, int i);
-int					addnode_status(char *str, int i);
+int					addtoken_spaces(char *str, int i);
+t_list 				*specialch_create_token(char *str, int i);
+int					addtoken_specialch(char *str, int i);
+int					addtoken_redir(char *str, int i);
+int					addtoken_status(char *str, int i);
 
 /*
 ** builtins.c

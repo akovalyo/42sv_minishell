@@ -6,11 +6,32 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 15:22:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 22:44:20 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Allocates memory for file descriptor's queue of
+** conected processes
+*/
+
+void 	allocate_fd(void)
+{
+	int i;
+
+	i = -1;
+	g_sh.gfd = malloc(sizeof(int *) * g_sh.map_len);
+	while (++i < g_sh.map_len)
+	{
+		g_sh.gfd[i] = malloc(sizeof(int) * 4);
+		g_sh.gfd[i][0] = 0;
+		g_sh.gfd[i][1] = 0;
+		g_sh.gfd[i][2] = 0;
+		g_sh.gfd[i][3] = 0;
+	}
+}
 
 /*
 ** Adds str to the array of strings

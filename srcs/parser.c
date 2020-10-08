@@ -6,11 +6,15 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/02 14:52:31 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 23:14:39 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Skips spaces in the string and returns the next index.
+*/
 
 int		skip_spaces(char *str, int i)
 {
@@ -19,7 +23,11 @@ int		skip_spaces(char *str, int i)
 	return (i);
 }
 
-char *get_first_arg(char *str, int *i)
+/*
+** Returns the first argument
+*/
+
+char 	*get_first_arg(char *str, int *i)
 {
 	char *arg;
 	int start;
@@ -35,11 +43,13 @@ char *get_first_arg(char *str, int *i)
 	return (arg);
 }
 
-
+/*
+** Saves address pointed to the token node in the array g_sh.map
+*/
 
 void	add_to_map(t_list *new)
 {
-	t_list **tmp;
+	t_list	**tmp;
 	int		size;
 	int		i;
 
@@ -51,40 +61,22 @@ void	add_to_map(t_list *new)
 	}
 	else
 	{
-		i = 0;
+		i = -1;
 		size = ft_arraylen((void **)g_sh.map) + 2;
 		tmp = g_sh.map;
 		g_sh.map = malloc(sizeof(t_list **) * size);
 		g_sh.map[size - 1] = NULL;
-		while (i < size - 2)
-		{
+		while (++i < size - 2)
 			g_sh.map[i] = tmp[i];
-			i++;
-		}
 		g_sh.map[i] = new;
 		free(tmp);
 	}
 }
 
-// void parser_rest(char *str, int i)
-// {
-// 	while (str[i])
-// 	{
-// 		if (ft_isspace(str[i]))
-// 			i = addnode_spaces(str, i);
-// 		else if (str[i] == '-' && !g_sh.fl_ignore)
-// 			i = addnode_flags(str, i);
-// 		else if (str[i] == '$')
-// 			i = addnode_envv(str, i);
-// 		else if (str[i] == '~')
-// 			i = addnode_tilde(str, i);
-// 		else if (special_char(str[i]))
-// 			i = addnode_specialch(str, i);
-// 		else
-// 			i = addnode_str(str, i);
-// 	}
-// }
-
+/*
+** Parses the command line from the command's queue, creates nodes
+** and adds them to the token list
+*/
 
 void 	parser(char *str)
 {
@@ -94,23 +86,22 @@ void 	parser(char *str)
 	while (str[i])
 	{
 		if (!g_sh.tokens || (str[i] == '|' && g_sh.n_comm > 0))
-			i = addnode_comm(str, i);
+			i = addtoken_comm(str, i);
 		else if (ft_isspace(str[i]))
-			i = addnode_spaces(str, i);
+			i = addtoken_spaces(str, i);
 		else if (str[i] == '-' && !g_sh.fl_ignore)
-			i = addnode_flags(str, i);
+			i = addtoken_flags(str, i);
 		else if (ft_strncmp(&str[i], "$?", 2) == 0)
-			i = addnode_status(str, i);
+			i = addtoken_status(str, i);
 		else if (str[i] == '$')
-			i = addnode_envv(str, i);
+			i = addtoken_envv(str, i);
 		else if (str[i] == '~')
-			i = addnode_tilde(str, i);
+			i = addtoken_tilde(str, i);
 		else if (isredir(str[i]) && ((g_sh.sn_qt % 2) == 0 || (g_sh.db_qt % 2) == 0))
-			i = addnode_redir(str, i);
+			i = addtoken_redir(str, i);
 		else if (special_char(str[i]))
-			i = addnode_specialch(str, i);
+			i = addtoken_specialch(str, i);
 		else
-			i = addnode_str(str, i);
+			i = addtoken_str(str, i);
 	}
-
 }

@@ -6,29 +6,11 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 17:30:14 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 22:17:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-** Copies the environment variable of the parent shell to the g.sh
-*/
-
-void	init_env(char **env)
-{
-	int i;
-
-	i = 0;
-	g_sh.env = ft_memalloc(sizeof(char *) * (ft_arraylen((void **)env) + 1));
-	while (env[i])
-	{
-		if (!(g_sh.env[i] = ft_strdup(env[i])))
-			exit_shell(errno);
-		i++;
-	}
-}
 
 /*
 ** Returns pointer to the value of the environment variable 'var' if found,
@@ -112,4 +94,36 @@ void	add_envv(char *key, char *value)
 	new = ft_straddchr(key, '=');
 	new = ft_strjoin_free(new, value);
 	g_sh.env = add_elem_to_arr(g_sh.env, new, free);
+}
+
+/*
+** Removes a variable in the position 'pos' from the environment
+** variable. 
+*/
+
+char	**remove_envv(int pos)
+{
+	char	**new_env;
+	int		size;
+	int		i;
+	int		j;
+
+	size = ft_arraylen((void **)g_sh.env);
+	i = -1;
+	j = 0;
+	if (!(new_env = (char **)malloc(sizeof(char *) * size)))
+	{
+		print_error(strerror(errno), errno);
+		return (NULL);
+	}
+	while (++i < size)
+	{
+		if (i == pos)
+			continue ;
+		new_env[j] = ft_strdup(g_sh.env[i]);
+		j++;
+	}
+	new_env[j] = NULL;
+	ft_strarr_free(g_sh.env);
+	return (new_env);
 }

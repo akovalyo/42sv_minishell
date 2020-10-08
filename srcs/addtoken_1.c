@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   addnode_1.c                                        :+:      :+:    :+:   */
+/*   addtoken_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 10:25:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 23:08:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		addnode_comm(char *str, int i)
+/*
+** Creates token 'command' and adds it to the token list
+*/
+
+int		addtoken_comm(char *str, int i)
 {
 	t_list	*new;
 	int start;
@@ -41,7 +45,11 @@ int		addnode_comm(char *str, int i)
 	return (i);		
 }
 
-int		addnode_flags(char *str, int i)
+/*
+** Creates token 'flag' and adds to the token list
+*/
+
+int		addtoken_flags(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -66,7 +74,11 @@ int		addnode_flags(char *str, int i)
 	return (start);
 }
 
-int		addnode_envv(char *str, int i)
+/*
+** Creates token 'environment variable' and adds it to the token list
+*/
+
+int		addtoken_envv(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -93,7 +105,11 @@ int		addnode_envv(char *str, int i)
 	return (i);
 }
 
-int		addnode_tilde(char *str, int i)
+/*
+** Creates token 'tilde' and adds it to the token list
+*/
+
+int		addtoken_tilde(char *str, int i)
 {
 	int 	start;
 	t_list	*new;
@@ -115,16 +131,16 @@ int		addnode_tilde(char *str, int i)
 		free(ptr);
 		free(rest);
 	}
-	new->content_size = ft_strlen(new->content);
-	new->atr = 0;
-	new->next = NULL;
-	new->ctg = STR;
-	new->comm = VOID;
+	token_tilde_init(&new);
 	ft_lstadd_back(&(g_sh.tokens), new);
 	return (i);
 }
 
-int		addnode_str(char *str, int i)
+/*
+** Creates token 'string' and adds it to the token list
+*/
+
+int		addtoken_str(char *str, int i)
 {
 	t_list	*new;
 
