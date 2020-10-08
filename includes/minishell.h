@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 17:30:39 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 18:53:24 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void				add_to_map(t_list *new);
 
 char				**read_input(void);
 void				comm_void(char **arg);
-void				comm_export(char **arg);
-void				comm_unset(char **arg);
-void				comm_env(char **arg);
 void				comm_sh(char **arg);
 char				*between_quotes(char *str, t_list **lstptr);
 void 				redirection_sign(t_list **lstptr);
@@ -162,22 +159,27 @@ int					addnode_status(char *str, int i);
 ** builtins.c
 */
 
-void				comm_echo(char **arg);
-void				comm_pwd(char **arg);
-void				comm_env(char **arg);
+void				comm_echo(char **argv);
+void				comm_pwd(char **argv);
+void				comm_env(char **argv);
 
 /*
 ** builtin_cd.c
 */
 
-void 				cd_home(void);
-void				comm_cd(char **arg);
+void				cd_home(void);
+char				*cd_above_2(char **pwd_split, int len);
+void				cd_above(void);
+void				cd(char *path);
+void				comm_cd(char **argv);
 
 /*
-** builtin_export.c
+** builtin_envmanage.c
 */
 
-void				comm_export(char **arg);
+void				get_key_value(char *arg, char **key, char **value);
+void				comm_export(char **argv);
+void				comm_unset(char **argv);
 
 /*
 ** fd.c

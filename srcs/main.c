@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 16:30:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 17:59:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,6 @@ void	comm_void(char **arg)
 	}	
 }
 
-/*
-**
-*/
-
-void		comm_unset(char **arg)
-{
-	return ; 
-}
 
 /*
 **

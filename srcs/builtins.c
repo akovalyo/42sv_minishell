@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 17:05:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 18:36:09 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,25 @@
 ** Executes the builtin echo command
 */
 
-void	comm_echo(char **arg)
+void	comm_echo(char **argv)
 {
 	int		i;
-	int		len;
+	int		argc;
 
 	i = 1;
-	len = ft_arraylen((void **)arg);
-	if (len == 1)
+	argc = ft_arraylen((void **)argv);
+	if (argc == 1)
 		ft_printf("\n");
 	else
 	{
-		if (ft_strncmp(arg[1], "-n", 3) == 0)
+		if (ft_strncmp(argv[1], "-n", 3) == 0)
 			i++;
-		while (i < len)
+		while (i < argc)
 		{
-			ft_printf("%s", arg[i]);
+			ft_printf("%s", argv[i]);
 			i++;
 		}
-		if (ft_strncmp(arg[1], "-n", 3) != 0)
+		if (ft_strncmp(argv[1], "-n", 3) != 0)
 			ft_printf("\n");
 	}
 }
@@ -43,28 +43,26 @@ void	comm_echo(char **arg)
 ** Executes the builtin pwd command
 */
 
-void	comm_pwd(char **arg)
+void	comm_pwd(char **argv)
 {
-	int		arg_len;
+	int		argc;
 
-	arg_len = ft_arraylen((void **)arg);
-	if (arg_len == 1)
-		ft_printf("%s\n", get_pwd());
-	else
-		print_error("too many arguments", 1);
+	argc = ft_arraylen((void **)argv);
+	if (argc > 1)
+		return (print_error("too many arguments", 1));
+	ft_printf("%s\n", get_pwd());	
 }
 
 /*
 ** Prints the environment variable
 */
 
-void	comm_env(char **arg)
+void	comm_env(char **argv)
 {
 	int		i;
 
 	i = -1;
-	if (ft_arraylen((void **)arg) == 1)
-		ft_strarr_print(g_sh.env);
-	else
-		print_error("too many arguments", 1);
+	if (ft_arraylen((void **)argv) > 1)
+		return	(print_error("too many arguments", 1));
+	ft_strarr_print(g_sh.env);	
 }
