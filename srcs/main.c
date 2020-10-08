@@ -6,11 +6,15 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 15:40:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 16:30:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**
+*/
 
 char	**read_input(void)
 {
@@ -30,30 +34,39 @@ char	**read_input(void)
 	return (tab_input);
 }
 
+/*
+**
+*/
+
 void	comm_void(char **arg)
 {
 	if (g_sh.map[g_sh.map_i]->comm == VOID)
 		ft_printf("");
 	else if (g_sh.map[g_sh.map_i]->comm == NOCOMM)
 	{
-		g_sh.error++;
-		g_sh.status[0] = 1;
-		ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
+		if (ft_strncmp(g_sh.tokens->content, "clear", 6) == 0)
+			clear_scr();
+		else
+		{
+			g_sh.error++;
+			g_sh.status[0] = 1;
+			ft_printf("minishell: command not found: %s\n", g_sh.tokens->content);
+		}
 	}	
 }
 
-void		comm_export(char **arg)
-{
-	return ;
-}
+/*
+**
+*/
 
 void		comm_unset(char **arg)
 {
 	return ; 
 }
 
-
-
+/*
+**
+*/
 
 char	*between_quotes(char *str, t_list **lstptr)
 {
@@ -81,6 +94,10 @@ char	*between_quotes(char *str, t_list **lstptr)
 	return (str);
 }
 
+/*
+**
+*/
+
 char **create_strarray_comm(t_list **lstptr)
 {
 	char **arr;
@@ -92,6 +109,10 @@ char **create_strarray_comm(t_list **lstptr)
 	return (arr);
 }
 
+/*
+**
+*/
+
 char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 {
 
@@ -99,6 +120,10 @@ char 	**add_to_arg_flag(char **arr, t_list **lstptr)
 	*lstptr = (*lstptr)->next;
 	return (arr);
 }
+
+/*
+**
+*/
 
 char	*strtrim_free(char *s1)
 {
@@ -109,6 +134,10 @@ char	*strtrim_free(char *s1)
 	free(tmp);
 	return (s1);
 }
+
+/*
+**
+*/
 
 char 	**add_to_arg_else(char **arr, t_list **lstptr)
 {
@@ -133,6 +162,10 @@ char 	**add_to_arg_else(char **arr, t_list **lstptr)
 	g_sh.flag = 0;
 	return (arr);
 }
+
+/*
+**
+*/
 
 char **create_arg(t_list *lstptr)
 {
@@ -230,6 +263,10 @@ void		comm_sh(char **arg)
 	}
 }
 
+/*
+**
+*/
+
 void	exec(void)
 {
 	static void		(*exec_comm[])(char **arg) = {comm_void, comm_echo, comm_pwd,
@@ -251,6 +288,10 @@ void	exec(void)
 	ft_strarr_free(arg);
 }
 
+/*
+**
+*/
+
 void 	allocate_fd(void)
 {
 	int i;
@@ -266,6 +307,10 @@ void 	allocate_fd(void)
 		g_sh.gfd[i][3] = 0;
 	}
 }
+
+/*
+**
+*/
 
 void set_fd_global(void)
 {
@@ -292,6 +337,10 @@ void set_fd_global(void)
 	}
 }
 
+/*
+**
+*/
+
 void	exec_input(void)
 {
 	int				i;
@@ -317,6 +366,10 @@ void	exec_input(void)
 		i++;
 	}
 }
+
+/*
+**
+*/
 
 int		main(int argc, char **argv, char **env)
 {

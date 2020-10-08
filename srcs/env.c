@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 09:44:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 17:30:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,20 @@ int		get_envv_pos(char *var)
 }
 
 /*
-** Replaces value of the variable 'var' with the 'value' in the environment var.
-** If 'var' not found, adds it.
+** Replaces value of the variable 'key' with the 'value' in the environment var.
+** If 'key' not found, adds it.
 */
 
-void	change_envv(char *var, char *value)
+void	change_envv(char *key, char *value)
 {
 	int		pos;
 	char	*tmp;
 	char	*new;
 
-	if ((pos = get_envv_pos(var)) < 0)
-		return (add_envv(var, value));
+	if ((pos = get_envv_pos(key)) < 0)
+		return (add_envv(key, value));
 	tmp = g_sh.env[pos];
-	new = ft_straddchr(var, '=');
+	new = ft_straddchr(key, '=');
 	new = ft_strjoin_free(new, value);
 	g_sh.env[pos] = ft_strdup(new);
 	free(new);
@@ -105,11 +105,11 @@ void	change_envv(char *var, char *value)
 ** Adds value to the environment variable.
 */
 
-void	add_envv(char *var, char *value)
+void	add_envv(char *key, char *value)
 {
 	char *new;
 
-	new = ft_straddchr(var, '=');
+	new = ft_straddchr(key, '=');
 	new = ft_strjoin_free(new, value);
 	g_sh.env = add_elem_to_arr(g_sh.env, new, free);
 }

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 15:44:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 17:05:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ void	comm_env(char **arg)
 
 	i = -1;
 	if (ft_arraylen((void **)arg) == 1)
-	{
-		while (g_sh.env[++i])
-			ft_printf("%s\n", g_sh.env[i]);
-	}
+		ft_strarr_print(g_sh.env);
 	else
 		print_error("too many arguments", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 15:40:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/07 17:30:39 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ void				exit_shell(int err);
 void				init_env(char **env);
 char				*get_envv(char *var);
 int					get_envv_pos(char *var);
-void				change_envv(char *var, char *value);
-void				add_envv(char *var, char *value);
+void				change_envv(char *key, char *value);
+void				add_envv(char *key, char *value);
 
 /*
 ** parser.c
@@ -172,6 +172,12 @@ void				comm_env(char **arg);
 
 void 				cd_home(void);
 void				comm_cd(char **arg);
+
+/*
+** builtin_export.c
+*/
+
+void				comm_export(char **arg);
 
 /*
 ** fd.c
