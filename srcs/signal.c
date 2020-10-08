@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:22:19 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 22:30:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 12:37:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	signal_in_parent(int sig)
 	if (sig == SIGINT)
 	{
 		ft_printf("\n");
-		ft_printf("%s: ", get_pwd());
+		ft_printf("\033[1;35m%s: \033[0m", get_pwd());
 	}
 }
 

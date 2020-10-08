@@ -6,14 +6,14 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 16:00:17 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 22:17:25 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:04:54 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Checks if argument is correct, then add get key and value 
+** Checks if argument is correct, then add get key and value
 */
 
 void	get_key_value(char *arg, char **key, char **value)
@@ -33,7 +33,7 @@ void	get_key_value(char *arg, char **key, char **value)
 ** Executes the builtin export command
 */
 
-void		comm_export(char **argv)
+void	comm_export(char **argv)
 {
 	int		argc;
 	char	*key;
@@ -59,7 +59,7 @@ void		comm_export(char **argv)
 **	Executes the builtin unset command
 */
 
-void		comm_unset(char **argv)
+void	comm_unset(char **argv)
 {
 	int		i;
 	int		env_ind;

@@ -6,18 +6,17 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 22:44:20 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:28:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Allocates memory for file descriptor's queue of
-** conected processes
+** Allocates memory for file descriptor's queue of conected processes.
 */
 
-void 	allocate_fd(void)
+void	allocate_fd(void)
 {
 	int i;
 
@@ -34,49 +33,10 @@ void 	allocate_fd(void)
 }
 
 /*
-** Adds str to the array of strings
+** Frees memory of the fd array.
 */
 
-char	**add_elem_to_arr(char **arr, char *str, void (*del)(void *))
-{
-	char	**new;
-	int		i;
-	int		size;
-
-	i = 0;
-	size = ft_arraylen((void **)arr);
-	new = malloc(sizeof(char *) * (size + 2));
-	while (i < size)
-	{
-		new[i] = ft_strdup(arr[i]);
-		free(arr[i]);
-		i++;
-	}
-	new[i] = ft_strdup(str);
-	if (del)
-		del(str);
-	i++;
-	new[i] = NULL;
-	free(arr);
-	return (new);
-}
-
-/*
-** Prints error and saves the error number to the 'g_sh' 
-*/
-
-void	print_error(char *err, int err_n)
-{
-	g_sh.error++;
-	g_sh.status[0] = err_n;
-	ft_printf("minishell: %s\n", err);
-}
-
-/*
-** Frees memory of the fd array
-*/
-
-void	fd_free()
+void	fd_free(void)
 {
 	int i;
 
@@ -90,10 +50,10 @@ void	fd_free()
 }
 
 /*
-**
+** Reinitializes g_sh struct between 2 command lines.
 */
 
-void 	clear_inner(void)
+void	clear_inner(void)
 {
 	fd_free();
 	ft_lstclear(&(g_sh.tokens), free);
@@ -106,7 +66,7 @@ void 	clear_inner(void)
 }
 
 /*
-**
+** Frees memory before exit and exits sheel.
 */
 
 void	exit_shell(int err)

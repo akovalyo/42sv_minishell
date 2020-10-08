@@ -6,11 +6,63 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 23:14:39 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:30:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Process the list of tokens between quotes and return combined string.
+*/
+
+char	*between_quotes(char *str, t_list **lstptr)
+{
+	char	*tmp;
+	int		qt;
+
+	qt = (*lstptr)->ctg;
+	*lstptr = (*lstptr)->next;
+	while (*lstptr && (*lstptr)->ctg != qt)
+	{
+		if ((*lstptr)->ctg == SP)
+		{
+			while ((*lstptr)->atr-- > 0)
+				str = ft_straddchr_free(str, ' ');
+		}
+		else
+		{
+			tmp = str;
+			str = ft_strjoin(str, (*lstptr)->content);
+			free(tmp);
+		}
+		*lstptr = (*lstptr)->next;
+	}
+	g_sh.flag = 0;
+	return (str);
+}
+
+/*
+** Reads input from user, splits it into separate command lines
+*/
+
+char	**read_input(void)
+{
+	char	**tab_input;
+	int		tab_len;
+	int		i;
+	int		ret;
+
+	i = 0;
+	if ((ret = get_next_line(0, &(g_sh.input))) < 0)
+		exit_shell(errno);
+	else if (ret == 0)
+		exit_shell(errno);
+	tab_input = ft_strsplit(g_sh.input, ';');
+	free(g_sh.input);
+	g_sh.input = NULL;
+	return (tab_input);
+}
 
 /*
 ** Skips spaces in the string and returns the next index.
@@ -21,26 +73,6 @@ int		skip_spaces(char *str, int i)
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	return (i);
-}
-
-/*
-** Returns the first argument
-*/
-
-char 	*get_first_arg(char *str, int *i)
-{
-	char *arg;
-	int start;
-
-	arg = NULL;
-	start = *i;
-	while (str[*i] && !ft_isspace(str[*i]))
-		(*i)++;
-	if (start - *i == 0)
-		return (NULL);
-	arg = ft_strsub(str, start, *i - start);
-	check_builtins_and_bin(arg);
-	return (arg);
 }
 
 /*
@@ -78,7 +110,7 @@ void	add_to_map(t_list *new)
 ** and adds them to the token list
 */
 
-void 	parser(char *str)
+void	parser(char *str)
 {
 	int i;
 
@@ -97,7 +129,8 @@ void 	parser(char *str)
 			i = addtoken_envv(str, i);
 		else if (str[i] == '~')
 			i = addtoken_tilde(str, i);
-		else if (isredir(str[i]) && ((g_sh.sn_qt % 2) == 0 || (g_sh.db_qt % 2) == 0))
+		else if (isredir(str[i]) && ((g_sh.sn_qt % 2) == 0 ||
+				(g_sh.db_qt % 2) == 0))
 			i = addtoken_redir(str, i);
 		else if (special_char(str[i]))
 			i = addtoken_specialch(str, i);

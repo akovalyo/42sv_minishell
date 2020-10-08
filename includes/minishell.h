@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 23:50:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:44:13 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,114 +41,17 @@ typedef struct		s_shell
 	int				n_comm : 8;
 	int				sn_qt;
 	int				db_qt;
-	int				red_count;	
+	int				red_count;
 	int				map_i;
 	int				map_len;
 	int				status[2];
-}                   t_shell;
+}					t_shell;
 
 /*
 ** global variables
 */
 
 t_shell				g_sh;
-
-/*
-** main.c
-*/
-
-void				add_to_map(t_list *new);
-char				**read_input(void);
-void				comm_void(char **arg);
-void				comm_sh(char **arg);
-char				*between_quotes(char *str, t_list **lstptr);
-void 				redirection_sign(t_list **lstptr);
-char 				**create_strarray_comm(t_list **lstptr);
-char 				**add_to_arg_flag(char **arr, t_list **lstptr);
-char 				**add_to_arg_else(char **arr, t_list **lstptr);
-char 				**create_arg(t_list *lstptr);
-int 				check_bin(char *comm);
-t_comm				check_builtins_and_bin(char *comm);
-void				exec_input(void);
-
-/*
-** init.c
-*/
-
-void				init_env(char **env);
-void 				init_fd(void);
-void				init_shell(void);
-
-/*
-** signal.c
-*/
-
-void				signal_in_parent(int sig);
-void				signal_in_child(int sig);
-void				signal_child(void);
-void				signal_parent(void);
-
-/*
-** utils_1.c
-*/
-
-void				clear_scr(void);
-
-void				clear_shell(void);
-char				*get_pwd(void);
-
-/*
-** utils_2.c
-*/
-
-int 				special_char(char c);
-int 				isquote(char c);
-int 				isredir(char c);
-int 				is_redirect_ctg(t_list *lst);
-
-/*
-** utils_cd.c
-*/
-
-int 				sh_chdir(char *path);
-void 				update_pwd_envv(void);
-
-/*
-** utils_addtoken.c
-*/
-
-int					handle_redir_sign(char *str, int *i);
-t_list 				*specialch_create_token(char *str, int i);
-void				token_tilde_init(t_list **token);
-
-/*
-** memory.c
-*/
-
-void 				allocate_fd(void);
-char				**add_elem_to_arr(char **arr, char *str, void (*del)(void *));
-void				print_error(char *err, int err_n);
-void 				clear_inner(void);
-void				exit_shell(int err);
-
-/*
-** env.c
-*/
-
-
-char				*get_envv(char *var);
-int					get_envv_pos(char *var);
-void				change_envv(char *key, char *value);
-void				add_envv(char *key, char *value);
-char				**remove_envv(int pos);
-
-/*
-** parser.c
-*/
-
-int					skip_spaces(char *str, int i);
-void				parser(char *arg);
-
 
 /*
 ** addtoken_1.c
@@ -160,24 +63,14 @@ int					addtoken_envv(char *str, int i);
 int					addtoken_tilde(char *str, int i);
 int					addtoken_str(char *str, int i);
 
-
 /*
 ** addtoken_2.c
 */
 
 int					addtoken_spaces(char *str, int i);
-t_list 				*specialch_create_token(char *str, int i);
 int					addtoken_specialch(char *str, int i);
 int					addtoken_redir(char *str, int i);
 int					addtoken_status(char *str, int i);
-
-/*
-** builtins.c
-*/
-
-void				comm_echo(char **argv);
-void				comm_pwd(char **argv);
-void				comm_env(char **argv);
 
 /*
 ** builtin_cd.c
@@ -198,13 +91,131 @@ void				comm_export(char **argv);
 void				comm_unset(char **argv);
 
 /*
+** builtins.c
+*/
+
+void				comm_echo(char **argv);
+void				comm_pwd(char **argv);
+void				comm_env(char **argv);
+
+/*
+** check_builtins_and_bin.c
+*/
+
+int					replace_content(t_list **node, char *cont, char **paths);
+char				*create_path(char *bin, char *comm);
+int					check_bin(t_list **node);
+t_comm				check_builtins_and_bin(t_list **new);
+
+/*
+** comm_array.c
+*/
+
+char				**add_to_argv_comm(t_list **lstptr);
+char				**add_to_arg_flag(char **arr, t_list **lstptr);
+char				**add_elem_to_arr(char **arr, char *str,
+						void (*del)(void *));
+char				**add_to_argv_else(char **arr, t_list **lstptr);
+char				**create_argv(t_list *lstptr);
+
+/*
+** env.c
+*/
+
+char				*get_envv(char *var);
+int					get_envv_pos(char *var);
+void				change_envv(char *key, char *value);
+void				add_envv(char *key, char *value);
+char				**remove_envv(int pos);
+
+/*
 ** fd.c
 */
 
 void				input_redir(t_list *lst, int i);
 void				output_redir(t_list *lst, int i);
 void				restore_fd(int i);
-void 				pipe_connect(int i);
-void 				set_fd(int i);
+void				pipe_connect(int i);
+void				set_fd(int i);
 
+/*
+** init.c
+*/
+
+void				set_fd_global(void);
+void				init_env(char **env);
+void				init_fd(void);
+void				init_shell(void);
+
+/*
+** main.c
+*/
+
+void				comm_void(char **arg);
+void				comm_sh(char **arg);
+void				exec_comm(void);
+void				handle_input(void);
+void				handle_input(void);
+
+/*
+** memory.c
+*/
+
+void				allocate_fd(void);
+void				fd_free(void);
+void				clear_inner(void);
+void				exit_shell(int err);
+
+/*
+** parser.c
+*/
+
+char				*between_quotes(char *str, t_list **lstptr);
+char				**read_input(void);
+int					skip_spaces(char *str, int i);
+void				add_to_map(t_list *new);
+void				parser(char *arg);
+
+/*
+** signal.c
+*/
+
+void				signal_in_parent(int sig);
+void				signal_in_child(int sig);
+void				signal_parent(void);
+void				signal_child(void);
+
+/*
+** utils_1.c
+*/
+
+void				clear_scr(void);
+void				print_error(char *err, int err_n);
+void				clear_shell(void);
+char				*get_pwd(void);
+char				*strtrim_free(char *s1);
+
+/*
+** utils_2.c
+*/
+
+int					special_char(char c);
+int					isredir(char c);
+int					isquote(char c);
+int					is_redirect_ctg(t_list *lst);
+
+/*
+** utils_addtoken.c
+*/
+
+int					handle_redir_sign(char *str, int *i);
+t_list				*specialch_create_token(char *str, int i);
+void				token_tilde_init(t_list **token);
+
+/*
+** utils_cd.c
+*/
+
+int					sh_chdir(char *path);
+void				update_pwd_envv(void);
 #endif

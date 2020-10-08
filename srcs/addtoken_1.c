@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   addtoken_1.c                                        :+:      :+:    :+:   */
+/*   addtoken_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/25 16:27:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 23:08:59 by akovalyo         ###   ########.fr       */
+/*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
+/*   Updated: 2020/10/08 15:00:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int		addtoken_comm(char *str, int i)
 {
 	t_list	*new;
-	int start;
+	int		start;
 
 	new = malloc(sizeof(t_list));
 	if (str[i] == '|')
@@ -32,7 +32,7 @@ int		addtoken_comm(char *str, int i)
 	while (str[i] && !ft_isspace(str[i]))
 		i++;
 	new->content = ft_strsub(str, start, i - start);
-	new->comm = (i == start) ? VOID : check_builtins_and_bin(new->content);
+	new->comm = (i == start) ? VOID : check_builtins_and_bin(&new);
 	new->next = NULL;
 	if (new->comm != VOID && new->comm != NOCOMM && new->ctg != PIPE)
 	{
@@ -42,7 +42,7 @@ int		addtoken_comm(char *str, int i)
 	}
 	add_to_map(new);
 	ft_lstadd_back(&(g_sh.tokens), new);
-	return (i);		
+	return (i);
 }
 
 /*
@@ -51,9 +51,9 @@ int		addtoken_comm(char *str, int i)
 
 int		addtoken_flags(char *str, int i)
 {
-	int 	start;
+	int		start;
 	t_list	*new;
-	
+
 	start = i;
 	if (ft_isalpha(str[i + 1]))
 	{
@@ -80,11 +80,11 @@ int		addtoken_flags(char *str, int i)
 
 int		addtoken_envv(char *str, int i)
 {
-	int 	start;
+	int		start;
 	t_list	*new;
-	char 	*tmp;
+	char	*tmp;
 	char	*ptr_env;
-	
+
 	start = i;
 	i++;
 	while (str[i] && ft_isprint(str[i]) && !ft_strchr(RESERVED, str[i]))
@@ -111,7 +111,7 @@ int		addtoken_envv(char *str, int i)
 
 int		addtoken_tilde(char *str, int i)
 {
-	int 	start;
+	int		start;
 	t_list	*new;
 	char	*rest;
 	char	*ptr;
@@ -147,8 +147,9 @@ int		addtoken_str(char *str, int i)
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
 	new->comm = VOID;
-	while (str[i] && !special_char(str[i]) && !isredir(str[i]) && str[i] != '$' && !ft_isspace(str[i]) && str[i] != '|')
-	{	
+	while (str[i] && !special_char(str[i]) && !isredir(str[i]) &&
+			str[i] != '$' && !ft_isspace(str[i]) && str[i] != '|')
+	{
 		if (str[i] == '\\')
 			i++;
 		new->content = ft_straddchr_free(new->content, str[i]);

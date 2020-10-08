@@ -6,11 +6,42 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 22:14:58 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 22:48:27 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:19:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Creates connections between processes, for redirections open file and
+** saves file descriptors in fd array.
+*/
+
+void	set_fd_global(void)
+{
+	int		i;
+	t_list	*lst;
+
+	i = -1;
+	if (g_sh.map_len > 1)
+	{
+		allocate_fd();
+		while (++i < g_sh.map_len)
+		{
+			if (g_sh.map[i]->ctg == PIPE)
+				pipe_connect(i);
+			if (i + 1 < g_sh.map_len)
+			{
+				lst = g_sh.map[i + 1];
+				if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
+					output_redir(lst, i);
+				else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm
+						!= VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
+					input_redir(lst, i);
+			}
+		}
+	}
+}
 
 /*
 ** Copies the environment variable of the parent shell to the g_sh
@@ -28,13 +59,14 @@ void	init_env(char **env)
 			exit_shell(errno);
 		i++;
 	}
+	change_envv("OLDPWD", get_envv("PWD"));
 }
 
 /*
 ** Saves stdin and stdout file descriptors.
 */
 
-void 	init_fd(void)
+void	init_fd(void)
 {
 	if ((g_sh.fdio[0] = dup(0)) < 0)
 	{

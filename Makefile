@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/07 23:23:40 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/08 14:38:08 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ LIBFT_INCL = libft/includes/
 INCL = includes/
 
 SRC = main.c \
+		check_builtins_and_bin.c \
 		init.c \
 		signal.c \
 		utils_1.c \
@@ -32,7 +33,8 @@ SRC = main.c \
 		builtins.c \
 		builtin_cd.c \
 		builtin_envmanage.c \
-		fd.c
+		fd.c \
+		comm_array.c
 
 SRCS = ${addprefix ${SRCS_DIR}, ${SRC}}
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   addtoken_2.c                                        :+:      :+:    :+:   */
+/*   addtoken_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 12:52:46 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:02:09 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ int		addtoken_spaces(char *str, int i)
 int		addtoken_specialch(char *str, int i)
 {
 	t_list	*new;
-	
+
 	new = specialch_create_token(str, i);
 	if (new->ctg == SN_QT)
 		new->content = ft_strdup("'");
 	else if (new->ctg == DB_QT)
 		new->content = ft_strdup("\"");
 	else if (new->ctg == PIPE)
-		new->content = ft_strdup("|");		
+		new->content = ft_strdup("|");
 	new->content_size = 0;
 	new->next = NULL;
 	ft_lstadd_back(&(g_sh.tokens), new);
@@ -71,7 +71,7 @@ int		addtoken_redir(char *str, int i)
 	if (str[i] == '\0')
 		print_error("syntax error near unexpected token 'newline'", 1);
 	while (str[i] && !ft_isspace(str[i]))
-	{	
+	{
 		if (str[i] == '\\')
 			i++;
 		new->content = ft_straddchr_free(new->content, str[i]);

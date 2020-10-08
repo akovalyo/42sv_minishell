@@ -1,6 +1,6 @@
 # 42sv_minishell
 
-:building_construction: **In progress** 95% :green_circle: 
+:building_construction: **In progress** 99% :green_circle: 
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)
 
@@ -66,6 +66,31 @@ struct stat {
     struct timespec st_mtim;        /* Time of last modification */
     struct timespec st_ctim;        /* Time of last status change */
     };
+```
+
+**lstat** function gets symbolic link status. If the path refers to a symbolic link, returns information about the link.
+
+**stat** function gets file status. If the path refers to a symbolic link, returns information about the file the link references.
+
+
+Macros used to interpret the values in a stat-struct, as returned from the system call stat():
+
+* S_ISREG(m)  is it a regular file?
+* S_ISDIR(m)  directory?
+* S_ISCHR(m)  character device?
+* S_ISBLK(m)  block device?
+* S_ISFIFO(m) FIFO (named pipe)?
+* S_ISLNK(m)  symbolic link?  (Not in POSIX.1-1996.)
+* S_ISSOCK(m) socket?  (Not in POSIX.1-1996.)
+
+```
+struct stat		sb;
+
+stat(path_name, &sb);
+if (S_SDIR(sb.st_mode))
+{
+    ...
+}
 ```
 
 ### Redirection

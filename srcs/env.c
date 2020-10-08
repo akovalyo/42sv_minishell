@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 22:17:04 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:10:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	add_envv(char *key, char *value)
 
 /*
 ** Removes a variable in the position 'pos' from the environment
-** variable. 
+** variable.
 */
 
 char	**remove_envv(int pos)

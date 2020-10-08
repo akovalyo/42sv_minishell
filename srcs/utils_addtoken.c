@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 23:23:02 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 23:50:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/08 15:37:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		handle_redir_sign(char *str, int *i)
 ** Sets the category of the token 'special sign'.
 */
 
-t_list 	*specialch_create_token(char *str, int i)
+t_list	*specialch_create_token(char *str, int i)
 {
 	t_list	*new;
 
