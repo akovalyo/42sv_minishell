@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:44:13 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:02:36 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int					addtoken_str(char *str, int i);
 int					addtoken_spaces(char *str, int i);
 int					addtoken_specialch(char *str, int i);
 int					addtoken_redir(char *str, int i);
-int					addtoken_status(char *str, int i);
+int					addtoken_status(int i);
 
 /*
 ** builtin_cd.c

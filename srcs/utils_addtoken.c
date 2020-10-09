@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 23:23:02 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:37:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:04:13 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int		handle_redir_sign(char *str, int *i)
 		else
 			ctg = GR_SIGN;
 	}
+	else
+		ctg = 0;
 	return (ctg);
 }
 

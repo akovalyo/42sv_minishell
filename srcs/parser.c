@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:30:32 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:02:37 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*between_quotes(char *str, t_list **lstptr)
 char	**read_input(void)
 {
 	char	**tab_input;
-	int		tab_len;
 	int		i;
 	int		ret;
 
@@ -124,7 +123,7 @@ void	parser(char *str)
 		else if (str[i] == '-' && !g_sh.fl_ignore)
 			i = addtoken_flags(str, i);
 		else if (ft_strncmp(&str[i], "$?", 2) == 0)
-			i = addtoken_status(str, i);
+			i = addtoken_status(i);
 		else if (str[i] == '$')
 			i = addtoken_envv(str, i);
 		else if (str[i] == '~')

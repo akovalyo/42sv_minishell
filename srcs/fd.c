@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:17:51 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:06:30 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 
 void	input_redir(t_list *lst, int i)
 {
-	int fd;
-
 	g_sh.gfd[i][2] = 1;
 	g_sh.gfd[i][3] = open(lst->content, O_RDONLY);
 	if (g_sh.gfd[i][3] < 0)

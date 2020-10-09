@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:02:09 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:02:38 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int		addtoken_specialch(char *str, int i)
 int		addtoken_redir(char *str, int i)
 {
 	t_list	*new;
-	int		start;
 
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
@@ -89,7 +88,7 @@ int		addtoken_redir(char *str, int i)
 ** creates token 'string' and adds it to the token list.
 */
 
-int		addtoken_status(char *str, int i)
+int		addtoken_status(int i)
 {
 	t_list	*new;
 

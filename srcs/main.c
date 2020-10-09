@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 14:55:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 10:08:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 void	comm_void(char **arg)
 {
+	(void)arg;
 	if (g_sh.map[g_sh.map_i]->comm == VOID)
 		ft_printf("");
 	else if (g_sh.map[g_sh.map_i]->comm == NOCOMM)
@@ -42,6 +43,7 @@ void	comm_sh(char **arg)
 {
 	pid_t	pid;
 
+	(void)arg;
 	pid = fork();
 	if (pid < 0)
 		print_error("failed to create a new process", 1);
@@ -63,7 +65,6 @@ void	exec_comm(void)
 	static void	(*exec_comm[])(char **arg) = {comm_void, comm_echo,
 				comm_pwd, comm_cd, comm_export, comm_unset, comm_env,
 				comm_void};
-	char		buff;
 	char		**arg;
 	t_list		*lstptr;
 
@@ -115,6 +116,8 @@ void	handle_input(void)
 
 int		main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	init_shell();
 	init_env(env);
 	while (1)
