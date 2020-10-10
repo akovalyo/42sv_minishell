@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/09 16:38:55 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/09 16:56:20 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,13 @@ $(NAME): $(OBJS)
 	@echo
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p objs
 	@gcc $(FLAGS) $< -I ./includes -o $@
 	@$(call status)
 
 clean:
-	@rm -f $(OBJS)
+	@rm -rf $(OBJS_DIR)
+
 
 fclean: clean 
 	@rm -f $(NAME)
