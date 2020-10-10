@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 15:16:32 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 17:55:45 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ void	cd_above(void)
 	char	**pwd_split;
 	char	*new_path;
 	int		len;
-	int		i;
 
-	i = -1;
 	pwd = getcwd(NULL, 0);
 	pwd_split = ft_strsplit(pwd, '/');
 	free(pwd);
@@ -112,11 +110,9 @@ void	cd(char *path)
 
 void	comm_cd(char **argv)
 {
-	int		i;
 	int		argc;
 	char	**args;
 
-	i = 0;
 	argc = ft_arraylen((void **)argv);
 	if (argc == 1)
 		cd_home();

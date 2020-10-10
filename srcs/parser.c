@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 10:02:37 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/09 17:57:19 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 char	*between_quotes(char *str, t_list **lstptr)
 {
 	char	*tmp;
-	int		qt;
+	t_ctg	qt;
 
 	qt = (*lstptr)->ctg;
 	*lstptr = (*lstptr)->next;
@@ -49,10 +49,8 @@ char	*between_quotes(char *str, t_list **lstptr)
 char	**read_input(void)
 {
 	char	**tab_input;
-	int		i;
 	int		ret;
 
-	i = 0;
 	if ((ret = get_next_line(0, &(g_sh.input))) < 0)
 		exit_shell(errno);
 	else if (ret == 0)
