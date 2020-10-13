@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akovalyo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 10:00:15 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/03/06 20:33:39 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:28:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*rest_text(char *content, char **ptr_endl)
+static char		*rest_text(char *content, char **ptr_endl)
 {
 	char *fline;
 
@@ -33,7 +33,7 @@ char	*rest_text(char *content, char **ptr_endl)
 	return (fline);
 }
 
-int		new_line(int fd, char **line, char *content, char **buf)
+static int		new_line(int fd, char **line, char *content, char **buf)
 {
 	int		byte_read;
 	char	*tmp;
@@ -57,10 +57,11 @@ int		new_line(int fd, char **line, char *content, char **buf)
 			return (-1);
 		free(tmp);
 	}
-	return ((**line == '\0' && !byte_read && !ft_strlen(content)) ? 0 : 1);
+	return (!byte_read || (**line == '\0' && !byte_read &&
+			!ft_strlen(content)) ? 0 : 1);
 }
 
-t_list	*new_elem(int fd)
+static t_list	*new_elem(int fd)
 {
 	t_list	*elem;
 
@@ -73,7 +74,7 @@ t_list	*new_elem(int fd)
 	return (elem);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	static t_list	*lst;
 	t_list			*tmp;

@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/09 16:27:31 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/12 17:37:39 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ test:
 mem:
 	gcc -g -fsanitize=address -fno-omit-frame-pointer $(SRCS) -o $(NAME) -L libft/ -lft -I $(LIBFT_INCL) -I $(INCL)
 
-norm:
-	norminette -R CheckForbiddenSourceHeader $(SRCS)
+norm: 
+	@make -C libft norm
+	@norminette -R CheckForbiddenSourceHeader $(SRCS) 
 

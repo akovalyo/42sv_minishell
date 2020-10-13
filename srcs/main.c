@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 10:08:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:42:53 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,21 @@ void	comm_void(char **arg)
 void	comm_sh(char **arg)
 {
 	pid_t	pid;
+	int		status;
 
 	(void)arg;
 	pid = fork();
 	if (pid < 0)
-		print_error("failed to create a new process", 1);
+		return (print_error("failed to create a new process", 1));
 	else if (pid == 0)
+	{
 		execve(arg[0], arg, g_sh.env);
+	}
 	else
 	{
 		signal_child();
-		wait(&pid);
+		waitpid(pid, &status, 0);
+		g_sh.status[0] = WEXITSTATUS(status);
 	}
 }
 

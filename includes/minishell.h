@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 10:02:36 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:44:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ void				exit_shell(int err);
 */
 
 char				*between_quotes(char *str, t_list **lstptr);
+void				process_semicolons(char **str);
 char				**read_input(void);
-int					skip_spaces(char *str, int i);
 void				add_to_map(t_list *new);
 void				parser(char *arg);
 
@@ -203,6 +203,7 @@ int					special_char(char c);
 int					isredir(char c);
 int					isquote(char c);
 int					is_redirect_ctg(t_list *lst);
+int					skip_spaces(char *str, int i);
 
 /*
 ** utils_addtoken.c

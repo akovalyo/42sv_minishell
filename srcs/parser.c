@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 17:57:19 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:45:23 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,33 +43,52 @@ char	*between_quotes(char *str, t_list **lstptr)
 }
 
 /*
-** Reads input from user, splits it into separate command lines
+** Checks the user input for ';', if it is separator or character.
+*/
+
+void	process_semicolons(char **str)
+{
+	int squotes;
+	int dquotes;
+	int i;
+
+	squotes = 0;
+	dquotes = 0;
+	i = -1;
+	while ((*str)[++i])
+	{
+		if ((*str)[i] == '\'')
+			squotes++;
+		else if ((*str)[i] == '"')
+			dquotes++;
+		if ((*str)[i] == ';' && (squotes % 2) == 0 && (dquotes % 2) == 0)
+			(*str)[i] = 7;
+	}
+}
+
+/*
+** Reads input from user, splits it into separate command lines.
 */
 
 char	**read_input(void)
 {
 	char	**tab_input;
 	int		ret;
+	char	*buff;
 
-	if ((ret = get_next_line(0, &(g_sh.input))) < 0)
+	buff = NULL;
+	ret = get_next_line(0, &(g_sh.input));
+	if (!ret && !ft_strlen(g_sh.input))
 		exit_shell(errno);
-	else if (ret == 0)
-		exit_shell(errno);
-	tab_input = ft_strsplit(g_sh.input, ';');
+	while (ret == 0)
+		ret = get_next_line(0, &buff);
+	if (buff)
+		g_sh.input = ft_strjoin_free(g_sh.input, buff);
+	process_semicolons(&(g_sh.input));
+	tab_input = ft_strsplit(g_sh.input, 7);
 	free(g_sh.input);
 	g_sh.input = NULL;
 	return (tab_input);
-}
-
-/*
-** Skips spaces in the string and returns the next index.
-*/
-
-int		skip_spaces(char *str, int i)
-{
-	while (str[i] && ft_isspace(str[i]))
-		i++;
-	return (i);
 }
 
 /*

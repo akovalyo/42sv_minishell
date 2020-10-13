@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/07 16:43:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 15:48:16 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,6 @@ int					ft_lstsize(t_list *lst);
 t_list				*ft_lstlast(t_list *lst);
 void				ft_lstprint_str(t_list *lst);
 t_list				*ft_strsplit_lst(char const *s, char c);
-char				*rest_text(char *ptr_rest, char **ptr_endl);
-int					new_line(const int fd, char **line, char *ptr_rest,
-							char **ptr_endl);
-t_list				*new_elem(const int fd);
 int					get_next_line(const int fd, char **line);
 char				*ft_itoa_uns(size_t nbr);
 char				*ft_itoa_long(long nbr);

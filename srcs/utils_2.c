@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:42:51 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:36:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:43:35 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,15 @@ int		is_redirect_ctg(t_list *lst)
 	if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN || lst->ctg == LESS_SIGN)
 		return (1);
 	return (0);
+}
+
+/*
+** Skips spaces in the string and returns the next index.
+*/
+
+int		skip_spaces(char *str, int i)
+{
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	return (i);
 }

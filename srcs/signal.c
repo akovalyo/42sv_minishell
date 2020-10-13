@@ -6,27 +6,27 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:22:19 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 12:37:04 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:36:03 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Called function if Ctrl+C interrupt the parent process.
+** Processes Ctrl+C interrupt in the parent process.
 */
 
 void	signal_in_parent(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\n");
+		ft_printf("\b\b  \n");
 		ft_printf("\033[1;35m%s: \033[0m", get_pwd());
 	}
 }
 
 /*
-** Called function if Ctrl+C interrupt the child process.
+** Processes Ctrl+C interruption in the child process.
 */
 
 void	signal_in_child(int sig)
@@ -36,7 +36,17 @@ void	signal_in_child(int sig)
 }
 
 /*
-** Handles signals in the shell
+** Processes Ctrl+\ interruption.
+*/
+
+void	signal_sl(int sig)
+{
+	ft_printf("\b\b  \b\b");
+	(void)sig;
+}
+
+/*
+** Handles signals in the shell.
 */
 
 void	signal_parent(void)
@@ -46,7 +56,7 @@ void	signal_parent(void)
 		print_error(strerror(errno), errno);
 		return ;
 	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGQUIT, signal_sl) == SIG_ERR)
 	{
 		print_error(strerror(errno), errno);
 		return ;
@@ -64,7 +74,7 @@ void	signal_child(void)
 		print_error(strerror(errno), errno);
 		return ;
 	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGQUIT, signal_sl) == SIG_ERR)
 	{
 		print_error(strerror(errno), errno);
 		return ;
