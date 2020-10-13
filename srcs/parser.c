@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 17:45:23 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 11:11:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,23 @@ char	*between_quotes(char *str, t_list **lstptr)
 
 void	process_semicolons(char **str)
 {
-	int squotes;
-	int dquotes;
 	int i;
+	char qt;
 
-	squotes = 0;
-	dquotes = 0;
-	i = -1;
-	while ((*str)[++i])
+	i = 0;
+	while ((*str)[i])
 	{
-		if ((*str)[i] == '\'')
-			squotes++;
-		else if ((*str)[i] == '"')
-			dquotes++;
-		if ((*str)[i] == ';' && (squotes % 2) == 0 && (dquotes % 2) == 0)
+		if ((*str)[i] == '\'' || (*str)[i] == '"')
+		{
+			qt = (*str)[i];
+			i++;
+			while ((*str)[i] && (*str)[i] != qt)
+				i++;
+		}	
+		if ((*str)[i] == ';')
 			(*str)[i] = 7;
+		if ((*str)[i] != '\0')
+			i++;
 	}
 }
 

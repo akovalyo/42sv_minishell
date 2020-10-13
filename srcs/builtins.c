@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 17:55:30 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 11:05:54 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,6 @@ void	comm_echo(char **argv)
 
 void	comm_pwd(char **argv)
 {
-	int		argc;
-
-	argc = ft_arraylen((void **)argv);
-	if (argc > 1)
-		return (print_error("too many arguments", 1));
 	ft_printf("%s\n", get_pwd());
 }
 

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 22:14:58 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:19:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 11:56:41 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	set_fd_global(void)
 				lst = g_sh.map[i + 1];
 				if (lst->ctg == GR_SIGN || lst->ctg == DB_GR_SIGN)
 					output_redir(lst, i);
-				else if (lst->ctg == LESS_SIGN && (g_sh.map[g_sh.map_i]->comm
-						!= VOID && (g_sh.map[g_sh.map_i]->comm != NOCOMM)))
+				else if (lst->ctg == LESS_SIGN)
 					input_redir(lst, i);
 			}
 		}
