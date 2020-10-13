@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 17:44:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 18:30:03 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void				comm_cd(char **argv);
 */
 
 void				get_key_value(char *arg, char **key, char **value);
+void				declare_env(void);
 void				comm_export(char **argv);
 void				comm_unset(char **argv);
 

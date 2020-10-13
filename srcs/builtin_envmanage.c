@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 16:00:17 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:04:54 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 18:27:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,25 @@ void	get_key_value(char *arg, char **key, char **value)
 	while (arg[i] != '\0' && arg[i] != '=' && !ft_isspace(arg[i]))
 		i++;
 	if (!arg[i] || ft_isspace(arg[i]))
+	{
+		*key = ft_strsub(arg, 0, i);
 		return ;
+	}
 	*key = ft_strsub(arg, 0, i);
 	*value = ft_strdup(&arg[i + 1]);
+}
+
+/*
+** Prints environment variabels
+*/
+
+void	declare_env(void)
+{
+	int i;
+
+	i = -1;
+	while (g_sh.env[++i])
+		ft_printf("declare -x %s\n", g_sh.env[i]);
 }
 
 /*
@@ -43,12 +59,12 @@ void	comm_export(char **argv)
 	value = NULL;
 	argc = ft_arraylen((void **)argv);
 	if (argc == 1)
-		ft_strarr_print(g_sh.env);
+		declare_env();
 	else
 	{
 		get_key_value(argv[1], &key, &value);
-		if (!key || !value)
-			return (print_error("usage: export KEY=value", 1));
+		if (key && !value)
+			change_envv(key, "");
 		change_envv(key, value);
 		free(key);
 		free(value);

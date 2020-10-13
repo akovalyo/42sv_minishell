@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 17:24:10 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/12 18:50:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int		addtoken_envv(char *str, int i)
 
 	start = i;
 	i++;
-	while (str[i] && ft_isprint(str[i]) && !ft_strchr(RESERVED, str[i]))
+	while (str[i] && ft_isprint(str[i]) && !ft_isspace(str[i])
+			&& !ft_strchr(RESERVED, str[i]))
 		i++;
 	new = malloc(sizeof(t_list));
 	tmp = ft_strsub(str, start, i - start);
