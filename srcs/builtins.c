@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 13:55:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:43:53 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	comm_echo(char **argv)
 
 void	comm_pwd(char **argv)
 {
+	(void)argv;
 	ft_printf("%s\n", get_pwd());
 }
 

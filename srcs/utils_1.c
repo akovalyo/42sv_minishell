@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:35:16 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 16:02:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,4 @@ char	*get_pwd(void)
 	if (!(pwd = get_envv("PWD")))
 		return (NULL);
 	return (pwd);
-}
-
-/*
-** Allocates and returns a copy of the string given as argument without
-** as argument without space chatacters at the beginning and the end of
-** the string. Frees 's1'.
-*/
-
-char	*strtrim_free(char *s1)
-{
-	char *tmp;
-
-	tmp = s1;
-	s1 = ft_strtrim(s1);
-	free(tmp);
-	return (s1);
 }

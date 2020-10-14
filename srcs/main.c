@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 13:46:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:44:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	comm_sh(char **arg)
 {
 	pid_t	pid;
 	int		status;
-	int		exit;
 
 	(void)arg;
 	pid = fork();
@@ -65,7 +64,7 @@ void	comm_sh(char **arg)
 ** Executes builtins or binary file
 */
 
-void	exec_comm(void)
+int	exec_comm(int j)
 {
 	static void	(*exec_comm[])(char **arg) = {comm_void, comm_echo,
 				comm_pwd, comm_cd, comm_export, comm_unset, comm_env,
@@ -75,13 +74,16 @@ void	exec_comm(void)
 
 	lstptr = g_sh.map[g_sh.map_i];
 	if (is_redirect_ctg(lstptr) || lstptr->ctg == 0)
-		return ;
+		return (j);
+	set_fd(j);
 	arg = create_argv(g_sh.map[g_sh.map_i]);
 	if (g_sh.map[g_sh.map_i]->comm == SH)
 		comm_sh(arg);
 	else
 		exec_comm[g_sh.map[g_sh.map_i]->comm](arg);
 	ft_strarr_free(arg);
+	restore_fd(j);
+	return (j + 1);
 }
 
 /*
@@ -91,8 +93,10 @@ void	exec_comm(void)
 void	handle_input(void)
 {
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while (g_sh.input_tab[i])
 	{
 		parser(g_sh.input_tab[i]);
@@ -102,12 +106,9 @@ void	handle_input(void)
 			return ;
 		while (g_sh.map_i < g_sh.map_len)
 		{
-			set_fd(g_sh.map_i);
 			if (g_sh.exit)
 				exit_shell(errno);
-			exec_comm();
-			restore_fd(g_sh.map_i);
-			
+			j = exec_comm(j);
 			g_sh.map_i++;
 		}
 		clear_inner();

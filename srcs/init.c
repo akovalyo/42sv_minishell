@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 22:14:58 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 14:25:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:45:20 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,21 @@
 void	set_fd_global(void)
 {
 	int		i;
-	t_list	*lst;
+	int		j;
 
 	i = -1;
-	if (g_sh.map_len > 1)
+	j = 0;
+	if (g_sh.map_len <= 1)
+		return ;
+	allocate_fd();
+	while (++i < g_sh.map_len)
 	{
-		allocate_fd();
-		while (++i < g_sh.map_len)
-		{
-			if (g_sh.map[i]->ctg == PIPE)
-				pipe_connect(i);
-			if (g_sh.map[i]->ctg == GR_SIGN || g_sh.map[i]->ctg == DB_GR_SIGN)
-				output_redir(g_sh.map[i], i);
-			if (g_sh.map[i]->ctg == LESS_SIGN)
-				input_redir(i);
-			if ((g_sh.map[i]->ctg == GR_SIGN || g_sh.map[i]->ctg == DB_GR_SIGN) &&
-				g_sh.map[i - 1]->ctg == LESS_SIGN)
-			{	
-				output_redir(g_sh.map[i], i - 1);
-				g_sh.map[i]->ctg = 0;
-			}
-		}
+		if (g_sh.map[i]->ctg == PIPE)
+			j = pipe_connect(j);
+		if (g_sh.map[i]->ctg == GR_SIGN || g_sh.map[i]->ctg == DB_GR_SIGN)
+			j = output_redir(i, j);
+		if (g_sh.map[i]->ctg == LESS_SIGN)
+			j = input_redir(i, j);
 	}
 }
 

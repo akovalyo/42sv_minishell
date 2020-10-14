@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 10:02:38 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:54:49 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		addtoken_spaces(char *str, int i)
 }
 
 /*
-** Creates token 'special sign' and adds to the token list.
+** Creates token 'special character' and adds to the token list.
 */
 
 int		addtoken_specialch(char *str, int i)

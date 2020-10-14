@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 09:32:47 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 16:02:38 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,11 @@ char				**remove_envv(int pos);
 ** fd.c
 */
 
-void				input_redir(int i);
-void				output_redir(t_list *lst, int i);
+int					input_redir(int i, int j);
+int					output_redir(int i, int j);
 void				restore_fd(int i);
-void				pipe_connect(int i);
-void				set_fd(int i);
-void				set_fd_m(int i);
+int					pipe_connect(int j);
+void				set_fd(int j);
 
 /*
 ** init.c
@@ -155,7 +154,7 @@ void				init_shell(void);
 
 void				comm_void(char **arg);
 void				comm_sh(char **arg);
-void				exec_comm(void);
+int					exec_comm(int j);
 void				handle_input(void);
 void				handle_input(void);
 
@@ -172,7 +171,6 @@ void				exit_shell(int err);
 ** parser.c
 */
 
-int					check_next_redir(int i);
 char				*between_quotes(char *str, t_list **lstptr);
 void				process_semicolons(char **str);
 char				**read_input(void);
@@ -185,6 +183,7 @@ void				parser(char *arg);
 
 void				signal_in_parent(int sig);
 void				signal_in_child(int sig);
+void				signal_sl(int sig);
 void				signal_parent(void);
 void				signal_child(void);
 
@@ -196,7 +195,6 @@ void				clear_scr(void);
 void				print_error(char *err, int err_n);
 void				clear_shell(void);
 char				*get_pwd(void);
-char				*strtrim_free(char *s1);
 
 /*
 ** utils_2.c

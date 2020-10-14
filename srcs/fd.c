@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 10:49:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:58:08 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,45 +16,48 @@
 ** Open file used in stdin redirection.
 */
 
-void	input_redir(int i)
+int		input_redir(int i, int j)
 {
 	int fd;
 
+	if (g_sh.gfd[j][2])
+		close(g_sh.gfd[j][3]);
 	fd = open(g_sh.map[i]->content, O_RDONLY);
 	if (fd < 0)
 	{
 		print_error(strerror(errno), errno);
-		return ;
+		return (j);
 	}
-	g_sh.gfd[i - 1][2] = 1;
-	g_sh.gfd[i - 1][3] = fd;
-	// if (i + 1 < g_sh.map_len && (g_sh.map[i + 1]->ctg == GR_SIGN || g_sh.map[i + 1]->ctg == DB_GR_SIGN))
-	// 	pipe_connect(i);
+	g_sh.gfd[j][2] = 1;
+	g_sh.gfd[j][3] = fd;
+	return (j);
 }
 
 /*
 ** Open files used in stdout redirection.
 */
 
-void	output_redir(t_list *lst, int i)
+int	output_redir(int i, int j)
 {
 	int fd;
-
-	if (lst->ctg == GR_SIGN)
-		fd = open(lst->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
-	else if (lst->ctg == DB_GR_SIGN)
-		fd = open(lst->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
+	if (g_sh.gfd[j][0])
+		close(g_sh.gfd[j][1]);
+	if (g_sh.map[i]->ctg == GR_SIGN)
+		fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
+	else if (g_sh.map[i]->ctg == DB_GR_SIGN)
+		fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
 	if (fd < 0)
 	{
 		print_error(strerror(errno), errno);
-		return ;
+		return (j);
 	}
-	g_sh.gfd[i - 1][0] = 1;
-	g_sh.gfd[i - 1][1] = fd;
+	g_sh.gfd[j][0] = 1;
+	g_sh.gfd[j][1] = fd;
+	return (j);
 }
 
 /*
-** Restores file descriptors before the next process.
+** Restores file descriptors before the next command.
 */
 
 void	restore_fd(int i)
@@ -77,41 +80,42 @@ void	restore_fd(int i)
 ** Creates connection between two processes.
 */
 
-void	pipe_connect(int i)
+int		pipe_connect(int j)
 {
 	int pipefd[2];
 
 	pipe(pipefd);
-	g_sh.gfd[i - 1][0] = 1;
-	g_sh.gfd[i - 1][1] = pipefd[1];
-	g_sh.gfd[i][2] = 1;
-	g_sh.gfd[i][3] = pipefd[0];
+	g_sh.gfd[j][0] = 1;
+	g_sh.gfd[j][1] = pipefd[1];
+	g_sh.gfd[j + 1][2] = 1;
+	g_sh.gfd[j + 1][3] = pipefd[0];
+	return (j + 1);
 }
 
 /*
 ** Sets file descriptors for current process.
 */
 
-void	set_fd(int i)
+void	set_fd(int j)
 {
 	if (!g_sh.gfd)
 		return ;
-	if (g_sh.gfd[i][0])
+	if (g_sh.gfd[j][0])
 	{
-		if ((dup2(g_sh.gfd[i][1], 1)) < 0)
+		if ((dup2(g_sh.gfd[j][1], 1)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
 		}
-		close(g_sh.gfd[i][1]);
+		close(g_sh.gfd[j][1]);
 	}
-	if (g_sh.gfd[i][2])
+	if (g_sh.gfd[j][2])
 	{
-		if ((dup2(g_sh.gfd[i][3], 0)) < 0)
+		if ((dup2(g_sh.gfd[j][3], 0)) < 0)
 		{
 			print_error(strerror(errno), errno);
 			return ;
 		}
-		close(g_sh.gfd[i][3]);
+		close(g_sh.gfd[j][3]);
 	}
 }
