@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 18:30:03 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 14:57:57 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void				output_redir(t_list *lst, int i);
 void				restore_fd(int i);
 void				pipe_connect(int i);
 void				set_fd(int i);
+void				set_fd_m(int i);
 
 /*
 ** init.c

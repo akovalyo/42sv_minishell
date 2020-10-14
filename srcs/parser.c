@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 11:11:32 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:05:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,16 @@ char	**read_input(void)
 	if (!ret && !ft_strlen(g_sh.input))
 		exit_shell(errno);
 	while (ret == 0)
+	{
 		ret = get_next_line(0, &buff);
+		if (ret == 0)
+			free(buff);
+	}
 	if (buff)
+	{
 		g_sh.input = ft_strjoin_free(g_sh.input, buff);
+		free(buff);
+	}
 	process_semicolons(&(g_sh.input));
 	tab_input = ft_strsplit(g_sh.input, 7);
 	free(g_sh.input);

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 12:43:58 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:26:44 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	input_redir(t_list *lst, int i)
 	g_sh.gfd[i][3] = open(lst->content, O_RDONLY);
 	if (g_sh.gfd[i][3] < 0)
 		print_error(strerror(errno), errno);
+	if (lst->next)
+		pipe_connect(i + 1);
 }
 
 /*
@@ -30,19 +32,21 @@ void	input_redir(t_list *lst, int i)
 
 void	output_redir(t_list *lst, int i)
 {
+	if (i + 1 < g_sh.map_len && (g_sh.map[i + 1]->ctg == DB_GR_SIGN || g_sh.map[i + 1]->ctg == GR_SIGN))
+		g_sh.gfd[i - 1][0] = 2;
+	else
+		g_sh.gfd[i - 1][0] = 1;
 	if (lst->ctg == GR_SIGN)
 	{
-		g_sh.gfd[i][0] = 1;
-		g_sh.gfd[i][1] = open(lst->content,
+		g_sh.gfd[i - 1][1] = open(lst->content,
 			(O_CREAT | O_WRONLY | O_TRUNC), 0666);
 	}
 	else if (lst->ctg == DB_GR_SIGN)
 	{
-		g_sh.gfd[i][0] = 1;
-		g_sh.gfd[i][1] = open(lst->content,
+		g_sh.gfd[i - 1][1] = open(lst->content,
 			(O_CREAT | O_WRONLY | O_APPEND), 0666);
 	}
-	if (g_sh.gfd[i][1] < 0)
+	if (g_sh.gfd[i - 1][1] < 0)
 		print_error(strerror(errno), errno);
 }
 
@@ -52,7 +56,7 @@ void	output_redir(t_list *lst, int i)
 
 void	restore_fd(int i)
 {
-	if (!g_sh.gfd)
+	if (!g_sh.gfd || g_sh.gfd[i][0] == 3)
 		return ;
 	if (g_sh.gfd[i][0])
 	{
@@ -89,7 +93,7 @@ void	set_fd(int i)
 {
 	if (!g_sh.gfd)
 		return ;
-	if (g_sh.gfd[i][0])
+	if (g_sh.gfd[i][0] == 1)
 	{
 		if ((dup2(g_sh.gfd[i][1], 1)) < 0)
 		{
@@ -97,6 +101,7 @@ void	set_fd(int i)
 			return ;
 		}
 		close(g_sh.gfd[i][1]);
+		g_sh.gfd[i][0] = 4;
 	}
 	if (g_sh.gfd[i][2])
 	{
@@ -107,4 +112,17 @@ void	set_fd(int i)
 		}
 		close(g_sh.gfd[i][3]);
 	}
+}
+
+void	set_fd_m(int i)
+{
+	if (!g_sh.gfd || g_sh.gfd[i][0] == 3)
+		return ;
+	while (g_sh.gfd[i][0] == 2)
+	{
+		close(g_sh.gfd[i][1]);
+		g_sh.gfd[i][0] = 3;
+		i++;
+	}
+	set_fd(i);
 }
