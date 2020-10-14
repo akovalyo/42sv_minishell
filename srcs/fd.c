@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 17:45:13 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 10:49:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,20 @@
 ** Open file used in stdin redirection.
 */
 
-void	input_redir(t_list *lst, int i)
+void	input_redir(int i)
 {
-	g_sh.gfd[i][2] = 1;
-	g_sh.gfd[i][3] = open(lst->content, O_RDONLY);
-	if (g_sh.gfd[i][3] < 0)
+	int fd;
+
+	fd = open(g_sh.map[i]->content, O_RDONLY);
+	if (fd < 0)
+	{
 		print_error(strerror(errno), errno);
-	if (lst->next)
-		pipe_connect(i + 1);
+		return ;
+	}
+	g_sh.gfd[i - 1][2] = 1;
+	g_sh.gfd[i - 1][3] = fd;
+	// if (i + 1 < g_sh.map_len && (g_sh.map[i + 1]->ctg == GR_SIGN || g_sh.map[i + 1]->ctg == DB_GR_SIGN))
+	// 	pipe_connect(i);
 }
 
 /*
@@ -32,20 +38,19 @@ void	input_redir(t_list *lst, int i)
 
 void	output_redir(t_list *lst, int i)
 {
+	int fd;
+
 	if (lst->ctg == GR_SIGN)
-	{
-		g_sh.gfd[i - 1][0] = 1;
-		g_sh.gfd[i - 1][1] = open(lst->content,
-			(O_CREAT | O_WRONLY | O_TRUNC), 0666);
-	}
+		fd = open(lst->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
 	else if (lst->ctg == DB_GR_SIGN)
+		fd = open(lst->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
+	if (fd < 0)
 	{
-		g_sh.gfd[i - 1][0] = 1;
-		g_sh.gfd[i - 1][1] = open(lst->content,
-			(O_CREAT | O_WRONLY | O_APPEND), 0666);
-	}
-	if (g_sh.gfd[i - 1][1] < 0)
 		print_error(strerror(errno), errno);
+		return ;
+	}
+	g_sh.gfd[i - 1][0] = 1;
+	g_sh.gfd[i - 1][1] = fd;
 }
 
 /*

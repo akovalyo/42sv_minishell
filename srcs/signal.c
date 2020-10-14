@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:22:19 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 17:36:03 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 13:55:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	signal_in_parent(int sig)
 
 void	signal_in_child(int sig)
 {
-	ft_printf("\n");
+	ft_putchar('\n');
 	(void)sig;
 }
 

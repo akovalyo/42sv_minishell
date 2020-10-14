@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:09:01 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:24:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 12:55:41 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,14 @@ char	**add_to_argv_else(char **arr, t_list **lstptr)
 	char *str;
 
 	str = NULL;
-	while ((*lstptr) && (*lstptr)->ctg != PIPE)
+	while ((*lstptr) && (*lstptr)->ctg != PIPE && is_redirect_ctg(*lstptr) != 1)
 	{
 		if ((*lstptr)->ctg == DB_QT || (*lstptr)->ctg == SN_QT)
-			str = between_quotes(str, lstptr);
-		else if ((*lstptr)->ctg == SP)
-			str = ft_straddchr_free(str, ' ');
-		else if ((*lstptr)->ctg == GR_SIGN || (*lstptr)->ctg == DB_GR_SIGN ||
-			(*lstptr)->ctg == LESS_SIGN)
-			*lstptr = (*lstptr)->next;
-		else
-			str = ft_strjoin_free(str, (*lstptr)->content);
+			arr = add_elem_to_arr(arr, between_quotes(str, lstptr), free);
+		else if ((*lstptr)->ctg == STR)
+			arr = add_elem_to_arr(arr, (*lstptr)->content, NULL);
 		*lstptr = (*lstptr == NULL) ? NULL : (*lstptr)->next;
 	}
-	str = strtrim_free(str);
-	arr = add_elem_to_arr(arr, str, free);
 	g_sh.flag = 0;
 	return (arr);
 }
@@ -103,7 +96,7 @@ char	**create_argv(t_list *lstptr)
 	char	**arr;
 
 	arr = add_to_argv_comm(&lstptr);
-	while (lstptr && lstptr->ctg != PIPE)
+	while (lstptr && lstptr->ctg != PIPE && is_redirect_ctg(lstptr) != 1)
 	{
 		if (lstptr->ctg == SP)
 			lstptr = lstptr->next;

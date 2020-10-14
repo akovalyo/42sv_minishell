@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 17:36:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 13:46:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	comm_void(char **arg)
 {
 	(void)arg;
 	if (g_sh.map[g_sh.map_i]->comm == VOID)
-		ft_printf("");
+		ft_putchar('\0');
 	else if (g_sh.map[g_sh.map_i]->comm == NOCOMM)
 	{
 		if (ft_strncmp(g_sh.tokens->content, "clear", 6) == 0)
@@ -43,6 +43,7 @@ void	comm_sh(char **arg)
 {
 	pid_t	pid;
 	int		status;
+	int		exit;
 
 	(void)arg;
 	pid = fork();
@@ -73,7 +74,7 @@ void	exec_comm(void)
 	t_list		*lstptr;
 
 	lstptr = g_sh.map[g_sh.map_i];
-	if (is_redirect_ctg(lstptr))
+	if (is_redirect_ctg(lstptr) || lstptr->ctg == 0)
 		return ;
 	arg = create_argv(g_sh.map[g_sh.map_i]);
 	if (g_sh.map[g_sh.map_i]->comm == SH)
@@ -106,6 +107,7 @@ void	handle_input(void)
 				exit_shell(errno);
 			exec_comm();
 			restore_fd(g_sh.map_i);
+			
 			g_sh.map_i++;
 		}
 		clear_inner();

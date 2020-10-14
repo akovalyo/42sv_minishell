@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 18:22:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 14:09:12 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	update_map(void)
 	{
 		if (i + 1 < g_sh.map_len && check_next_redir(i))
 		{
-			fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
+			if (g_sh.map[i]->ctg == GR_SIGN)
+				fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
+			else
+				fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_APPEND), 0666);
 			close(fd);
 			delete_map_pos(i);
 			g_sh.map_len--;

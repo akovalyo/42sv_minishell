@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 14:57:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 09:32:47 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char				**remove_envv(int pos);
 ** fd.c
 */
 
-void				input_redir(t_list *lst, int i);
+void				input_redir(int i);
 void				output_redir(t_list *lst, int i);
 void				restore_fd(int i);
 void				pipe_connect(int i);
@@ -172,6 +172,7 @@ void				exit_shell(int err);
 ** parser.c
 */
 
+int					check_next_redir(int i);
 char				*between_quotes(char *str, t_list **lstptr);
 void				process_semicolons(char **str);
 char				**read_input(void);

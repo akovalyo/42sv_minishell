@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:15:50 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 11:05:54 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 13:55:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	comm_echo(char **argv)
 	i = 1;
 	argc = ft_arraylen((void **)argv);
 	if (argc == 1)
-		ft_printf("\n");
+		ft_putchar('\n');
 	else
 	{
 		if (ft_strncmp(argv[1], "-n", 3) == 0)
@@ -32,10 +32,12 @@ void	comm_echo(char **argv)
 		while (i < argc)
 		{
 			ft_printf("%s", argv[i]);
+			if (i + 1 < argc)
+				ft_putchar(' ');
 			i++;
 		}
 		if (ft_strncmp(argv[1], "-n", 3) != 0)
-			ft_printf("\n");
+			ft_putchar('\n');
 	}
 }
 
