@@ -6,11 +6,50 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/08 15:28:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 18:22:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		check_next_redir(int i)
+{
+	if ((g_sh.map[i]->ctg == GR_SIGN || g_sh.map[i]->ctg == DB_GR_SIGN) &&
+	(g_sh.map[i + 1]->ctg == GR_SIGN || g_sh.map[i + 1]->ctg == DB_GR_SIGN))
+		return (1);
+	return (0);
+}
+
+void 	delete_map_pos(int i)
+{
+	while (i + 1 < g_sh.map_len)
+	{
+		g_sh.map[i] = g_sh.map[i + 1];
+		i++;
+	}
+	g_sh.map[i] = NULL;
+
+}
+
+void	update_map(void)
+{
+	int i;
+	int fd;
+
+	i = 0;
+	while (i < g_sh.map_len)
+	{
+		if (i + 1 < g_sh.map_len && check_next_redir(i))
+		{
+			fd = open(g_sh.map[i]->content, (O_CREAT | O_WRONLY | O_TRUNC), 0666);
+			close(fd);
+			delete_map_pos(i);
+			g_sh.map_len--;
+			i--;
+		}
+		i++;
+	}
+}
 
 /*
 ** Allocates memory for file descriptor's queue of conected processes.
@@ -21,6 +60,7 @@ void	allocate_fd(void)
 	int i;
 
 	i = -1;
+	update_map();
 	g_sh.gfd = malloc(sizeof(int *) * g_sh.map_len);
 	while (++i < g_sh.map_len)
 	{

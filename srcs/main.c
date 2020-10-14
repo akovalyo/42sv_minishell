@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 14:58:01 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:36:49 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	handle_input(void)
 			return ;
 		while (g_sh.map_i < g_sh.map_len)
 		{
-			set_fd_m(g_sh.map_i);
+			set_fd(g_sh.map_i);
 			if (g_sh.exit)
 				exit_shell(errno);
 			exec_comm();
