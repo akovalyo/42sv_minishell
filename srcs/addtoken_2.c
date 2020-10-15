@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 15:54:49 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:09:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,21 @@ int		addtoken_specialch(char *str, int i)
 	return (new->ctg == DB_GR_SIGN ? i + 2 : i + 1);
 }
 
+int		addtoken_betweenq(char *str, int i)
+{
+	t_list	*new;
+
+	new = malloc(sizeof(t_list));
+	new->content = NULL;
+	new->content = ft_straddchr(new->content, str[i]);
+	new->ctg = STR;
+	new->next = NULL;
+	new->comm = VOID;
+	new->atr = 0;
+	ft_lstadd_back(&(g_sh.tokens), new);
+	return (i + 1);
+}
+
 /*
 ** Creates token 'redirection sign' and adds it to the token list
 */
@@ -63,13 +78,15 @@ int		addtoken_redir(char *str, int i)
 {
 	t_list	*new;
 
+	if (isbetween_quotes())
+		return (addtoken_betweenq(str, i));
 	new = malloc(sizeof(t_list));
 	new->content = NULL;
 	new->ctg = handle_redir_sign(str, &i);
 	i = skip_spaces(str, i);
 	if (str[i] == '\0')
 		print_error("syntax error near unexpected token 'newline'", 1);
-	while (str[i] && !ft_isspace(str[i]))
+	while (str[i] && !ft_isspace(str[i]) && !isredir(str[i]) && str[i] != '|')
 	{
 		if (str[i] == '\\')
 			i++;

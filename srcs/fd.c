@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 15:58:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:16:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ int		input_redir(int i, int j)
 ** Open files used in stdout redirection.
 */
 
-int	output_redir(int i, int j)
+int		output_redir(int i, int j)
 {
 	int fd;
+
 	if (g_sh.gfd[j][0])
 		close(g_sh.gfd[j][1]);
 	if (g_sh.map[i]->ctg == GR_SIGN)

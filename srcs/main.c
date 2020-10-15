@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 15:44:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:14:32 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	comm_sh(char **arg)
 ** Executes builtins or binary file
 */
 
-int	exec_comm(int j)
+int		exec_comm(int j)
 {
 	static void	(*exec_comm[])(char **arg) = {comm_void, comm_echo,
 				comm_pwd, comm_cd, comm_export, comm_unset, comm_env,

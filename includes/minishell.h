@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 16:02:38 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 17:22:09 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int					addtoken_str(char *str, int i);
 
 int					addtoken_spaces(char *str, int i);
 int					addtoken_specialch(char *str, int i);
+int					addtoken_betweenq(char *str, int i);
 int					addtoken_redir(char *str, int i);
 int					addtoken_status(int i);
 
@@ -213,6 +214,7 @@ int					skip_spaces(char *str, int i);
 int					handle_redir_sign(char *str, int *i);
 t_list				*specialch_create_token(char *str, int i);
 void				token_tilde_init(t_list **token);
+int					isbetween_quotes(void);
 
 /*
 ** utils_cd.c

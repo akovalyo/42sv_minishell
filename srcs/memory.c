@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 15:26:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:00:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	clear_inner(void)
 	g_sh.map_i = 0;
 	g_sh.map_len = 0;
 	g_sh.error = 0;
+	g_sh.flag = 1;
+	g_sh.fl_ignore = 0;
 }
 
 /*

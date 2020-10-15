@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/13 17:05:15 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:17:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ char	*between_quotes(char *str, t_list **lstptr)
 
 void	process_semicolons(char **str)
 {
-	int i;
-	char qt;
+	int		i;
+	char	qt;
 
 	i = 0;
 	while ((*str)[i])
@@ -60,7 +60,7 @@ void	process_semicolons(char **str)
 			i++;
 			while ((*str)[i] && (*str)[i] != qt)
 				i++;
-		}	
+		}
 		if ((*str)[i] == ';')
 			(*str)[i] = 7;
 		if ((*str)[i] != '\0')
@@ -142,7 +142,8 @@ void	parser(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!g_sh.tokens || (str[i] == '|' && g_sh.n_comm > 0))
+		if (!g_sh.tokens || (str[i] == '|' && g_sh.n_comm > 0
+			&& !isbetween_quotes()))
 			i = addtoken_comm(str, i);
 		else if (ft_isspace(str[i]))
 			i = addtoken_spaces(str, i);
@@ -154,8 +155,7 @@ void	parser(char *str)
 			i = addtoken_envv(str, i);
 		else if (str[i] == '~')
 			i = addtoken_tilde(str, i);
-		else if (isredir(str[i]) && ((g_sh.sn_qt % 2) == 0 ||
-				(g_sh.db_qt % 2) == 0))
+		else if (isredir(str[i]))
 			i = addtoken_redir(str, i);
 		else if (special_char(str[i]))
 			i = addtoken_specialch(str, i);

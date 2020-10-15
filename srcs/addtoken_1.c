@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 18:50:17 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:03:24 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		addtoken_comm(char *str, int i)
 	}
 	i = skip_spaces(str, i++);
 	start = i;
-	while (str[i] && !ft_isspace(str[i]))
+	while (str[i] && !ft_isspace(str[i]) && !isredir(str[i]) && str[i] != '|')
 		i++;
 	new->content = ft_strsub(str, start, i - start);
 	new->comm = (i == start) ? VOID : check_builtins_and_bin(&new);
