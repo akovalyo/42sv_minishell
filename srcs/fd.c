@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:08:33 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 18:16:48 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 12:31:22 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		output_redir(int i, int j)
 {
 	int fd;
 
+	fd = 0;
 	if (g_sh.gfd[j][0])
 		close(g_sh.gfd[j][1]);
 	if (g_sh.map[i]->ctg == GR_SIGN)

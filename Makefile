@@ -6,22 +6,23 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 10:24:43 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 12:55:40 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
+CC = gcc
 FLAGS = -Wall -Wextra -Werror
-SRC_DIR = srcs
+SRCS_DIR = srcs
 LIBFT_DIR = libft
 LIBFT_INCL = libft/includes
+OBJS_DIR = objs
 INCL = includes
 SRC = 	addtoken_1.c \
 		addtoken_2.c \
 		builtins.c \
 		builtin_cd.c \
 		builtin_envmanage.c \
-		builtins.c \
 		check_builtins_and_bin.c \
 		comm_array.c \
 		env.c \
@@ -35,14 +36,40 @@ SRC = 	addtoken_1.c \
 		utils_2.c \
 		utils_addtoken.c \
 		utils_cd.c
-SRCS = $(addprefix $(SRC_DIR), $(SRC))
+
+SRCS = ${addprefix ${SRCS_DIR}/, ${SRC}}
+OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
+
+TOTAL = $(shell find srcs -iname  "*.c" | wc -l | bc)
+TOTAL_D := $(shell echo $(TOTAL)/10 | bc)
+RES = 0
+COUNT = 0
+END  = 0
+PR = 0
+
+define status
+	$(eval COUNT := $(shell find objs -iname "*.o" 2> /dev/null | wc -l | bc))
+	$(eval COUNT_D := $(shell echo $(COUNT)/10 | bc))
+	$(eval RES := $(shell echo $(TOTAL_D) - $(COUNT_D) | bc))
+	$(eval PR := $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}"))
+	printf "\r\033[1;35m"
+	printf "█%.0s" $(shell seq 0 $(COUNT_D))
+	printf "%s%%" $(PR)
+	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
+	printf "%$(END)s" "  Compiling minishell..."
+endef
 
 all: $(NAME)
 
-$(NAME): 
-	@make -C $(LIBFT_DIR) re
-	@gcc $(FLAGS) $(SRCS) -o $(NAME) -L $(LIBFT_DIR) -lft -I $(LIBFT_INCL) -I $(INCL)
+$(NAME): $(OBJS) 
+	@make -C $(LIBFT_DIR)
+	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft
 	@echo "\033[1;35m\rminishell is ready\033[0m"
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -c $< -o $@
+	@$(call status)
 
 clean:
 	@make -C $(LIBFT_DIR) clean
@@ -50,14 +77,16 @@ clean:
 fclean: clean 
 	@make -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
+	@rm -rf $(OBJS_DIR)
 
 re: fclean all
 
-test:
-	gcc -g $(SRCS) -o $(NAME) -L $(LIBFT_DIR) -lft -I $(LIBFT_INCL) -I $(INCL)
+test: $(OBJS)
+	$(CC) -g $(SRCS) -o $(NAME) -L $(LIBFT_DIR) -lft -I $(LIBFT_INCL) -I $(INCL)
 
-mem:
-	gcc -g -fsanitize=address -fno-omit-frame-pointer $(SRCS) -o $(NAME) -L libft/ -lft -I $(LIBFT_INCL) -I $(INCL)
+mem: $(OBJS)
+	@make -C $(LIBFT_DIR)
+	$(CC) -g -fsanitize=address -fno-omit-frame-pointer -I $(LIBFT_INCL) -o $(NAME) -I $(INCL) $(OBJS) -L libft/ -lft 
 
 norm: 
 	@make -C libft norm
