@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 09:57:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 15:59:03 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	comm_void(char **arg)
 		else
 		{
 			g_sh.error++;
-			g_sh.status[0] = 1;
+			errno = 1;
 			ft_printf("minishell: command not found: %s\n",
 									g_sh.tokens->content);
 		}
@@ -56,7 +56,7 @@ void	comm_sh(char **arg)
 	{
 		signal_child();
 		waitpid(pid, &status, 0);
-		g_sh.status[0] = WEXITSTATUS(status);
+		errno = WEXITSTATUS(status);
 	}
 }
 
@@ -125,8 +125,8 @@ int		main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	init_shell();
 	init_env(env);
+	init_shell();
 	while (1)
 	{
 		ft_printf("\033[1;35m%s: \033[0m", get_pwd());

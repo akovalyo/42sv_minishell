@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/15 11:09:55 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 16:00:02 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct		s_shell
 	int				red_count;
 	int				map_i;
 	int				map_len;
-	int				status[2];
 }					t_shell;
 
 /*
@@ -125,7 +124,7 @@ char				**create_argv(t_list *lstptr);
 
 char				*get_envv(char *var);
 int					get_envv_pos(char *var);
-void				change_envv(char *key, char *value);
+void				change_envv(char *key, char *value, void (*del)(void *));
 void				add_envv(char *key, char *value);
 char				**remove_envv(int pos);
 

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/15 11:09:17 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 15:59:05 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	clear_scr(void)
 void	print_error(char *err, int err_n)
 {
 	g_sh.error++;
-	g_sh.status[0] = err_n;
+	errno = err_n;
 	ft_printf("minishell: %s\n", err);
 }
 
@@ -46,8 +46,8 @@ void	clear_shell(void)
 	g_sh.exit = 0;
 	g_sh.n_comm = 0;
 	g_sh.flag = 1;
-	g_sh.status[1] = g_sh.status[0];
-	g_sh.status[0] = 0;
+	errno != 0 ? change_envv("STATUS", "1", NULL) : change_envv("STATUS", "0", NULL);
+	errno = 0;
 }
 
 /*

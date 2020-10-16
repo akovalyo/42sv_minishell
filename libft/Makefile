@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 12:57:12 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 16:30:09 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,21 +120,17 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
 
 TOTAL = $(shell find srcs -iname  "*.c" | wc -l | bc)
 TOTAL_D := $(shell echo $(TOTAL)/10 | bc)
-RES = 0
 COUNT = 0
 END  = 0
-PR = 0
 
 define status
 	$(eval COUNT := $(shell find objs -iname "*.o" 2> /dev/null | wc -l | bc))
 	$(eval COUNT_D := $(shell echo $(COUNT)/10 | bc))
-	$(eval RES := $(shell echo $(TOTAL_D) - $(COUNT_D) | bc))
-	$(eval PR := $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}"))
 	printf "\r\033[0;32m"
 	printf "█%.0s" $(shell seq 0 $(COUNT_D))
-	printf "%s%%" $(PR)
+	printf "%s%%" $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}")
 	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
-	printf "%$(END)s" "  Compiling libft...       "
+	printf "%$(END)s" "  Compiling libft...       \033[0m"
 endef
 
 all: $(NAME)

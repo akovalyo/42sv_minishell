@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/09 17:55:45 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 15:59:06 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,23 +111,17 @@ void	cd(char *path)
 void	comm_cd(char **argv)
 {
 	int		argc;
-	char	**args;
 
 	argc = ft_arraylen((void **)argv);
 	if (argc == 1)
 		cd_home();
 	else if (argc == 2)
+		cd(argv[1]);
+	else
 	{
-		args = ft_strsplit(argv[1], ' ');
-		if (ft_arraylen((void **)args) > 1)
-		{
-			g_sh.error++;
-			g_sh.status[0] = 1;
-			ft_printf("minishell: string not in pwd: %s\n", argv[1]);
-			return ;
-		}
-		else
-			cd(args[0]);
-		ft_strarr_free(args);
+		g_sh.error++;
+		errno = 1;
+		ft_printf("minishell: string not in pwd: %s\n", argv[1]);
+		return ;
 	}
 }

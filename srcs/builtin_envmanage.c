@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 16:00:17 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 18:27:57 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 14:50:27 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	comm_export(char **argv)
 	{
 		get_key_value(argv[1], &key, &value);
 		if (key && !value)
-			change_envv(key, "");
-		change_envv(key, value);
+			change_envv(key, "", NULL);
+		change_envv(key, value, NULL);
 		free(key);
 		free(value);
 	}
