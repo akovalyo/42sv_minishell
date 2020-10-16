@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 18:17:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/15 11:07:51 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,20 @@ void	add_to_map(t_list *new)
 	}
 }
 
+int flags_allowed()
+{
+	t_list *head;
+
+	head = g_sh.tokens;
+	while (head && head->ctg == SP && head->ctg == COMM)
+	{
+		head = head->next;
+	}
+	if (head == NULL)
+		return (1);
+	return (0);
+}
+
 /*
 ** Parses the command line from the command's queue, creates nodes
 ** and adds them to the token list
@@ -147,7 +161,7 @@ void	parser(char *str)
 			i = addtoken_comm(str, i);
 		else if (ft_isspace(str[i]))
 			i = addtoken_spaces(str, i);
-		else if (str[i] == '-' && !g_sh.fl_ignore)
+		else if (str[i] == '-' && flags_allowed())
 			i = addtoken_flags(str, i);
 		else if (ft_strncmp(&str[i], "$?", 2) == 0)
 			i = addtoken_status(i);

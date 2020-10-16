@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 22:14:58 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 15:45:20 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/15 11:09:15 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	init_shell(void)
 	g_sh.n_comm = 0;
 	g_sh.tokens = NULL;
 	g_sh.flag = 1;
-	g_sh.fl_ignore = 0;
 	g_sh.map = NULL;
 	g_sh.map_i = 0;
 	g_sh.map_len = 0;

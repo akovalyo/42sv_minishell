@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 18:03:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/15 11:09:16 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int		addtoken_flags(char *str, int i)
 		ft_lstadd_back(&(g_sh.tokens), new);
 		return (i);
 	}
-	g_sh.fl_ignore = 1;
 	return (start);
 }
 

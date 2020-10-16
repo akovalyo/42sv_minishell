@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 16:02:33 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/15 11:09:17 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	clear_shell(void)
 	g_sh.exit = 0;
 	g_sh.n_comm = 0;
 	g_sh.flag = 1;
-	g_sh.fl_ignore = 0;
 	g_sh.status[1] = g_sh.status[0];
 	g_sh.status[0] = 0;
 }

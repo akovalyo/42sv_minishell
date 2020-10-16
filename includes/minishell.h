@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 17:22:09 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/15 11:09:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct		s_shell
 	int				error;
 	int				exit : 1;
 	int				flag : 1;
-	int				fl_ignore : 1;
 	int				n_comm : 8;
 	int				sn_qt;
 	int				db_qt;
