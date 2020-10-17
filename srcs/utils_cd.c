@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:42:51 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 15:17:11 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/17 10:59:07 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	update_pwd_envv(void)
 
 	pwd = getcwd(NULL, 0);
 	change_envv("OLDPWD", get_envv("PWD"), NULL);
-	change_envv("PWD", pwd, NULL);
+	change_envv("PWD", pwd, free);
 }

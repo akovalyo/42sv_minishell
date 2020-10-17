@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 18:07:12 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/17 16:57:56 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SRC = 	addtoken_1.c \
 		utils_1.c \
 		utils_2.c \
 		utils_addtoken.c \
-		utils_cd.c
+		utils_cd.c \
+		utils_check_bin.c
 
 SRCS = ${addprefix ${SRCS_DIR}/, ${SRC}}
 OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))

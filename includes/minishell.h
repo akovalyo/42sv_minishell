@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 17:55:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/17 16:56:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft.h"
-# define RESERVED "<>:\"\'/\\|&*"
+# define RESERVED "<>:\"\'/\\|&*$"
 
 typedef struct		s_shell
 {
@@ -37,10 +37,9 @@ typedef struct		s_shell
 	int				error;
 	int				exit : 1;
 	int				flag : 1;
-	int				n_comm : 8;
+	int				n_comm;
 	int				sn_qt;
 	int				db_qt;
-	int				red_count;
 	int				map_i;
 	int				map_len;
 }					t_shell;
@@ -221,4 +220,11 @@ int					flags_allowed(void);
 
 int					sh_chdir(char *path);
 void				update_pwd_envv(void);
+
+/*
+** utils_check_bin.c
+*/
+
+int			check_path(char *str);
+int			check_relative_path(t_list **node);
 #endif
