@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/15 11:07:51 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:51:48 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,20 +128,6 @@ void	add_to_map(t_list *new)
 		g_sh.map[i] = new;
 		free(tmp);
 	}
-}
-
-int flags_allowed()
-{
-	t_list *head;
-
-	head = g_sh.tokens;
-	while (head && head->ctg == SP && head->ctg == COMM)
-	{
-		head = head->next;
-	}
-	if (head == NULL)
-		return (1);
-	return (0);
 }
 
 /*

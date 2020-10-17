@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 23:23:02 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/14 18:13:08 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:53:25 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,22 @@ int		isbetween_quotes(void)
 	if (g_sh.sn_qt % 2 == 0 && g_sh.db_qt % 2 == 0)
 		return (0);
 	return (1);
+}
+
+/*
+** Checks tokens, if it's allowed to add flags to it, returns 1.
+*/
+
+int		flags_allowed(void)
+{
+	t_list *head;
+
+	head = g_sh.tokens;
+	while (head && head->ctg == SP && head->ctg == COMM)
+	{
+		head = head->next;
+	}
+	if (head == NULL)
+		return (1);
+	return (0);
 }

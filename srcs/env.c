@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 14:39:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:47:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	change_envv(char *key, char *value, void (*del)(void *))
 	new = ft_strjoin_free(new, value);
 	g_sh.env[pos] = ft_strdup(new);
 	if (del)
-		free (value);
+		free(value);
 	free(new);
 	free(tmp);
 }

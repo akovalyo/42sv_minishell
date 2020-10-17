@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 16:00:02 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:55:28 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ int					handle_redir_sign(char *str, int *i);
 t_list				*specialch_create_token(char *str, int i);
 void				token_tilde_init(t_list **token);
 int					isbetween_quotes(void);
+int					flags_allowed(void);
 
 /*
 ** utils_cd.c

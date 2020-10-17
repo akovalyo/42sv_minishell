@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 16:30:09 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 17:46:42 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,7 +115,7 @@ SRC = 	ft_arraylen.c \
 		pf_helpers.c \
 		pf_print.c \
 
-SRCS = ${addprefix ${SRC_DIR}, ${SRC}}
+SRCS = ${addprefix ${SRCS_DIR}/, ${SRC}}
 OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
 
 TOTAL = $(shell find srcs -iname  "*.c" | wc -l | bc)
@@ -130,7 +130,8 @@ define status
 	printf "█%.0s" $(shell seq 0 $(COUNT_D))
 	printf "%s%%" $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}")
 	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
-	printf "%$(END)s" "  Compiling libft...       \033[0m"
+	printf "%$(END)s" "  Compiling libft...       "
+	printf "\r\033[0m"
 endef
 
 all: $(NAME)
@@ -138,7 +139,8 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
-	@printf "\033[0;32m\rlibft compiled                       \033[0m"
+	@printf "\033[0;32m\rlibft compiled                       "
+	@printf "\r\033[0m"
 	@echo
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c

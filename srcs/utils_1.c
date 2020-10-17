@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 15:59:05 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:48:04 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	clear_shell(void)
 	g_sh.exit = 0;
 	g_sh.n_comm = 0;
 	g_sh.flag = 1;
-	errno != 0 ? change_envv("STATUS", "1", NULL) : change_envv("STATUS", "0", NULL);
+	errno != 0 ? change_envv("STATUS", "1", NULL) :
+		change_envv("STATUS", "0", NULL);
 	errno = 0;
 }
 

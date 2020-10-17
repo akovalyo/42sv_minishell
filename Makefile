@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 16:38:05 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 17:54:58 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ test: $(OBJS) $(INCL)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(OBJS) $(LFT) 
 
-sanit: 
+mem: 
 	@$(CC) $(FLAGS) -g -fsanitize=address -fno-omit-frame-pointer -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(SRCS) $(LFT) 
 
 valgr:
@@ -94,6 +94,6 @@ efence:
 
 norm: 
 	@make -C libft norm
-	@norminette -R CheckForbiddenSourceHeader $(SRCS)
+	@norminette -R CheckForbiddenSourceHeader $(SRCS) $(INCL)/*.h
 
 .PHONY: clean fclean re test mem norm

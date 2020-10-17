@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 16:06:35 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 17:47:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	clear_inner(void)
 	g_sh.map_len = 0;
 	g_sh.error = 0;
 	g_sh.flag = 1;
-	errno != 0 ? change_envv("STATUS", "1", NULL) : change_envv("STATUS", "0", NULL);
+	errno != 0 ? change_envv("STATUS", "1", NULL) :
+		change_envv("STATUS", "0", NULL);
 	errno = 0;
 }
 
