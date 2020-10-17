@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/01 21:26:34 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 17:46:42 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 18:07:40 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,7 +130,7 @@ define status
 	printf "█%.0s" $(shell seq 0 $(COUNT_D))
 	printf "%s%%" $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}")
 	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
-	printf "%$(END)s" "  Compiling libft...       "
+	printf "%$(END)s" "  Compiling libft...           "
 	printf "\r\033[0m"
 endef
 

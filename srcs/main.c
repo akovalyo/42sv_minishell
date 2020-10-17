@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 15:59:03 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 18:32:54 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ void	handle_input(void)
 			j = exec_comm(j);
 			g_sh.map_i++;
 		}
+		errno != 0 ? change_envv("STATUS", "1", NULL) :
+			change_envv("STATUS", "0", NULL);
+		errno = 0;
 		clear_inner();
 		i++;
 	}

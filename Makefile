@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/16 17:54:58 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/16 18:07:12 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,12 @@ END  = 0
 
 define status
 	$(eval COUNT := $(shell find objs -iname "*.o" 2> /dev/null | wc -l | bc))
-	$(eval COUNT_D := $(shell echo $(COUNT)/10 | bc))
+	$(eval COUNT_D := $(shell echo $(COUNT)/2 | bc))
 	printf "\r\033[1;35m"
 	printf "█%.0s" $(shell seq 0 $(COUNT_D))
 	printf "%s%%" $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}")
 	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
-	printf "%$(END)s" "  Compiling minishell... \033[0m"
+	printf "%$(END)s" "  Compiling minishell...  "
 	printf "\r\033[0m"
 endef
 

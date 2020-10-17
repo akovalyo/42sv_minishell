@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:11:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 17:47:33 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/16 18:45:12 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	clear_inner(void)
 	g_sh.map_len = 0;
 	g_sh.error = 0;
 	g_sh.flag = 1;
-	errno != 0 ? change_envv("STATUS", "1", NULL) :
-		change_envv("STATUS", "0", NULL);
-	errno = 0;
 }
 
 /*
@@ -77,6 +74,8 @@ void	exit_shell(int err)
 {
 	if (err == 1)
 		print_error(strerror(err), err);
+	else
+		ft_printf("exit\n");
 	clear_inner();
 	free(g_sh.input);
 	ft_strarr_free(g_sh.input_tab);
