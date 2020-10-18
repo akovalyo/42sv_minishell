@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 11:37:28 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/17 17:01:56 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int		addtoken_str(char *str, int i)
 	while (str[i] && !special_char(str[i]) && !isredir(str[i]) &&
 			str[i] != '$' && !ft_isspace(str[i]) && str[i] != '|')
 	{
-		if (str[i] == '\\')
+		if (str[i] == '\\' && str[i + 1] != '\0')
 			i++;
 		new->content = ft_straddchr_free(new->content, str[i]);
 		i++;
