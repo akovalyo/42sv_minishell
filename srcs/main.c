@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 18:32:54 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:25:39 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	comm_void(char **arg)
 		else
 		{
 			g_sh.error++;
-			errno = 1;
+			errno = 127;
 			ft_printf("minishell: command not found: %s\n",
 									g_sh.tokens->content);
 		}
@@ -111,8 +111,7 @@ void	handle_input(void)
 			j = exec_comm(j);
 			g_sh.map_i++;
 		}
-		errno != 0 ? change_envv("STATUS", "1", NULL) :
-			change_envv("STATUS", "0", NULL);
+		change_envv("?", ft_itoa(errno), free);
 		errno = 0;
 		clear_inner();
 		i++;

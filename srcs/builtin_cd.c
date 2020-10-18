@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/03 15:17:53 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 15:59:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:05:33 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,5 @@ void	comm_cd(char **argv)
 	else if (argc == 2)
 		cd(argv[1]);
 	else
-	{
-		g_sh.error++;
-		errno = 1;
-		ft_printf("minishell: string not in pwd: %s\n", argv[1]);
-		return ;
-	}
+		return (print_error("too many arguments", 1));
 }

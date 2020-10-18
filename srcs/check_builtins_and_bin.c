@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:38:07 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 17:06:00 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:49:59 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ t_comm	check_builtins_and_bin(t_list **new)
 	else if (check_bin(new))
 		return (SH);
 	else
+	{
+
 		return (NOCOMM);
+	}
 	return (VOID);
 }

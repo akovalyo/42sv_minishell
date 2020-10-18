@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:29:00 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 11:14:46 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 12:52:16 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		addtoken_status(int i)
 	new = malloc(sizeof(t_list));
 	new->atr = 0;
 	new->next = NULL;
-	new->content = ft_strdup(get_envv("STATUS"));
+	new->content = ft_strdup(get_envv("?"));
 	new->ctg = STR;
 	new->comm = VOID;
 	ft_lstadd_back(&(g_sh.tokens), new);

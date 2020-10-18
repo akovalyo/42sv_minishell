@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 14:57:54 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 17:01:56 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 14:04:16 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int		addtoken_envv(char *str, int i)
 		i++;
 	new = malloc(sizeof(t_list));
 	tmp = ft_strsub(str, start, i - start);
-	new->atr = 0;
 	new->next = NULL;
 	if ((ptr_env = get_envv(tmp + 1)))
 		new->content = ft_strdup(ptr_env);

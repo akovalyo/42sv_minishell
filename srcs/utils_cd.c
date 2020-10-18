@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:42:51 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 10:59:07 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:05:41 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		sh_chdir(char *path)
 {
 	if (chdir(path))
 	{
-		print_error(strerror(errno), errno);
+		print_error(strerror(errno), 1);
 		return (1);
 	}
 	return (0);

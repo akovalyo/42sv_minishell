@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 22:42:20 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/16 17:47:04 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:54:31 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*get_envv(char *var)
 		i++;
 	}
 	free(tmp);
-	print_error("failed to load env variable", 1);
 	return (NULL);
 }
 

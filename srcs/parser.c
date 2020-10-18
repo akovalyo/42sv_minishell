@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 16:24:09 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 11:21:36 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:46:40 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,6 @@ void	parser(char *str)
 			i = addtoken_spaces(str, i);
 		else if (str[i] == '-' && flags_allowed())
 			i = addtoken_flags(str, i);
-		else if (ft_strncmp(&str[i], "$?", 2) == 0)
-			i = addtoken_status(i);
 		else if (str[i] == '$')
 			i = addtoken_envv(str, i);
 		else if (str[i] == '~')
