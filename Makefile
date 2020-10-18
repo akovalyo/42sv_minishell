@@ -6,10 +6,48 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/17 16:57:56 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/18 12:01:57 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# ****** #
+# COLORS #
+# ****** #
+
+RED = \033[0;31m
+BRED = \033[1;31m
+GREEN = \033[0;32m
+BGREEN = \033[1;32m
+YELLOW = \033[0;33m
+BELLOW = \033[1;33m
+BLUE = \033[0;34m
+BBLUE = \033[01;34m
+MAGENTA = \033[0;35m
+BMAGENTA = \033[1;35m
+CYAN = \033[0;36m
+BCYAN = \033[1;36m
+RESET = \033[0m
+
+# ********** #
+# STATUS BAR #
+# ********** #
+
+TOTAL = $(shell find $(SRCS_DIR) -iname  "*.c" | wc -l | bc)
+define status
+	$(eval COUNT := $(shell find $(OBJS_DIR) -iname "*.o" 2> /dev/null | wc -l | bc))
+	$(eval PER := $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}"))
+	$(eval SIZE := $(shell echo $(PER)/10 | bc))
+	printf "\r$(COLOR)"
+	printf "█%.0s" $(shell seq 0 $(SIZE))
+	printf "%s%%" $(PER)
+	$(eval END := $(shell echo 10 - $(SIZE) | bc))
+	printf "%$(END)s" "  Compiling minishell...           "
+	printf "\r$(RESET)"
+endef
+
+# ********** #
+
+COLOR = $(MAGENTA)
 NAME = minishell
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
@@ -42,28 +80,14 @@ SRC = 	addtoken_1.c \
 SRCS = ${addprefix ${SRCS_DIR}/, ${SRC}}
 OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
 
-TOTAL = $(shell find srcs -iname  "*.c" | wc -l | bc)
-TOTAL_D := $(shell echo $(TOTAL)/10 | bc)
-COUNT = 0
-END  = 0
-
-define status
-	$(eval COUNT := $(shell find objs -iname "*.o" 2> /dev/null | wc -l | bc))
-	$(eval COUNT_D := $(shell echo $(COUNT)/2 | bc))
-	printf "\r\033[1;35m"
-	printf "█%.0s" $(shell seq 0 $(COUNT_D))
-	printf "%s%%" $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}")
-	$(eval END := $(shell echo $(TOTAL_D) - $(COUNT_D) + 12 | bc))
-	printf "%$(END)s" "  Compiling minishell...  "
-	printf "\r\033[0m"
-endef
-
 all: $(NAME)
 
 $(NAME): $(OBJS) $(INCL)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(OBJS) $(LFT)
-	@echo "\033[1;35m\rminishell is ready\033[0m"
+	@echo "\r$(COLOR)minishell is ready"
+	@printf "\r$(RESET)"
+	@echo
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(OBJS_DIR)
