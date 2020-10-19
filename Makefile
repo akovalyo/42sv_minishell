@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/18 12:01:57 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/19 16:28:26 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ endef
 COLOR = $(MAGENTA)
 NAME = minishell
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 SRCS_DIR = srcs
 LIBFT_DIR = libft
 LIBFT_INCL = libft/includes
@@ -82,7 +82,7 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(INCL)
+$(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(OBJS) $(LFT)
 	@echo "\r$(COLOR)minishell is ready"
@@ -104,18 +104,18 @@ fclean: clean
 
 re: fclean all
 
-test: $(OBJS) $(INCL)
+test: $(OBJS)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(OBJS) $(LFT) 
 
 mem: 
-	@$(CC) $(FLAGS) -g -fsanitize=address -fno-omit-frame-pointer -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(SRCS) $(LFT) 
+	@$(CC) $(FLAGS) -fsanitize=address -fno-omit-frame-pointer -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(SRCS) $(LFT) 
 
 valgr:
 	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes 
 
 efence:
-	@$(CC) $(FLAGS) -g -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(SRCS) $(LFT) -lefence
+	@$(CC) $(FLAGS) -I $(LIBFT_INCL) -I $(INCL) -o $(NAME) $(SRCS) $(LFT) -lefence
 
 norm: 
 	@make -C libft norm

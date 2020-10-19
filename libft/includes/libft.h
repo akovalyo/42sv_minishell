@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/01 18:00:42 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/12 15:48:16 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/19 16:18:55 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include "printf.h"
-# define BUFF_SIZE 32
+# define BUFF_SIZE 128
 
 typedef enum		e_comm
 {
