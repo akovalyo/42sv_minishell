@@ -6,37 +6,45 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 10:29:13 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/17 16:56:06 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/19 12:00:01 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_path(char *str)
+char	*replace_tilde(t_list **node)
+{
+	char	*ptr1;
+	char	*ptr2;
+
+	ptr1 = ft_strdup(get_envv("HOME"));
+	ptr2 = (*node)->content;
+	(*node)->content = ft_strjoin(ptr1, ptr2 + 1);
+	free(ptr1);
+	free(ptr2);
+	return ("");
+}
+
+int		check_path(t_list **node)
 {
 	struct stat		sb;
 	char			*tmp;
-	char			*tmp_path;
 
 	tmp = NULL;
-	if (ft_strlen(str) > 1 && ft_strncmp(str, "./", 2) == 0)
-		tmp = str;
-	else if (ft_strlen(str) > 2 && ft_strncmp(str, "../", 2) == 0)
-		tmp = str;
-	else if (ft_strncmp(str, "/", 1) == 0)
-		tmp = str;
-	if (tmp && stat(str, &sb) == 0 && !S_ISDIR(sb.st_mode))
+	if (ft_strlen((*node)->content) > 1 &&
+		ft_strncmp((*node)->content, "./", 2) == 0)
+		tmp = (*node)->content;
+	else if (ft_strlen((*node)->content) > 2 &&
+		ft_strncmp((*node)->content, "../", 3) == 0)
+		tmp = (*node)->content;
+	else if (ft_strncmp((*node)->content, "/", 2) == 0)
+		print_error("/: is a directory", 126);
+	else if (ft_strncmp((*node)->content, "/", 1) == 0)
+		tmp = (*node)->content;
+	else if (ft_strncmp((*node)->content, "~", 1) == 0)
+		tmp = replace_tilde(node);
+	if (tmp && stat((*node)->content, &sb) == 0 && !S_ISDIR(sb.st_mode))
 		return (1);
-	tmp_path = ft_strdup(get_envv("PWD"));
-	if (ft_strncmp(tmp_path, "/", 2))
-		tmp_path = ft_straddchr_free(tmp_path, '/');
-	tmp_path = ft_strjoin_free(tmp_path, str);
-	if (stat(tmp_path, &sb) == 0 && !S_ISDIR(sb.st_mode))
-	{
-		free(tmp_path);
-		return (1);
-	}
-	free(tmp_path);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:45:10 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/18 13:20:37 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/19 11:58:14 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,7 @@ void				update_pwd_envv(void);
 ** utils_check_bin.c
 */
 
-int					check_path(char *str);
+char				*replace_tilde(t_list **node);
+int					check_path(t_list **node);
 int					check_relative_path(t_list **node);
 #endif

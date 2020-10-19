@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:38:07 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/18 13:49:59 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/19 11:59:29 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ int		check_bin(t_list **node)
 	struct stat		sb;
 	char			*tmp_path;
 
-	if (check_path((*node)->content))
+	if (check_path(node))
 		return (1);
 	if (check_relative_path(node))
 		return (1);
+	if (ft_strlen((*node)->content) > 2 &&
+		ft_strncmp((*node)->content, "../", 2) == 0)
+		return (0);
 	i = -1;
 	if (!(paths = ft_strsplit(get_envv("PATH"), ':')))
 		return (0);
@@ -95,9 +98,6 @@ t_comm	check_builtins_and_bin(t_list **new)
 	else if (check_bin(new))
 		return (SH);
 	else
-	{
-
 		return (NOCOMM);
-	}
 	return (VOID);
 }
