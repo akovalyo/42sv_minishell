@@ -23,7 +23,7 @@ make
 
 ## Live
 
-[Run minishell online](https://repl.it/join/alibthfq-akovalyo)
+[Run minishell online](https://repl.it/@akovalyo/42svminishell)
 
 ## Common Instructions (mandatory part):
 
