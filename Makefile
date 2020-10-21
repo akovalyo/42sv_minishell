@@ -32,16 +32,16 @@ RESET = \033[0m
 # STATUS BAR #
 # ********** #
 
-TOTAL = $(shell find $(SRCS_DIR) -iname  "*.c" | wc -l | bc)
+TOTAL = $(shell find $(SRCS_DIR) -iname  "*.c" | wc -l)
 define status
-	$(eval COUNT := $(shell find $(OBJS_DIR) -iname "*.o" 2> /dev/null | wc -l | bc))
+	$(eval COUNT := $(shell find $(OBJS_DIR) -iname "*.o" 2> /dev/null | wc -l))
 	$(eval PER := $(shell awk "BEGIN {printf \"%.0f\n\", $(COUNT)/$(TOTAL) * 100}"))
-	$(eval SIZE := $(shell echo $(PER)/10 | bc))
+	$(eval SIZE := $(shell awk "BEGIN {printf \"%.0f\n\", $(PER)/10}"))
 	printf "\r$(COLOR)"
 	printf "█%.0s" $(shell seq 0 $(SIZE))
 	printf "%s%%" $(PER)
-	$(eval END := $(shell echo 10 - $(SIZE) | bc))
-	printf "%$(END)s" "  Compiling minishell...           "
+	$(eval END := $(shell awk "BEGIN {printf \"%.0f\n\", 10 - $(SIZE)}"))
+	printf "%$(END)s" "  Compiling libft...           "
 	printf "\r$(RESET)"
 endef
 
