@@ -6,7 +6,24 @@
 
 The objective of this project is to create a simple shell and learn about processes and file descriptors.
 
-*The project is written in accordance with the school's [Norm](https://github.com/akovalyo/akovalyo/blob/master/42_NORM.md).*
+## Usage
+
+**Download and Compile:**
+
+```
+git clone https://github.com/akovalyo/42sv_minishell minishell
+cd minishell
+make
+```
+
+**Run:**
+```
+./minishell
+```
+
+## Live
+
+[Run minishell online](https://repl.it/join/alibthfq-akovalyo)
 
 ## Common Instructions (mandatory part):
 
@@ -43,22 +60,4 @@ The objective of this project is to create a simple shell and learn about proces
 * **$?** should work like in bash
 
 * **ctrl-C, ctrl-D and ctrl-\** should have the same result as in bash
-
-## Usage
-
-**Download and Compile:**
-
-```
-git clone https://github.com/akovalyo/42sv_minishell minishell
-cd minishell
-make
-```
-
-**Run:**
-```
-./minishell
-```
-
-## Live
-
 
