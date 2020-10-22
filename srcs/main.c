@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/21 19:41:24 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/21 19:48:10 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	comm_sh(char **arg)
 	{
 		signal_child();
 		waitpid(pid, &status, 0);
-		errno = WEXITSTATUS(status);	
+		errno = WEXITSTATUS(status);
 	}
 }
 
