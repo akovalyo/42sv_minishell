@@ -6,7 +6,7 @@
 /*   By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:55:46 by akovalyo          #+#    #+#             */
-/*   Updated: 2020/10/18 13:25:39 by akovalyo         ###   ########.fr       */
+/*   Updated: 2020/10/21 19:41:24 by akovalyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	comm_sh(char **arg)
 	{
 		signal_child();
 		waitpid(pid, &status, 0);
-		errno = WEXITSTATUS(status);
+		errno = WEXITSTATUS(status);	
 	}
 }
 
@@ -96,9 +96,9 @@ void	handle_input(void)
 	int		j;
 
 	i = 0;
-	j = 0;
 	while (g_sh.input_tab[i])
 	{
+		j = 0;
 		parser(g_sh.input_tab[i]);
 		g_sh.map_len = ft_arraylen((void **)g_sh.map);
 		set_fd_global();
