@@ -6,7 +6,7 @@
 #    By: akovalyo <al.kovalyov@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 11:47:21 by akovalyo          #+#    #+#              #
-#    Updated: 2020/10/21 19:47:20 by akovalyo         ###   ########.fr        #
+#    Updated: 2020/10/21 19:50:59 by akovalyo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ define status
 	printf "█%.0s" $(shell seq 0 $(SIZE))
 	printf "%s%%" $(PER)
 	$(eval END := $(shell awk "BEGIN {printf \"%.0f\n\", 10 - $(SIZE)}"))
-	printf "%$(END)s" "  Compiling minishell...           "
+	printf "%$(END)s" "  Compiling $(NAME)...           "
 	printf "\r$(RESET)"
 endef
 
