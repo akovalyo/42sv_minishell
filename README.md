@@ -1,11 +1,8 @@
-# 42sv_minishell
-
-## Usage
+### Usage
 
 Press **Run &#8883; Button**
 
 or
-
 ```
 make
 ./minishell
