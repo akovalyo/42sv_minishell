@@ -1,29 +1,15 @@
 # 42sv_minishell
 
-100% :green_circle: 
-
-[![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)
-
-The objective of this project is to create a simple shell and learn about processes and file descriptors.
-
 ## Usage
 
-**Download and Compile:**
+Press **Run &#8883; Button**
+
+or
 
 ```
-git clone https://github.com/akovalyo/42sv_minishell minishell
-cd minishell
 make
-```
-
-**Run:**
-```
 ./minishell
 ```
-
-## Live
-
-[Run minishell online](https://repl.it/@akovalyo/42svminishell)
 
 ## Common Instructions (mandatory part):
 
